@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Api
 {
-    [Microsoft.AspNetCore.Mvc.Route("[controller]")]
+    [Microsoft.AspNetCore.Mvc.Route("identity")]
     [Authorize]
     public class IdentityController : ControllerBase
     {
