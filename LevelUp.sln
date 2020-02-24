@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.29519.181
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LevelUpAPI", "LevelUpAPI\LevelUpAPI.csproj", "{2C31C431-9047-4A63-B479-B02DE0A5579F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LevelUpIdentityServer", "LevelUpIdentityServer\LevelUpIdentityServer.csproj", "{BC2C8890-4D02-4A2E-BC00-79BEB3908828}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{2C31C431-9047-4A63-B479-B02DE0A5579F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C31C431-9047-4A63-B479-B02DE0A5579F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C31C431-9047-4A63-B479-B02DE0A5579F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC2C8890-4D02-4A2E-BC00-79BEB3908828}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC2C8890-4D02-4A2E-BC00-79BEB3908828}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC2C8890-4D02-4A2E-BC00-79BEB3908828}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC2C8890-4D02-4A2E-BC00-79BEB3908828}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
