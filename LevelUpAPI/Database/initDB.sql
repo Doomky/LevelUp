@@ -15,8 +15,8 @@ CREATE TABLE users
 	firstname		VARCHAR(255)             NOT NULL,
 	lastname		VARCHAR(255)			 NOT NULL,
 	email			VARCHAR(255)			 NOT NULL,
-	last_login_date VARCHAR(255),
-	password_hast   VARCHAR(255),
+	last_login_date DATETIME,
+	password_hash   VARCHAR(255),
 	avatar_id		INT FOREIGN KEY REFERENCES avatars(id)	 NOT NULL,
 	PRIMARY KEY (id),
 );
@@ -34,7 +34,7 @@ CREATE TABLE open_food_facts_datas (
 
 CREATE TABLE quests_types (
   id				INT IDENTITY(1, 1)		NOT NULL,
-  type				varchar(255),
+  type				VARCHAR(255),
   PRIMARY KEY (id),
 );
 
@@ -58,7 +58,7 @@ CREATE TABLE food_entries (
   id						INT IDENTITY(1, 1)									 NOT NULL,
   user_id					INT	FOREIGN KEY REFERENCES users(id)				 NOT NULL,
   open_food_facts_data_id	INT FOREIGN KEY REFERENCES open_food_facts_datas(id) NOT NULL,
-  date						TIMESTAMP											 NOT NULL,
+  date						DATETIME											 NOT NULL,
   PRIMARY KEY (id),
 );
 
@@ -73,7 +73,7 @@ CREATE TABLE physical_activites_entries (
   id					   INT	IDENTITY(1, 1)									NOT NULL,
   user_id				   INT	FOREIGN KEY REFERENCES users(id)				NOT NULL,
   physical_activites_id	   INT  FOREIGN KEY REFERENCES physical_activites(id)	NOT NULL,
-  date					   TIMESTAMP											NOT NULL,
+  date					   DATETIME 											NOT NULL,
   PRIMARY KEY (id),
 );
 
@@ -81,7 +81,7 @@ CREATE TABLE sleep_entries (
   id					  INT identity(1, 1)									NOT NULL,
   user_id				  INT FOREIGN KEY REFERENCES users(id)					NOT NULL,
   duration_minutes		  NUMERIC												NOT NULL,
-  date					  TIMESTAMP												NOT NULL,				
+  date					  DATETIME												NOT NULL,				
   PRIMARY KEY (id),
 
 );
