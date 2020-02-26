@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Text;
 using Newtonsoft.Json.Linq;
+using LevelUpRequests;
 
 namespace LevelUpBackend.Controllers
 {
@@ -55,6 +56,14 @@ namespace LevelUpBackend.Controllers
             }
             _logger.LogInformation(RequestMessageFormatterHelpers.ToLoggerMessage(HttpContext));
             return user;
+        }
+
+        [HttpPost]
+        [Route("signin")]
+        public void SignIn()
+        {
+            SignInRequestHandler SignInHandler = new SignInRequestHandler();
+            SignInHandler.Execute(HttpContext);
         }
     }
 }
