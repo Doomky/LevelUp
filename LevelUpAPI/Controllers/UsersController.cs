@@ -65,5 +65,15 @@ namespace LevelUpBackend.Controllers
             SignInRequestHandler SignInHandler = new SignInRequestHandler();
             SignInHandler.Execute(HttpContext);
         }
+
+        [HttpPost]
+        [Route("signup")]
+
+        public void SignUp()
+        {
+            SignUpRequestHandler signUpRequestHandler = new SignUpRequestHandler();
+            signUpRequestHandler.Execute(HttpContext);
+        }
+
     }
 }
