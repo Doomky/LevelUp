@@ -4,10 +4,11 @@ using System.Text;
 
 namespace LevelUpRequests
 {
-    class SignInRequest
+    public class SignInRequest : Request
     {
-        private string _login;
-        private string _emailAddress;
-        private string _hashPassword;
+        public string Login { get; set; }
+        public string EmailAddress { get; set; }
+
+        public string HashPassword { get; set; }
     }
 }

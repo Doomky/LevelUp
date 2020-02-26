@@ -4,7 +4,7 @@ using System.Text;
 
 namespace LevelUpRequests
 {
-    abstract class Request
+    public abstract class Request
     {
         
     }
