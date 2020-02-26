@@ -10,7 +10,7 @@ namespace LevelUpRequests
 {
     public class SignInRequestHandler : RequestHandler<SignInRequest>
     {
-        protected virtual async void ExecuteRequest(HttpContext context)
+        protected override async void ExecuteRequest(HttpContext context)
         {
             context.Response.StatusCode = StatusCodes.Status200OK;
         }
