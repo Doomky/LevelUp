@@ -8,7 +8,6 @@ namespace LevelUpRequests
     {
         public string Login { get; set; }
         public string EmailAddress { get; set; }
-
         public string PasswordHash { get; set; }
     }
 }
