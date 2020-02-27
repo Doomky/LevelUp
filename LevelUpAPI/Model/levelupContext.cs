@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace LevelUpBackend.Model
+namespace LevelUpAPI.Model
 {
     public partial class levelupContext : DbContext
     {

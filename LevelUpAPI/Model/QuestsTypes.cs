@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace LevelUpBackend.Model
+namespace LevelUpAPI.Model
 {
     public partial class QuestsTypes
     {

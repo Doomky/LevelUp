@@ -1,10 +1,10 @@
-﻿using LevelUpBackend.Model;
+﻿using LevelUpAPI.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace LevelUpBackend.DataAccess
+namespace LevelUpAPI.DataAccess
 {
     public static class User
     {
