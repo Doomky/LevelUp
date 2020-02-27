@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace LevelUpBackend.Model
+namespace LevelUpAPI.Model
 {
     public partial class levelupContext : DbContext
     {
@@ -56,7 +56,7 @@ namespace LevelUpBackend.Model
                     .WithMany(p => p.Advices)
                     .HasForeignKey(d => d.CategoryId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__advices__categor__5629CD9C");
+                    .HasConstraintName("FK__advices__categor__778AC167");
             });
 
             modelBuilder.Entity<Avatars>(entity =>
@@ -95,10 +95,8 @@ namespace LevelUpBackend.Model
                 entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Date)
-                    .IsRequired()
                     .HasColumnName("date")
-                    .IsRowVersion()
-                    .IsConcurrencyToken();
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.OpenFoodFactsDataId).HasColumnName("open_food_facts_data_id");
 
@@ -108,13 +106,13 @@ namespace LevelUpBackend.Model
                     .WithMany(p => p.FoodEntries)
                     .HasForeignKey(d => d.OpenFoodFactsDataId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__food_entr__open___4AB81AF0");
+                    .HasConstraintName("FK__food_entr__open___6C190EBB");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.FoodEntries)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__food_entr__user___49C3F6B7");
+                    .HasConstraintName("FK__food_entr__user___6B24EA82");
             });
 
             modelBuilder.Entity<OpenFoodFactsDatas>(entity =>
@@ -168,10 +166,8 @@ namespace LevelUpBackend.Model
                 entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Date)
-                    .IsRequired()
                     .HasColumnName("date")
-                    .IsRowVersion()
-                    .IsConcurrencyToken();
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.PhysicalActivitesId).HasColumnName("physical_activites_id");
 
@@ -181,13 +177,13 @@ namespace LevelUpBackend.Model
                     .WithMany(p => p.PhysicalActivitesEntries)
                     .HasForeignKey(d => d.PhysicalActivitesId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__physical___physi__5070F446");
+                    .HasConstraintName("FK__physical___physi__71D1E811");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.PhysicalActivitesEntries)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__physical___user___4F7CD00D");
+                    .HasConstraintName("FK__physical___user___70DDC3D8");
             });
 
             modelBuilder.Entity<Quests>(entity =>
@@ -208,13 +204,13 @@ namespace LevelUpBackend.Model
                     .WithMany(p => p.Quests)
                     .HasForeignKey(d => d.CategoryId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__quests__category__45F365D3");
+                    .HasConstraintName("FK__quests__category__6754599E");
 
                 entity.HasOne(d => d.Type)
                     .WithMany(p => p.Quests)
                     .HasForeignKey(d => d.TypeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__quests__type_id__46E78A0C");
+                    .HasConstraintName("FK__quests__type_id__68487DD7");
             });
 
             modelBuilder.Entity<QuestsTypes>(entity =>
@@ -236,10 +232,8 @@ namespace LevelUpBackend.Model
                 entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Date)
-                    .IsRequired()
                     .HasColumnName("date")
-                    .IsRowVersion()
-                    .IsConcurrencyToken();
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.DurationMinutes)
                     .HasColumnName("duration_minutes")
@@ -251,7 +245,7 @@ namespace LevelUpBackend.Model
                     .WithMany(p => p.SleepEntries)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__sleep_ent__user___534D60F1");
+                    .HasConstraintName("FK__sleep_ent__user___74AE54BC");
             });
 
             modelBuilder.Entity<Users>(entity =>
@@ -276,8 +270,7 @@ namespace LevelUpBackend.Model
 
                 entity.Property(e => e.LastLoginDate)
                     .HasColumnName("last_login_date")
-                    .HasMaxLength(255)
-                    .IsUnicode(false);
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.Lastname)
                     .IsRequired()
@@ -291,8 +284,8 @@ namespace LevelUpBackend.Model
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
-                entity.Property(e => e.PasswordHast)
-                    .HasColumnName("password_hast")
+                entity.Property(e => e.PasswordHash)
+                    .HasColumnName("password_hash")
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
@@ -300,7 +293,7 @@ namespace LevelUpBackend.Model
                     .WithMany(p => p.Users)
                     .HasForeignKey(d => d.AvatarId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__users__avatar_id__3D5E1FD2");
+                    .HasConstraintName("FK__users__avatar_id__5EBF139D");
             });
 
             OnModelCreatingPartial(modelBuilder);

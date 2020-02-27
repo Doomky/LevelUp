@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace LevelUpBackend.Model
+namespace LevelUpAPI.Model
 {
     public partial class Users
     {
@@ -17,8 +17,8 @@ namespace LevelUpBackend.Model
         public string Firstname { get; set; }
         public string Lastname { get; set; }
         public string Email { get; set; }
-        public string LastLoginDate { get; set; }
-        public string PasswordHast { get; set; }
+        public DateTime? LastLoginDate { get; set; }
+        public string PasswordHash { get; set; }
         public int AvatarId { get; set; }
 
         public virtual Avatars Avatar { get; set; }

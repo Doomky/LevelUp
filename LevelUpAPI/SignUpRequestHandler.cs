@@ -1,4 +1,4 @@
-﻿using LevelUpBackend.Model;
+﻿using LevelUpAPI.Model;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
