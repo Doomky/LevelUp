@@ -7,7 +7,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace LevelUpBackend
+namespace LevelUpAPI
 {
     public class SignInRequestHandler : RequestHandler<SignInRequest>
     {

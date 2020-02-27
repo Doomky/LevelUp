@@ -5,7 +5,7 @@
 using IdentityServer4.Models;
 using System.Collections.Generic;
 
-namespace LevelUpBackend
+namespace LevelUpAPI
 {
     public static class Config
     {
