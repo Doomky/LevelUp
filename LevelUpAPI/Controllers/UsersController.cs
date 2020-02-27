@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LevelUpBackend.Helpers;
+using LevelUpAPI.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Text;
 using Newtonsoft.Json.Linq;
 using LevelUpRequests;
-using LevelUpAPI.Model;
 
 namespace LevelUpBackend.Controllers
 {

@@ -32,24 +32,26 @@ namespace LevelUpRequests
                 {
                     Avatars avatar = new Avatars()
                     {
-                        Id = dbcontext.Avatars.Count(),
                         Level = 1,
                         Size = 1,
                         Xp = 0,
-                        XpMax = 0,
+                        XpMax = 10,
                     };
                     dbcontext.Avatars.Add(avatar);
+                    dbcontext.SaveChanges();
+
 
                     Users user = new Users()
                     {
-                        Id = dbcontext.Users.Count(),
                         Login = Request.Login,
                         Firstname = Request.Firstname,
                         Lastname = Request.Lastname,
+                        Email = Request.EmailAddress,
                         LastLoginDate = null,
                         AvatarId = avatar.Id
                     };
                     dbcontext.Users.Add(user);
+                    dbcontext.SaveChanges();
 
                     context.Response.StatusCode = StatusCodes.Status200OK;
                     return;

@@ -268,6 +268,11 @@ namespace LevelUpAPI.Model
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
+                entity.Property(e => e.GoogleId)
+                    .HasColumnName("google_id")
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.LastLoginDate)
                     .HasColumnName("last_login_date")
                     .HasColumnType("datetime");

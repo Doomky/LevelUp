@@ -20,6 +20,7 @@ namespace LevelUpAPI.Model
         public DateTime? LastLoginDate { get; set; }
         public string PasswordHash { get; set; }
         public int AvatarId { get; set; }
+        public string GoogleId { get; set; }
 
         public virtual Avatars Avatar { get; set; }
         public virtual ICollection<FoodEntries> FoodEntries { get; set; }
