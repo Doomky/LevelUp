@@ -1,6 +1,6 @@
 CREATE TABLE avatars
  (
-	id				INT						NOT NULL,
+	id				INT IDENTITY(1, 1)      NOT NULL,
 	level			INT						NOT NULL,
 	xp				INT						NOT NULL,
 	xp_max			INT						NOT NULL,
@@ -16,8 +16,9 @@ CREATE TABLE users
 	lastname		VARCHAR(255)			 NOT NULL,
 	email			VARCHAR(255)			 NOT NULL,
 	last_login_date DATETIME,
-	password_hash   VARCHAR(255),
+	password_hash   VARCHAR(255)             NOT NULL,
 	avatar_id		INT FOREIGN KEY REFERENCES avatars(id)	 NOT NULL,
+    google_id       VARCHAR(255),
 	PRIMARY KEY (id),
 );
 
@@ -34,13 +35,13 @@ CREATE TABLE open_food_facts_datas (
 
 CREATE TABLE quests_types (
   id				INT IDENTITY(1, 1)		NOT NULL,
-  type				VARCHAR(255),
+  type				VARCHAR(255)            NOT NULL,
   PRIMARY KEY (id),
 );
 
 CREATE TABLE categories (
   id				INT IDENTITY(1, 1)		NOT NULL,
-  category			VARCHAR(255),
+  category			VARCHAR(255)            NOT NULL,
   PRIMARY KEY (id),
 );
 
@@ -78,7 +79,7 @@ CREATE TABLE physical_activites_entries (
 );
 
 CREATE TABLE sleep_entries (
-  id					  INT identity(1, 1)									NOT NULL,
+  id					  INT IDENTITY(1, 1)									NOT NULL,
   user_id				  INT FOREIGN KEY REFERENCES users(id)					NOT NULL,
   duration_minutes		  NUMERIC												NOT NULL,
   date					  DATETIME												NOT NULL,				
