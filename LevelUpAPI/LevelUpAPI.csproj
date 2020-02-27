@@ -5,6 +5,7 @@
 
   <ItemGroup>
     <Folder Include="Controllers\" />
+    <Folder Include="RequestHandlers\" />
   </ItemGroup>
 
   <ItemGroup>
