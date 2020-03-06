@@ -3,7 +3,9 @@
 
 
 using IdentityServer4.Models;
+using LevelUpAPI.Model;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace IdentityServer
 {
@@ -21,26 +23,41 @@ namespace IdentityServer
                 new ApiResource("api1", "My API")
             };
 
-        public static IEnumerable<Client> Clients =>
-            new Client[]
+        public static Dictionary<int, Client> _clients = new Dictionary<int,Client>();
+
+        public static IEnumerable<Client> Clients => GetClients();
+
+        public static IEnumerable<Client> GetClients()
+        {
+            try
             {
-                 new Client
-                 {
-                     ClientId = "client",
+                using (var dbcontext = new levelupContext())
+                {
+                    foreach (var user in dbcontext.Users)
+                    {
+                        if (!_clients.ContainsKey(user.Id))
+                        {
+                            Client client = new Client()
+                            {
+                                ClientId = user.Login,
+                                ClientSecrets =
+                            {
+                                new Secret(user.PasswordHash),
+                            },
+                                AllowedGrantTypes = GrantTypes.ClientCredentials,
 
-                     // no interactive user, use the clientid/secret for authentication
-                     AllowedGrantTypes = GrantTypes.ClientCredentials,
+                                AllowedScopes = { "api1" }
+                            };
+                            _clients.Add(user.Id, client);
+                        }
+                    }
+                }
+            }
+            catch (System.Exception)
+            {
 
-                     // secret for authentication
-                     ClientSecrets =
-                     {
-                         new Secret("secret".Sha256())
-                     },
-
-                     // scopes that client has access to
-                     AllowedScopes = { "api1" }
-                 }
-            };
-
+            }
+            return _clients.Values.ToList();
+        }
     }
 }
