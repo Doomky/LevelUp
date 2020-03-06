@@ -3,15 +3,14 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using LevelUpBackend.Helpers;
+using LevelUpAPI.Helpers;
 using LevelUpAPI.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Text;
 using Newtonsoft.Json.Linq;
-using LevelUpRequests;
 
-namespace LevelUpBackend.Controllers
+namespace LevelUpAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
@@ -68,7 +67,6 @@ namespace LevelUpBackend.Controllers
 
         [HttpPost]
         [Route("signup")]
-
         public void SignUp()
         {
             SignUpRequestHandler signUpRequestHandler = new SignUpRequestHandler();

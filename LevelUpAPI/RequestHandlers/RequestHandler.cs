@@ -1,12 +1,13 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using LevelUpRequests;
 
-namespace LevelUpRequests
+namespace LevelUpAPI
 {
     public abstract class RequestHandler<TRequest> where TRequest : Request
     {

@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace LevelUpBackend.Helpers
+namespace LevelUpAPI.Helpers
 {
     public static class RequestMessageFormatterHelpers
     {

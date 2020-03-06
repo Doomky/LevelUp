@@ -1,6 +1,7 @@
 ﻿using IdentityModel.Client;
 using IdentityServer4.Models;
 using LevelUpAPI.Model;
+using LevelUpRequests;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 
-namespace LevelUpRequests
+namespace LevelUpAPI
 {
     public class SignUpRequestHandler : RequestHandler<SignUpRequest>
     {
