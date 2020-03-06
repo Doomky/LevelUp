@@ -20,10 +20,12 @@ namespace LevelUpAPI.Controllers
     public class UsersController : ControllerBase
     {
         private readonly ILogger<UsersController> _logger;
+        private readonly levelupContext _context;
 
-        public UsersController(ILogger<UsersController> logger)
+        public UsersController(ILogger<UsersController> logger, levelupContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         [HttpPost]

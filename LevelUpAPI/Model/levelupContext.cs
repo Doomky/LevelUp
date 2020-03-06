@@ -27,14 +27,9 @@ namespace LevelUpAPI.Model
         public virtual DbSet<SleepEntries> SleepEntries { get; set; }
         public virtual DbSet<Users> Users { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        /*protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=LAPTOP-AUN7URN9\\MSSQLSERVER01;Database=levelup;Trusted_Connection=True;");
-            }
-        }
+        }*/
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
