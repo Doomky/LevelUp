@@ -1,8 +1,10 @@
 ﻿using IdentityModel.Client;
 using IdentityServer4.Models;
+using LevelUpAPI.DataAccess.Repositories;
 using LevelUpAPI.Model;
 using LevelUpRequests;
 using Microsoft.AspNetCore.Http;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,44 +31,22 @@ namespace LevelUpAPI
 
             using (var dbcontext = new levelupContext())
             {
-                var query = from users in dbcontext.Users
-                            where users.Login == Request.Login || users.Email == Request.EmailAddress
-                            select users;
+                UserRepository userRepository = new UserRepository(dbcontext, null);
 
-                if (query.Any())
+                if (!userRepository.CanSignUp(Request).GetAwaiter().GetResult())
                 {
                     context.Response.StatusCode = StatusCodes.Status409Conflict;
                     return;
                 }
                 else
                 {
-                    Avatars avatar = new Avatars()
-                    {
-                        Level = 1,
-                        Size = 1,
-                        Xp = 0,
-                        XpMax = 10,
-                    };
-                    dbcontext.Avatars.Add(avatar);
-                    dbcontext.SaveChanges();
+                    AvatarRepository avatarRepository = new AvatarRepository(dbcontext, null);
+                    Dbo.Avatar avatar = avatarRepository.CreateAvatar().GetAwaiter().GetResult();
 
-
-                    Users user = new Users()
-                    {
-                        Login = Request.Login,
-                        Firstname = Request.Firstname,
-                        Lastname = Request.Lastname,
-                        Email = Request.EmailAddress,
-                        PasswordHash = Request.PasswordHash.Sha256(),
-                        LastLoginDate = null,
-                        AvatarId = avatar.Id
-                    };
-                    dbcontext.Users.Add(user);
-                    dbcontext.SaveChanges();
+                    Dbo.User user = userRepository.SignUp(Request, avatar.Id).GetAwaiter().GetResult();
 
                     string fullAddress = $"{HTTP}{address}:{port}/{endpoint}";
                     var client = new HttpClient();
-
                     string jsonString = JsonSerializer.Serialize<ClientCredentialsRequest>(new ClientCredentialsRequest()
                     {
                         Id = user.Id,

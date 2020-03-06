@@ -23,9 +23,10 @@ namespace IdentityServer
             services.AddControllers();
 
             var builder = services.AddIdentityServer()
+                .AddClientStore<CredentialsClientStore>()
                 .AddInMemoryIdentityResources(Config.Ids)
-                .AddInMemoryApiResources(Config.Apis)
-                .AddInMemoryClients(Config.Clients);
+                .AddInMemoryApiResources(Config.Apis);
+                //.AddInMemoryClients(Config.Clients);
 
             // not recommended for production - you need to store your key material somewhere secure
             builder.AddDeveloperSigningCredential();

@@ -9,6 +9,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Text;
 using Newtonsoft.Json.Linq;
+using LevelUpAPI.DataAccess.Repositories;
+using LevelUpAPI.Dbo;
+using LevelUpRequests;
 
 namespace LevelUpAPI.Controllers
 {
@@ -21,40 +24,6 @@ namespace LevelUpAPI.Controllers
         public UsersController(ILogger<UsersController> logger)
         {
             _logger = logger;
-        }
-
-        [HttpGet]
-        public object Get()
-        {
-            int id = -1;
-            Users user = null;
-            
-            using (Stream receiveStream = HttpContext.Request.Body)
-            {
-                JObject body = null;
-                using (StreamReader streamReader = new StreamReader(receiveStream, Encoding.UTF8))
-                {
-                    string bodyAsStr = streamReader.ReadToEndAsync().Result;
-                    if (bodyAsStr != null)
-                    {
-                        try
-                        {
-                            body = JObject.Parse(bodyAsStr);
-                        }
-                        catch (Exception)
-                        {
-                            body = null;
-                        }
-                    }
-                }
-                if (body != null && body.ContainsKey("id"))
-                {
-                    id = body.Value<int>("id");
-                    user = DataAccess.User.GetUserById(id);
-                }
-            }
-            _logger.LogInformation(RequestMessageFormatterHelpers.ToLoggerMessage(HttpContext));
-            return user;
         }
 
         [HttpPost]

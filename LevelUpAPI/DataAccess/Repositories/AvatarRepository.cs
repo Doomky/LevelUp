@@ -1,0 +1,29 @@
+﻿using LevelUpAPI.Model;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace LevelUpAPI.DataAccess.Repositories
+{
+    public class AvatarRepository : Repository<Model.Avatars, Dbo.Avatar>
+    {
+        public AvatarRepository(levelupContext context, ILogger logger) : base(context, context.Avatars, logger)
+        {
+        }
+
+        public async Task<Dbo.Avatar> CreateAvatar()
+        {
+            Dbo.Avatar avatar = new Dbo.Avatar()
+            {
+                Level = 1,
+                Size = 1,
+                Xp = 0,
+                XpMax = 10
+            };
+            return await base.Insert(avatar);
+        }
+    }
+}
