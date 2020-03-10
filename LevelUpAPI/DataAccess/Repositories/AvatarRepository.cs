@@ -11,7 +11,7 @@ namespace LevelUpAPI.DataAccess.Repositories
 {
     public class AvatarRepository : Repository<Model.Avatars, Dbo.Avatar>, IAvatarRepository
     {
-        public AvatarRepository(levelupContext context, ILogger logger) : base(context, context.Avatars, logger)
+        public AvatarRepository(levelupContext context, ILogger<AvatarRepository> logger) : base(context, context.Avatars, logger)
         {
         }
 

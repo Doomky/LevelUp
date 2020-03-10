@@ -28,57 +28,58 @@ namespace LevelUpClient
         {
             string fullAddress = $"{HTTP}{address}:{port}";
             var client = new HttpClient();
-            DiscoveryDocumentResponse discoDoc = null;
+            
+            //DiscoveryDocumentResponse discoDoc = null;
 
-            do
-            {
-                try
-                {
-                    discoDoc = await client.GetDiscoveryDocumentAsync(fullAddress);
-                    if (discoDoc.IsError)
-                    {
-                        Console.WriteLine($"Discovery Document:\n { discoDoc.Error }");
-                    }
-                    else
-                    {
-                        Console.WriteLine($"Discovery Document:\n { discoDoc.HttpResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult() }");
-                        break;
-                    }
-                }
-                catch (Exception e)
-                {
+            //do
+            //{
+            //    try
+            //    {
+            //        discoDoc = await client.GetDiscoveryDocumentAsync(fullAddress);
+            //        if (discoDoc.IsError)
+            //        {
+            //            Console.WriteLine($"Discovery Document:\n { discoDoc.Error }");
+            //        }
+            //        else
+            //        {
+            //            Console.WriteLine($"Discovery Document:\n { discoDoc.HttpResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult() }");
+            //            break;
+            //        }
+            //    }
+            //    catch (Exception e)
+            //    {
 
-                }
+            //    }
 
-                discoDoc = null;
-                Console.WriteLine("Please enter the Identity Server port:");
-                port = Console.ReadLine();
-                fullAddress = $"{HTTP}{address}:{port}";
-            } while (discoDoc == null);
+            //    discoDoc = null;
+            //    Console.WriteLine("Please enter the Identity Server port:");
+            //    port = Console.ReadLine();
+            //    fullAddress = $"{HTTP}{address}:{port}";
+            //} while (discoDoc == null);
 
 
-            // request token
-            var tokenResponse = await client.RequestClientCredentialsTokenAsync(new ClientCredentialsTokenRequest
-            {
-                Address = discoDoc.TokenEndpoint,
-                ClientId = "client",
-                ClientSecret = "secret",
-                Scope = "api1"
-            });
+            //// request token
+            //var tokenResponse = await client.RequestClientCredentialsTokenAsync(new ClientCredentialsTokenRequest
+            //{
+            //    Address = discoDoc.TokenEndpoint,
+            //    ClientId = "client",
+            //    ClientSecret = "secret",
+            //    Scope = "api1"
+            //});
 
-            if (tokenResponse.IsError)
-            {
-                Console.WriteLine(tokenResponse.Error);
-                return;
-            }
+            //if (tokenResponse.IsError)
+            //{
+            //    Console.WriteLine(tokenResponse.Error);
+            //    return;
+            //}
 
-            client.SetBearerToken(tokenResponse.AccessToken);
+            //client.SetBearerToken(tokenResponse.AccessToken);
 
-            Console.WriteLine(
-                @$"token response:
-                    access token: {tokenResponse.AccessToken}
-                    identity token: {tokenResponse.IdentityToken}
-                    expire in: {tokenResponse.ExpiresIn}");
+            //Console.WriteLine(
+            //    @$"token response:
+            //        access token: {tokenResponse.AccessToken}
+            //        identity token: {tokenResponse.IdentityToken}
+            //        expire in: {tokenResponse.ExpiresIn}");
 
             // call api
             while (true)

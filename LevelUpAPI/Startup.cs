@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LevelUpAPI.DataAccess.Repositories;
+using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Model;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -30,19 +32,6 @@ namespace LevelUpAPI
         {
             services.AddControllers();
 
-            services.AddMvc(options =>
-            {
-                options.AllowEmptyInputInBodyModelBinding = true;
-                foreach (var formatter in options.InputFormatters)
-                {
-                    if (formatter.GetType() == typeof(SystemTextJsonInputFormatter))
-                    {
-                        ((SystemTextJsonInputFormatter)formatter).SupportedMediaTypes.Add(Microsoft.Net.Http.Headers.MediaTypeHeaderValue.Parse("text/plain"));
-                        ((SystemTextJsonInputFormatter)formatter).SupportedMediaTypes.Add(Microsoft.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json"));
-                    }
-                }
-            });
-
             services.AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", options =>
                 {
@@ -54,6 +43,8 @@ namespace LevelUpAPI
 
             services.AddDbContext<levelupContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddTransient<IAvatarRepository, AvatarRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -64,6 +55,12 @@ namespace LevelUpAPI
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Error");
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
             }
 
             app.UseAuthentication();

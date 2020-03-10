@@ -1,4 +1,5 @@
-﻿using LevelUpRequests;
+﻿using IdentityModel;
+using LevelUpRequests;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -18,6 +19,13 @@ namespace LevelUpClient
         {
             Console.Write("Email Address:");
             Request.EmailAddress = Console.ReadLine();
+            return this;
+        }
+
+        public ConsoleSignInRequestBuilder WithPassword()
+        {
+            Console.Write("Password (will be hashed):");
+            Request.PasswordHash = Console.ReadLine().ToSha256();
             return this;
         }
 

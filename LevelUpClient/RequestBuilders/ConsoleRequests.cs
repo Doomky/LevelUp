@@ -15,7 +15,8 @@ namespace LevelUpClient
                     return new ConsoleSignInRequestBuilder()
                             .WithLogin()
                             .WithEmailAddress()
-                            .WithPasswordHash()
+                            .WithPassword()
+                            //.WithPasswordHash()
                             .Build();
                 case "users/signup":
                     return new ConsoleSignUpRequestBuilder()

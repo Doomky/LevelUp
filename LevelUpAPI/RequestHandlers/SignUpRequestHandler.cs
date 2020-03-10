@@ -1,6 +1,7 @@
 ﻿using IdentityModel.Client;
 using IdentityServer4.Models;
 using LevelUpAPI.DataAccess.Repositories;
+using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Model;
 using LevelUpRequests;
 using Microsoft.AspNetCore.Http;
@@ -21,6 +22,15 @@ namespace LevelUpAPI
         public const string port = "5000";
         public const string endpoint = "clientcredentials";
 
+        private readonly IAvatarRepository _avatarRepository;
+        private readonly IUserRepository _userRepository;
+
+        public SignUpRequestHandler(IAvatarRepository avatarRepository, IUserRepository userRepository)
+        {
+            _avatarRepository = avatarRepository;
+            _userRepository = userRepository;
+        }
+
         protected override void ExecuteRequest(HttpContext context)
         {
             if (Request == null)
@@ -29,36 +39,29 @@ namespace LevelUpAPI
                 return;
             }
 
-            using (var dbcontext = new levelupContext())
+            if (!_userRepository.CanSignUp(Request).GetAwaiter().GetResult())
             {
-                UserRepository userRepository = new UserRepository(dbcontext, null);
+                context.Response.StatusCode = StatusCodes.Status409Conflict;
+                return;
+            }
+            else
+            {
+                Dbo.Avatar avatar = _avatarRepository.Create().GetAwaiter().GetResult();
+                Dbo.User user = _userRepository.SignUp(Request, avatar.Id).GetAwaiter().GetResult();
 
-                if (!userRepository.CanSignUp(Request).GetAwaiter().GetResult())
+                string fullAddress = $"{HTTP}{address}:{port}/{endpoint}";
+                var client = new HttpClient();
+                string jsonString = JsonSerializer.Serialize<ClientCredentialsRequest>(new ClientCredentialsRequest()
                 {
-                    context.Response.StatusCode = StatusCodes.Status409Conflict;
-                    return;
-                }
-                else
-                {
-                    AvatarRepository avatarRepository = new AvatarRepository(dbcontext, null);
-                    Dbo.Avatar avatar = avatarRepository.Create().GetAwaiter().GetResult();
+                    Id = user.Id,
+                    Login = user.Login,
+                    PasswordHash = user.PasswordHash
+                });
 
-                    Dbo.User user = userRepository.SignUp(Request, avatar.Id).GetAwaiter().GetResult();
-
-                    string fullAddress = $"{HTTP}{address}:{port}/{endpoint}";
-                    var client = new HttpClient();
-                    string jsonString = JsonSerializer.Serialize<ClientCredentialsRequest>(new ClientCredentialsRequest()
-                    {
-                        Id = user.Id,
-                        Login = user.Login,
-                        PasswordHash = user.PasswordHash
-                    });
-
-                    HttpContent httpContent = new StringContent(jsonString);
-                    HttpResponseMessage httpResponse = client.PostAsync(fullAddress, httpContent).GetAwaiter().GetResult();
-                    context.Response.StatusCode = StatusCodes.Status200OK;
-                    return;
-                }
+                HttpContent httpContent = new StringContent(jsonString);
+                HttpResponseMessage httpResponse = client.PostAsync(fullAddress, httpContent).GetAwaiter().GetResult();
+                context.Response.StatusCode = StatusCodes.Status200OK;
+                return;
             }
         }
     }

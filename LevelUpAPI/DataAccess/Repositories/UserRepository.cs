@@ -1,5 +1,6 @@
 ﻿using IdentityServer4.Models;
 using LevelUpAPI.DataAccess.Repositories.Interfaces;
+using LevelUpAPI.Dbo;
 using LevelUpAPI.Model;
 using LevelUpRequests;
 using Microsoft.Extensions.Logging;
@@ -12,7 +13,7 @@ namespace LevelUpAPI.DataAccess.Repositories
 {
     public class UserRepository : Repository<Model.Users, Dbo.User>, IUserRepository
     {
-        public UserRepository(levelupContext context, ILogger logger) : base(context, context.Users, logger)
+        public UserRepository(levelupContext context, ILogger<UserRepository> logger) : base(context, context.Users, logger)
         {
 
         }
@@ -53,6 +54,28 @@ namespace LevelUpAPI.DataAccess.Repositories
                 AvatarId = avatarId
             };
             return user = await Insert(user);
+        }
+
+        public async Task<bool> CanSignIn(SignInRequest signInRequest)
+        {
+            var arr = await base.Get();
+            var query = from users in arr
+                        where users.Login == signInRequest.Login || users.Email == signInRequest.EmailAddress
+                        select users;
+            return query.Any();
+        }
+
+        public async Task<User> GetUserByLogin(string login)
+        {
+            var arr = await base.Get();
+            var query = from users in arr
+                        where users.Login == login
+                        select users;
+            if (query.Any())
+            {
+                return query.First();
+            }
+            return null;
         }
     }
 }

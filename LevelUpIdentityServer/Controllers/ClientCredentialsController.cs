@@ -6,6 +6,8 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using IdentityServer;
 using IdentityServer4.Models;
+using LevelUpAPI.DataAccess.Repositories.Interfaces;
+using LevelUpAPI.Model;
 using LevelUpRequests;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +18,15 @@ namespace LevelUpIdentityServer.Controllers
     [ApiController]
     public class ClientCredentialsController : ControllerBase
     {
+        private readonly levelupContext _context;
+        private readonly IUserRepository _userRepository;
+
+        public ClientCredentialsController(levelupContext context, IUserRepository userRepository)
+        {
+            _context = context;
+            _userRepository = userRepository;
+        }
+
         [HttpPost]
         public async Task<object> Get()
         {
@@ -26,19 +37,19 @@ namespace LevelUpIdentityServer.Controllers
                 bodyStr = await reader.ReadToEndAsync();
             }
             ClientCredentialsRequest clientCredentialsRequest = JsonSerializer.Deserialize<ClientCredentialsRequest>(bodyStr);
-            Config._clients.Add(clientCredentialsRequest.Id, new Client()
-            {
-                ClientId = clientCredentialsRequest.Login,
-                ClientSecrets = 
-                {
-                    new Secret(clientCredentialsRequest.PasswordHash)
-                },
-                AllowedGrantTypes = GrantTypes.ClientCredentials,
-                AllowedScopes = 
-                { 
-                    "api1" 
-                }
-            });
+            //Config._clients.Add(clientCredentialsRequest.Id, new Client()
+            //{
+            //    ClientId = clientCredentialsRequest.Login,
+            //    ClientSecrets = 
+            //    {
+            //        new Secret(clientCredentialsRequest.PasswordHash)
+            //    },
+            //    AllowedGrantTypes = GrantTypes.ClientCredentials,
+            //    AllowedScopes = 
+            //    { 
+            //        "api1" 
+            //    }
+            //});
             return Ok();
         }
     }

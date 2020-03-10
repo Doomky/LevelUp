@@ -11,6 +11,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using IdentityServer4.Models;
 using LevelUpRequests;
+using LevelUpAPI.DataAccess.Repositories.Interfaces;
 
 namespace LevelUpAPI
 {
@@ -21,6 +22,13 @@ namespace LevelUpAPI
         public const string port = "5000";
         public const string endpoint = "clientcredentials";
 
+        private IUserRepository _userRepository;
+
+        public SignInRequestHandler(IUserRepository userRepository)
+        {
+            _userRepository = userRepository;
+        }
+
         protected override void ExecuteRequest(HttpContext context)
         {
             if (Request == null)
@@ -28,16 +36,11 @@ namespace LevelUpAPI
                 context.Response.StatusCode = StatusCodes.Status400BadRequest;
                 return;
             }
-            using (var dbcontext = new levelupContext())
+
+            if (!_userRepository.CanSignIn(Request).GetAwaiter().GetResult())
             {
-                var query = from users in dbcontext.Users
-                            where users.Login == Request.Login || users.Email == Request.EmailAddress
-                            select users;
-                if (!query.Any())
-                {
-                    context.Response.StatusCode = StatusCodes.Status400BadRequest;
-                    return;
-                }
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                return;
             }
 
             string fullAddress = $"{HTTP}{address}:{port}";
@@ -52,15 +55,10 @@ namespace LevelUpAPI
                 Scope = "api1"
             }).GetAwaiter().GetResult();
 
-            try
-            {
-                context.Response.StatusCode = StatusCodes.Status200OK;
-                context.Response.WriteAsync(tokenResponse.Json.ToString()).GetAwaiter().GetResult();
-            }
-            catch (Exception e)
-            {
-                //context.Response.StatusCode = StatusCodes.Status400BadRequest;
-            }
+            string jsonAsString = tokenResponse.Json.ToString();
+
+            context.Response.StatusCode = StatusCodes.Status200OK;
+            context.Response.WriteAsync(jsonAsString).GetAwaiter().GetResult();
         }
     }
 }
