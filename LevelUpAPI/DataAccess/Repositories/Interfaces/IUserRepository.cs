@@ -1,0 +1,18 @@
+﻿using LevelUpAPI.Dbo;
+using LevelUpAPI.Model;
+using LevelUpRequests;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace LevelUpAPI.DataAccess.Repositories.Interfaces
+{
+    public interface IUserRepository : IRepository<Users, User>
+    {
+        public Task<Dbo.User> GetUserById(int id);
+        public Task<bool> CanSignUp(SignUpRequest signUpRequest);
+        public Task<Dbo.User> SignUp(SignUpRequest signUpRequest, int avatarId);
+
+    }
+}

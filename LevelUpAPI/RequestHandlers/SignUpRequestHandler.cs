@@ -41,7 +41,7 @@ namespace LevelUpAPI
                 else
                 {
                     AvatarRepository avatarRepository = new AvatarRepository(dbcontext, null);
-                    Dbo.Avatar avatar = avatarRepository.CreateAvatar().GetAwaiter().GetResult();
+                    Dbo.Avatar avatar = avatarRepository.Create().GetAwaiter().GetResult();
 
                     Dbo.User user = userRepository.SignUp(Request, avatar.Id).GetAwaiter().GetResult();
 

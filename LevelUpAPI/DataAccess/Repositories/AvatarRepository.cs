@@ -1,4 +1,5 @@
-﻿using LevelUpAPI.Model;
+﻿using LevelUpAPI.DataAccess.Repositories.Interfaces;
+using LevelUpAPI.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
@@ -8,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace LevelUpAPI.DataAccess.Repositories
 {
-    public class AvatarRepository : Repository<Model.Avatars, Dbo.Avatar>
+    public class AvatarRepository : Repository<Model.Avatars, Dbo.Avatar>, IAvatarRepository
     {
         public AvatarRepository(levelupContext context, ILogger logger) : base(context, context.Avatars, logger)
         {
         }
 
-        public async Task<Dbo.Avatar> CreateAvatar()
+        public async Task<Dbo.Avatar> Create()
         {
             Dbo.Avatar avatar = new Dbo.Avatar()
             {

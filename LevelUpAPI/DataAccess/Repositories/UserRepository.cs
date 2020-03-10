@@ -1,4 +1,5 @@
 ﻿using IdentityServer4.Models;
+using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Model;
 using LevelUpRequests;
 using Microsoft.Extensions.Logging;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace LevelUpAPI.DataAccess.Repositories
 {
-    public class UserRepository : Repository<Model.Users, Dbo.User>
+    public class UserRepository : Repository<Model.Users, Dbo.User>, IUserRepository
     {
         public UserRepository(levelupContext context, ILogger logger) : base(context, context.Users, logger)
         {
