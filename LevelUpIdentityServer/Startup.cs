@@ -7,6 +7,7 @@ using LevelUpAPI.Model;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -15,10 +16,12 @@ namespace IdentityServer
     public class Startup
     {
         public IWebHostEnvironment Environment { get; }
+        public IConfiguration Configuration { get; }
 
-        public Startup(IWebHostEnvironment environment)
+        public Startup(IWebHostEnvironment environment, IConfiguration configuration)
         {
             Environment = environment;
+            Configuration = configuration;
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -27,7 +30,7 @@ namespace IdentityServer
             services.AddControllers();
 
             services.AddDbContext<levelupContext>(options =>
-                options.UseSqlServer("Server=.\\MSSQLSERVER01;Database=levelup;Trusted_Connection=True;"));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddTransient<IAvatarRepository, AvatarRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
 
