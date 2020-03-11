@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -14,9 +15,11 @@ namespace LevelUpAPI.DataAccess.Repositories
         private DbSet<DBEntity> _set;
         protected Model.levelupContext _context;
         protected ILogger _logger;
+        protected readonly IMapper _mapper;
 
-        public Repository(Model.levelupContext context, DbSet<DBEntity> set, ILogger logger)
+        public Repository(Model.levelupContext context, DbSet<DBEntity> set, ILogger logger, IMapper mapper)
         {
+            _mapper = mapper;
             _context = context;
             _logger = logger;
             _set = set;

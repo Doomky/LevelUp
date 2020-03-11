@@ -1,4 +1,5 @@
-﻿using IdentityServer4.Models;
+﻿using AutoMapper;
+using IdentityServer4.Models;
 using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Dbo;
 using LevelUpAPI.Model;
@@ -15,7 +16,7 @@ namespace LevelUpAPI.DataAccess.Repositories
 {
     public class UserRepository : Repository<Model.Users, Dbo.User>, IUserRepository
     {
-        public UserRepository(levelupContext context, ILogger<UserRepository> logger) : base(context, context.Users, logger)
+        public UserRepository(levelupContext context, ILogger<UserRepository> logger, IMapper mapper) : base(context, context.Users, logger, mapper)
         {
 
         }
