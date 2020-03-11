@@ -41,6 +41,8 @@ namespace LevelUpAPI.DataAccess
             AddTwoWayMapping<Dbo.QuestType, Model.QuestsTypes>();
             AddTwoWayMapping<Dbo.SleepEntry, Model.SleepEntries>();
             AddTwoWayMapping<Dbo.User, Model.Users>();
+            AddTwoWayMapping<Dbo.NbFoodEntriesByLogin, Model.NbFoodEntriesByLogin>();
+            AddTwoWayMapping<Dbo.NbPhysicalActivitiesEntriesByLogin, Model.NbPhysicalActivitiesEntriesByLogin>();
         }
 
         public void AddTwoWayMapping<T1, T2>()
