@@ -38,7 +38,7 @@ namespace LevelUpAPI.DataAccess.Repositories
                         where user.Login == signUpRequest.Login || user.Email == signUpRequest.EmailAddress
                         select user;
 
-            return query.Any();
+            return !query.Any();
         }
 
         public async Task<Dbo.User> SignUp(SignUpRequest signUpRequest, int avatarId)

@@ -13,6 +13,8 @@ using LevelUpAPI.DataAccess.Repositories;
 using LevelUpAPI.Dbo;
 using LevelUpRequests;
 using LevelUpAPI.DataAccess.Repositories.Interfaces;
+using LevelUpAPI.RequestHandlers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LevelUpAPI.Controllers
 {
@@ -49,5 +51,13 @@ namespace LevelUpAPI.Controllers
             signUpRequestHandler.Execute(HttpContext);
         }
 
+        [HttpPost]
+        [Authorize]
+        [Route("change-password")]
+        public void ChangePassword()
+        {
+            ChangePasswordRequestHandler changePasswordRequestHandler = new ChangePasswordRequestHandler();
+            changePasswordRequestHandler.Execute(HttpContext);
+        }
     }
 }

@@ -90,24 +90,27 @@ namespace LevelUpClient
                     port = Console.ReadLine();
                     Console.Write("endpoint:");
                     string endpoint = Console.ReadLine();
-                    Request request = ConsoleRequests.Create(endpoint);
-                    if (request != null)
-                    {
-                        fullAddress = $"{HTTPS}{address}:{port}/{endpoint}";
-                        Console.WriteLine(fullAddress);
-                        string jsonString = JsonSerializer.Serialize<SignInRequest>((SignInRequest)request);
-                        HttpContent httpContent = new StringContent(jsonString);
-                        HttpResponseMessage httpResponse = await client.PostAsync(fullAddress, httpContent);
-                        string bodyAsStr = "";
-                        if (httpResponse.IsSuccessStatusCode)
-                        {
-                            bodyAsStr = await httpResponse.Content.ReadAsStringAsync();
-                        }
-                        Console.WriteLine(
-$@"response:
-status code: {(int)httpResponse.StatusCode} {httpResponse.StatusCode}
-body: {bodyAsStr}");
-                    }
+                    fullAddress = $"{HTTPS}{address}:{port}/{endpoint}";
+
+                    RequestHandler.RequestHandlers.HandleEndpoint(client, endpoint, fullAddress);
+//                    Request request = ConsoleRequests.Create(endpoint);
+//                    if (request != null)
+//                    {
+//                        fullAddress = $"{HTTPS}{address}:{port}/{endpoint}";
+//                        Console.WriteLine(fullAddress);
+//                        string jsonString = JsonSerializer.Serialize<SignInRequest>((SignInRequest)request);
+//                        HttpContent httpContent = new StringContent(jsonString);
+//                        HttpResponseMessage httpResponse = await client.PostAsync(fullAddress, httpContent);
+//                        string bodyAsStr = "";
+//                        if (httpResponse.IsSuccessStatusCode)
+//                        {
+//                            bodyAsStr = await httpResponse.Content.ReadAsStringAsync();
+//                        }
+//                        Console.WriteLine(
+//$@"response:
+//status code: {(int)httpResponse.StatusCode} {httpResponse.StatusCode}
+//body: {bodyAsStr}");
+//                    }
                 }
                 catch (Exception e)
                 {
