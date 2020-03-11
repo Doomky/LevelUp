@@ -27,7 +27,7 @@ namespace LevelUpAPI.DataAccess.Repositories
             try
             {
                 List<DBEntity> query = null;
-                query = await _set. AsNoTracking().ToListAsync();
+                query = await _set.AsNoTracking().ToListAsync();
                 var arr = AutomapperProfile.Mapper.Map<ModelEntity[]>(query);
                 if (id.HasValue)
                     return arr.Where(obj => obj.Id == id.Value);
@@ -36,7 +36,7 @@ namespace LevelUpAPI.DataAccess.Repositories
             }
             catch (Exception ex)
             {
-                _logger.LogError("error on db", ex);
+                _logger.LogError("Cannot get this entry", ex);
                 return null;
             }
         }
@@ -53,7 +53,7 @@ namespace LevelUpAPI.DataAccess.Repositories
             }
             catch (Exception ex)
             {
-                _logger.LogError("error on db", ex);
+                _logger.LogError("Cannot insert this new entry", ex);
                 return null;
             }
         }
@@ -77,7 +77,7 @@ namespace LevelUpAPI.DataAccess.Repositories
             }
             catch (Exception ex)
             {
-                _logger.LogError("error on db", ex);
+                _logger.LogError("Cannot update this entry", ex);
                 return null;
             }
             return AutomapperProfile.Mapper.Map<ModelEntity>(dbEntity);
@@ -99,7 +99,7 @@ namespace LevelUpAPI.DataAccess.Repositories
             }
             catch (Exception ex)
             {
-                _logger.LogError("error on db", ex);
+                _logger.LogError("Cannot delete this entry", ex);
                 return false;
             }
         }
