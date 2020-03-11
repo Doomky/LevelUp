@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LevelUpRequests", "LevelUpR
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LevelUpClient", "LevelUpClient\LevelUpClient.csproj", "{0B13B57C-C7D5-44AA-A348-54989A372E58}"
 EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "LevelUpDatabase", "LevelUpDatabase\LevelUpDatabase.sqlproj", "{4FB9B3DB-86BF-4569-895B-6F66A216A15E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,12 @@ Global
 		{0B13B57C-C7D5-44AA-A348-54989A372E58}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B13B57C-C7D5-44AA-A348-54989A372E58}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B13B57C-C7D5-44AA-A348-54989A372E58}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FB9B3DB-86BF-4569-895B-6F66A216A15E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FB9B3DB-86BF-4569-895B-6F66A216A15E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FB9B3DB-86BF-4569-895B-6F66A216A15E}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{4FB9B3DB-86BF-4569-895B-6F66A216A15E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FB9B3DB-86BF-4569-895B-6F66A216A15E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FB9B3DB-86BF-4569-895B-6F66A216A15E}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
