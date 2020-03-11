@@ -49,11 +49,10 @@ namespace LevelUpAPI.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         [Route("change-password")]
         public void ChangePassword()
         {
-            ChangePasswordRequestHandler changePasswordRequestHandler = new ChangePasswordRequestHandler();
+            ChangePasswordRequestHandler changePasswordRequestHandler = new ChangePasswordRequestHandler(_userRepository);
             changePasswordRequestHandler.Execute(HttpContext);
         }
     }

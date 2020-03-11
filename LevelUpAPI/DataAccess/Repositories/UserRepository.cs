@@ -7,6 +7,8 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
+using System.Security.Principal;
 using System.Threading.Tasks;
 
 namespace LevelUpAPI.DataAccess.Repositories
@@ -75,6 +77,16 @@ namespace LevelUpAPI.DataAccess.Repositories
             {
                 return query.First();
             }
+            return null;
+        }
+
+        public async Task<User> GetUserByClaims(ClaimsPrincipal claimsPrincipal)
+        {
+            if (claimsPrincipal == null)
+                return null;
+            foreach (var claim in claimsPrincipal.Claims)
+                if (claim.Type == "client_id")
+                    return await GetUserByLogin(claim.Value);
             return null;
         }
     }
