@@ -8,6 +8,6 @@ namespace LevelUpAPI.Dbo
         public int Id { get; set; }
         public int UserId { get; set; }
         public int OpenFoodFactsDataId { get; set; }
-        public DateTime Date { get; set; }
+        public DateTime Datetime { get; set; }
     }
 }

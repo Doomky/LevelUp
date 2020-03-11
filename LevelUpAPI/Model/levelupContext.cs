@@ -19,6 +19,8 @@ namespace LevelUpAPI.Model
         public virtual DbSet<Avatars> Avatars { get; set; }
         public virtual DbSet<Categories> Categories { get; set; }
         public virtual DbSet<FoodEntries> FoodEntries { get; set; }
+        public virtual DbSet<NbFoodEntriesByLogin> NbFoodEntriesByLogin { get; set; }
+        public virtual DbSet<NbPhysicalActivitiesEntriesByLogin> NbPhysicalActivitiesEntriesByLogin { get; set; }
         public virtual DbSet<OpenFoodFactsDatas> OpenFoodFactsDatas { get; set; }
         public virtual DbSet<PhysicalActivites> PhysicalActivites { get; set; }
         public virtual DbSet<PhysicalActivitesEntries> PhysicalActivitesEntries { get; set; }
@@ -51,14 +53,16 @@ namespace LevelUpAPI.Model
                     .WithMany(p => p.Advices)
                     .HasForeignKey(d => d.CategoryId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__advices__categor__151B244E");
+                    .HasConstraintName("FK__advices__categor__52593CB8");
             });
 
             modelBuilder.Entity<Avatars>(entity =>
             {
                 entity.ToTable("avatars");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .ValueGeneratedNever();
 
                 entity.Property(e => e.Level).HasColumnName("level");
 
@@ -76,7 +80,6 @@ namespace LevelUpAPI.Model
                 entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Category)
-                    .IsRequired()
                     .HasColumnName("category")
                     .HasMaxLength(255)
                     .IsUnicode(false);
@@ -88,8 +91,8 @@ namespace LevelUpAPI.Model
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
-                entity.Property(e => e.Date)
-                    .HasColumnName("date")
+                entity.Property(e => e.Datetime)
+                    .HasColumnName("datetime")
                     .HasColumnType("datetime");
 
                 entity.Property(e => e.OpenFoodFactsDataId).HasColumnName("open_food_facts_data_id");
@@ -100,13 +103,55 @@ namespace LevelUpAPI.Model
                     .WithMany(p => p.FoodEntries)
                     .HasForeignKey(d => d.OpenFoodFactsDataId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__food_entr__open___09A971A2");
+                    .HasConstraintName("FK__food_entr__open___46E78A0C");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.FoodEntries)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__food_entr__user___08B54D69");
+                    .HasConstraintName("FK__food_entr__user___45F365D3");
+            });
+
+            modelBuilder.Entity<NbFoodEntriesByLogin>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("NbFoodEntriesByLogin");
+
+                entity.Property(e => e.Login)
+                    .IsRequired()
+                    .HasColumnName("login")
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasColumnName("name")
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Total).HasColumnName("total");
+            });
+
+            modelBuilder.Entity<NbPhysicalActivitiesEntriesByLogin>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("NbPhysicalActivitiesEntriesByLogin");
+
+                entity.Property(e => e.Login)
+                    .IsRequired()
+                    .HasColumnName("login")
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasColumnName("name")
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Total).HasColumnName("total");
             });
 
             modelBuilder.Entity<OpenFoodFactsDatas>(entity =>
@@ -159,8 +204,8 @@ namespace LevelUpAPI.Model
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
-                entity.Property(e => e.Date)
-                    .HasColumnName("date")
+                entity.Property(e => e.Datetime)
+                    .HasColumnName("datetime")
                     .HasColumnType("datetime");
 
                 entity.Property(e => e.PhysicalActivitesId).HasColumnName("physical_activites_id");
@@ -171,13 +216,13 @@ namespace LevelUpAPI.Model
                     .WithMany(p => p.PhysicalActivitesEntries)
                     .HasForeignKey(d => d.PhysicalActivitesId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__physical___physi__0F624AF8");
+                    .HasConstraintName("FK__physical___physi__4CA06362");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.PhysicalActivitesEntries)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__physical___user___0E6E26BF");
+                    .HasConstraintName("FK__physical___user___4BAC3F29");
             });
 
             modelBuilder.Entity<Quests>(entity =>
@@ -198,13 +243,13 @@ namespace LevelUpAPI.Model
                     .WithMany(p => p.Quests)
                     .HasForeignKey(d => d.CategoryId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__quests__category__04E4BC85");
+                    .HasConstraintName("FK__quests__category__4222D4EF");
 
                 entity.HasOne(d => d.Type)
                     .WithMany(p => p.Quests)
                     .HasForeignKey(d => d.TypeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__quests__type_id__05D8E0BE");
+                    .HasConstraintName("FK__quests__type_id__4316F928");
             });
 
             modelBuilder.Entity<QuestsTypes>(entity =>
@@ -214,7 +259,6 @@ namespace LevelUpAPI.Model
                 entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Type)
-                    .IsRequired()
                     .HasColumnName("type")
                     .HasMaxLength(255)
                     .IsUnicode(false);
@@ -226,8 +270,8 @@ namespace LevelUpAPI.Model
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
-                entity.Property(e => e.Date)
-                    .HasColumnName("date")
+                entity.Property(e => e.Datetime)
+                    .HasColumnName("datetime")
                     .HasColumnType("datetime");
 
                 entity.Property(e => e.DurationMinutes)
@@ -240,7 +284,7 @@ namespace LevelUpAPI.Model
                     .WithMany(p => p.SleepEntries)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__sleep_ent__user___123EB7A3");
+                    .HasConstraintName("FK__sleep_ent__user___4F7CD00D");
             });
 
             modelBuilder.Entity<Users>(entity =>
@@ -285,7 +329,6 @@ namespace LevelUpAPI.Model
                     .IsUnicode(false);
 
                 entity.Property(e => e.PasswordHash)
-                    .IsRequired()
                     .HasColumnName("password_hash")
                     .HasMaxLength(255)
                     .IsUnicode(false);
@@ -294,7 +337,7 @@ namespace LevelUpAPI.Model
                     .WithMany(p => p.Users)
                     .HasForeignKey(d => d.AvatarId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__users__avatar_id__7C4F7684");
+                    .HasConstraintName("FK__users__avatar_id__398D8EEE");
             });
 
             OnModelCreatingPartial(modelBuilder);
