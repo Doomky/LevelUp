@@ -33,7 +33,7 @@ body: {bodyAsStr}");
         {
             return new ConsoleSignUpRequestBuilder()
                     .WithLogin()
-                    .WithPasswordHash()
+                    .WithPassword()
                     .WithFirstname()
                     .WithLastname()
                     .WithEmailAddress()

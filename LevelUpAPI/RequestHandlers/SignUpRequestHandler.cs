@@ -49,7 +49,7 @@ namespace LevelUpAPI
                 Dbo.Avatar avatar = _avatarRepository.Create().GetAwaiter().GetResult();
                 Dbo.User user = _userRepository.SignUp(Request, avatar.Id).GetAwaiter().GetResult();
 
-                string fullAddress = $"{HTTP}{address}:{port}/{endpoint}";
+                /*string fullAddress = $"{HTTP}{address}:{port}/{endpoint}";
                 var client = new HttpClient();
                 string jsonString = JsonSerializer.Serialize<ClientCredentialsRequest>(new ClientCredentialsRequest()
                 {
@@ -59,7 +59,7 @@ namespace LevelUpAPI
                 });
 
                 HttpContent httpContent = new StringContent(jsonString);
-                HttpResponseMessage httpResponse = client.PostAsync(fullAddress, httpContent).GetAwaiter().GetResult();
+                HttpResponseMessage httpResponse = client.PostAsync(fullAddress, httpContent).GetAwaiter().GetResult();*/
                 context.Response.StatusCode = StatusCodes.Status200OK;
                 return;
             }
