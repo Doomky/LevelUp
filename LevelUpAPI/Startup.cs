@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using IdentityServer4;
+using LevelUpAPI.DataAccess;
 using LevelUpAPI.DataAccess.Repositories;
 using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Model;
@@ -45,6 +47,7 @@ namespace LevelUpAPI
 
             services.AddDbContext<levelupContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddAutoMapper(typeof(AutomapperProfile));
             services.AddTransient<IAvatarRepository, AvatarRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
         }

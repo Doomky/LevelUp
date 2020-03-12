@@ -8,26 +8,6 @@ namespace LevelUpAPI.DataAccess
 {
     public class AutomapperProfile : Profile
     {
-        private static IMapper _mapper;
-
-        public static IMapper Mapper
-        {
-            get
-            {
-                if (_mapper == null)
-                    ConfWithProfile();
-                return _mapper;
-            }
-        }
-
-        private static void ConfWithProfile()
-        {
-            var config = new MapperConfiguration(cfg => {
-                cfg.AddProfile<AutomapperProfile>();
-            });
-            _mapper = config.CreateMapper();
-        }
-
         public AutomapperProfile()
         {
             AddTwoWayMapping<Dbo.Advice, Model.Advices>();

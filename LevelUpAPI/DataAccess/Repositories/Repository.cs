@@ -12,9 +12,9 @@ namespace LevelUpAPI.DataAccess.Repositories
         where DBEntity : class, new()
         where ModelEntity : class, Dbo.IObjectWithId, new()
     {
-        private DbSet<DBEntity> _set;
-        protected Model.levelupContext _context;
-        protected ILogger _logger;
+        protected readonly DbSet<DBEntity> _set;
+        protected readonly Model.levelupContext _context;
+        protected readonly ILogger _logger;
         protected readonly IMapper _mapper;
 
         public Repository(Model.levelupContext context, DbSet<DBEntity> set, ILogger logger, IMapper mapper)
@@ -31,7 +31,7 @@ namespace LevelUpAPI.DataAccess.Repositories
             {
                 List<DBEntity> query = null;
                 query = await _set.AsNoTracking().ToListAsync();
-                var arr = AutomapperProfile.Mapper.Map<ModelEntity[]>(query);
+                var arr = _mapper.Map<ModelEntity[]>(query);
                 if (id.HasValue)
                     return arr.Where(obj => obj.Id == id.Value);
                 else
@@ -46,12 +46,12 @@ namespace LevelUpAPI.DataAccess.Repositories
 
         public virtual async Task<ModelEntity> Insert(ModelEntity entity)
         {
-            DBEntity dbEntity = AutomapperProfile.Mapper.Map<DBEntity>(entity);
+            DBEntity dbEntity = _mapper.Map<DBEntity>(entity);
             _set.Add(dbEntity);
             try
             {
                 await _context.SaveChangesAsync();
-                ModelEntity newEntity = AutomapperProfile.Mapper.Map<ModelEntity>(dbEntity);
+                ModelEntity newEntity = _mapper.Map<ModelEntity>(dbEntity);
                 return newEntity;
             }
             catch (Exception ex)
@@ -69,7 +69,7 @@ namespace LevelUpAPI.DataAccess.Repositories
             {
                 return null;
             }
-            AutomapperProfile.Mapper.Map(entity, dbEntity);
+            _mapper.Map(entity, dbEntity);
             if (!_context.ChangeTracker.HasChanges())
             {
                 return entity;
@@ -83,7 +83,7 @@ namespace LevelUpAPI.DataAccess.Repositories
                 _logger.LogError("Cannot update this entry", ex);
                 return null;
             }
-            return AutomapperProfile.Mapper.Map<ModelEntity>(dbEntity);
+            return _mapper.Map<ModelEntity>(dbEntity);
         }
 
         public virtual async Task<bool> Delete(long idEntity)
