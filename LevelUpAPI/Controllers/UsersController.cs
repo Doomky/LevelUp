@@ -55,5 +55,13 @@ namespace LevelUpAPI.Controllers
             ChangePasswordRequestHandler changePasswordRequestHandler = new ChangePasswordRequestHandler(_userRepository);
             changePasswordRequestHandler.Execute(HttpContext);
         }
+
+        [HttpPost]
+        [Route("user-info")]
+        public void GetUserInfo()
+        {
+            UserInfoRequestHandler userInfoRequestHandler = new UserInfoRequestHandler(_userRepository);
+            userInfoRequestHandler.Execute(HttpContext);
+        }
     }
 }

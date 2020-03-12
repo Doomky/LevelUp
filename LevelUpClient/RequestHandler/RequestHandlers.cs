@@ -25,6 +25,9 @@ namespace LevelUpClient.RequestHandler
                 case "users/change-password":
                     requestHandler = new ChangePasswordRequestHandler(fulladrress);
                     break;
+                case "users/user-info":
+                    requestHandler = new UserInfoRequestHandler(fulladrress);
+                    break;
                 default:
                     Console.WriteLine("Unknown endpoint");
                     return;

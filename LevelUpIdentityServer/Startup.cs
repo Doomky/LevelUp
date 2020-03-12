@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
+using AutoMapper;
+using LevelUpAPI.DataAccess;
 using LevelUpAPI.DataAccess.Repositories;
 using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Model;
@@ -31,6 +33,7 @@ namespace IdentityServer
 
             services.AddDbContext<levelupContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddAutoMapper(typeof(AutomapperProfile));
             services.AddTransient<IAvatarRepository, AvatarRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
 
