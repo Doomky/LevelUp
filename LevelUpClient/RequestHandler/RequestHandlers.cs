@@ -28,6 +28,9 @@ namespace LevelUpClient.RequestHandler
                 case "users/user-info":
                     requestHandler = new UserInfoRequestHandler(fulladrress);
                     break;
+                case "users/change-user-info":
+                    requestHandler = new ChangeUserInfoRequestHandler(fulladrress);
+                    break;
                 case "users/google-id-token/set":
                     requestHandler = new SetGoogleIdTokenRequestHandler(fulladrress);
                     break;

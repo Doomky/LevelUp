@@ -15,7 +15,7 @@ namespace LevelUpClient.RequestHandler
 
         public override void Execute(HttpClient httpClient)
         {
-            HttpResponseMessage httpResponse = ExeuteMethod(httpClient).GetAwaiter().GetResult();
+            HttpResponseMessage httpResponse = ExecuteMethod(httpClient).GetAwaiter().GetResult();
             string bodyAsStr = "";
             if (httpResponse.IsSuccessStatusCode)
             {

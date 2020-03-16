@@ -16,7 +16,7 @@ namespace LevelUpClient.RequestHandler
 
         public override void Execute(HttpClient httpClient)
         {
-            HttpResponseMessage httpResponse = ExeuteMethod(httpClient).GetAwaiter().GetResult();
+            HttpResponseMessage httpResponse = ExecuteMethod(httpClient).GetAwaiter().GetResult();
         }
 
         public override SetGoogleIdTokenRequest RequestBuilder()

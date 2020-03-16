@@ -28,7 +28,7 @@ namespace LevelUpClient.RequestHandler
             Execute(httpClient);
         }
 
-        public async Task<HttpResponseMessage> ExeuteMethod(HttpClient httpClient)
+        public async Task<HttpResponseMessage> ExecuteMethod(HttpClient httpClient)
         {
             switch (Request.MethodType)
             {
