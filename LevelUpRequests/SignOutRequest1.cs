@@ -6,6 +6,9 @@ namespace LevelUpRequests
 {
     public class SignOutRequest : Request
     {
+        public SignOutRequest() : base(Method.GET)
+        {
 
+        }
     }
 }

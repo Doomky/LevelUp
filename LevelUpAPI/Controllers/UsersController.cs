@@ -63,5 +63,21 @@ namespace LevelUpAPI.Controllers
             UserInfoRequestHandler userInfoRequestHandler = new UserInfoRequestHandler(_userRepository);
             userInfoRequestHandler.Execute(HttpContext);
         }
+
+        [HttpPost]
+        [Route("google-id-token/set")]
+        public void SetGoogleIdToken()
+        {
+            SetGoogleIdTokenRequestHandler setGoogleIdTokenRequestHandler = new SetGoogleIdTokenRequestHandler(_userRepository);
+            setGoogleIdTokenRequestHandler.Execute(HttpContext);
+        }
+
+        [HttpGet]
+        [Route("google-id-token/remove")]
+        public void RemoveGoogleIdToken()
+        {
+            RemoveGoogleIdTokenRequestHandler removeGoogleIdTokenRequestHandler = new RemoveGoogleIdTokenRequestHandler(_userRepository);
+            removeGoogleIdTokenRequestHandler.Execute(HttpContext);
+        }
     }
 }

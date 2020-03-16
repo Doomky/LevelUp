@@ -4,9 +4,9 @@ using System.Text;
 
 namespace LevelUpRequests
 {
-    public class UserInfoRequest : Request
+    public class RemoveGoogleIdTokenRequest : Request
     {
-        public UserInfoRequest() : base(Method.GET)
+        public RemoveGoogleIdTokenRequest() :  base(Method.GET)
         {
 
         }

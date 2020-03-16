@@ -4,14 +4,14 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
-using System.Text.Json;
 
 namespace LevelUpClient.RequestHandler
 {
-    public class ChangePasswordRequestHandler : RequestHandler<ChangePasswordRequest>
+    public class RemoveGoogleIdRequestHandler : RequestHandler<RemoveGoogleIdTokenRequest>
     {
-        public ChangePasswordRequestHandler(string fullAdress) : base(fullAdress)
+        public RemoveGoogleIdRequestHandler(string fullAdress) : base(fullAdress)
         {
+
         }
 
         public override void Execute(HttpClient httpClient)
@@ -19,12 +19,9 @@ namespace LevelUpClient.RequestHandler
             HttpResponseMessage httpResponse = ExeuteMethod(httpClient).GetAwaiter().GetResult();
         }
 
-        public override ChangePasswordRequest RequestBuilder()
+        public override RemoveGoogleIdTokenRequest RequestBuilder()
         {
-            return new ConsoleChangePasswordRequestBuilder()
-                .WithPassword()
-                .WithNewPassword()
-                .Build();
+            return new ConsoleRemoveGoogleIdRequestBuilder().Build();
         }
     }
 }

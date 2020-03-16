@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace LevelUpClient.RequestHandler
 {
@@ -24,6 +26,21 @@ namespace LevelUpClient.RequestHandler
         {
             Request = RequestBuilder();
             Execute(httpClient);
+        }
+
+        public async Task<HttpResponseMessage> ExeuteMethod(HttpClient httpClient)
+        {
+            switch (Request.MethodType)
+            {
+                case LevelUpRequests.Request.Method.GET:
+                    return await httpClient.GetAsync(FullAdress);
+                case LevelUpRequests.Request.Method.POST:
+                    string jsonString = JsonSerializer.Serialize<TRequest>(Request);
+                    HttpContent httpContent = new StringContent(jsonString);
+                    return await httpClient.PostAsync(FullAdress, httpContent);
+                default:
+                    throw new NotSupportedException(Request.MethodType + " is not supported yet");
+            }
         }
     }
 }

@@ -28,6 +28,12 @@ namespace LevelUpClient.RequestHandler
                 case "users/user-info":
                     requestHandler = new UserInfoRequestHandler(fulladrress);
                     break;
+                case "users/google-id-token/set":
+                    requestHandler = new SetGoogleIdTokenRequestHandler(fulladrress);
+                    break;
+                case "users/google-id-token/remove":
+                    requestHandler = new RemoveGoogleIdRequestHandler(fulladrress);
+                    break;
                 default:
                     Console.WriteLine("Unknown endpoint");
                     return;

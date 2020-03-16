@@ -9,7 +9,7 @@ using LevelUpRequests;
 
 namespace LevelUpAPI
 {
-    public abstract class RequestHandler<TRequest> where TRequest : Request
+    public abstract class RequestHandler<TRequest> where TRequest : Request, new()
     {
         protected TRequest Request { get; set; }
 
@@ -19,13 +19,17 @@ namespace LevelUpAPI
         }
         protected virtual async Task<HttpContext> CheckBody(HttpContext context)
         {
-            string bodyStr = "";
-            Stream body = context.Request.Body;
-            using (StreamReader reader = new StreamReader(body))
+            Request = new TRequest();
+            if (Request.MethodType == LevelUpRequests.Request.Method.POST)
             {
-                bodyStr = await reader.ReadToEndAsync();
+                string bodyStr = "";
+                Stream body = context.Request.Body;
+                using (StreamReader reader = new StreamReader(body))
+                {
+                    bodyStr = await reader.ReadToEndAsync();
+                }
+                Request = JsonSerializer.Deserialize<TRequest>(bodyStr);
             }
-            Request = JsonSerializer.Deserialize<TRequest>(bodyStr);
             return context;
         }
 

@@ -17,9 +17,7 @@ namespace LevelUpClient.RequestHandler
 
         public override void Execute(HttpClient httpClient)
         {
-            string jsonString = JsonSerializer.Serialize<LevelUpRequests.UserInfoRequest>(Request);
-            HttpContent httpContent = new StringContent(jsonString);
-            HttpResponseMessage httpResponse = httpClient.PostAsync(FullAdress, httpContent).GetAwaiter().GetResult();
+            HttpResponseMessage httpResponse = ExeuteMethod(httpClient).GetAwaiter().GetResult();
             string bodyAsStr = "";
             if (httpResponse.IsSuccessStatusCode)
             {
