@@ -60,9 +60,7 @@ namespace LevelUpAPI.Model
             {
                 entity.ToTable("avatars");
 
-                entity.Property(e => e.Id)
-                    .HasColumnName("id")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Level).HasColumnName("level");
 

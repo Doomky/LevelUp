@@ -65,6 +65,14 @@ namespace LevelUpAPI.Controllers
         }
 
         [HttpPost]
+        [Route("change-user-info")]
+        public void ChangeUserInfo()
+        {
+            ChangeUserInfoRequestHandler ChangeUserInfoRequestHandler = new ChangeUserInfoRequestHandler(_userRepository);
+            ChangeUserInfoRequestHandler.Execute(HttpContext);
+        }
+
+        [HttpPost]
         [Route("google-id-token/set")]
         public void SetGoogleIdToken()
         {

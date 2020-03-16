@@ -50,7 +50,7 @@ namespace LevelUpAPI
                     return;
                 ExecuteRequest(context);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 context.Response.StatusCode = StatusCodes.Status500InternalServerError;
             }
