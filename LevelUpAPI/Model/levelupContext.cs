@@ -162,7 +162,11 @@ namespace LevelUpAPI.Model
 
                 entity.Property(e => e.Energy100g).HasColumnName("energy_100g");
 
+                entity.Property(e => e.EnergyServing).HasColumnName("energy_serving");
+
                 entity.Property(e => e.Fat100g).HasColumnName("fat_100g");
+
+                entity.Property(e => e.FatServing).HasColumnName("fat_serving");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
@@ -172,13 +176,23 @@ namespace LevelUpAPI.Model
 
                 entity.Property(e => e.Proteins100g).HasColumnName("proteins_100g");
 
+                entity.Property(e => e.ProteinsServing).HasColumnName("proteins_serving");
+
                 entity.Property(e => e.Salt100g).HasColumnName("salt_100g");
+
+                entity.Property(e => e.SaltServing).HasColumnName("salt_serving");
 
                 entity.Property(e => e.SaturatedFat100g).HasColumnName("saturated-fat_100g");
 
+                entity.Property(e => e.SaturatedFatServing).HasColumnName("saturated-fat_serving");
+
                 entity.Property(e => e.Sodium100g).HasColumnName("sodium_100g");
 
+                entity.Property(e => e.SodiumServing).HasColumnName("sodium_serving");
+
                 entity.Property(e => e.Sugars100g).HasColumnName("sugars_100g");
+
+                entity.Property(e => e.SugarsServing).HasColumnName("sugars_serving");
             });
 
             modelBuilder.Entity<PhysicalActivites>(entity =>

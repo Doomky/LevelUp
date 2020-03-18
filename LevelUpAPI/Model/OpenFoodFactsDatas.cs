@@ -20,6 +20,13 @@ namespace LevelUpAPI.Model
         public double? SaturatedFat100g { get; set; }
         public double? Proteins100g { get; set; }
         public double? Sugars100g { get; set; }
+        public double? EnergyServing { get; set; }
+        public double? SodiumServing { get; set; }
+        public double? SaltServing { get; set; }
+        public double? FatServing { get; set; }
+        public double? SaturatedFatServing { get; set; }
+        public double? ProteinsServing { get; set; }
+        public double? SugarsServing { get; set; }
 
         public virtual ICollection<FoodEntries> FoodEntries { get; set; }
     }

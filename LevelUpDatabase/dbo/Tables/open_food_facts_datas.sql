@@ -9,6 +9,13 @@
     [saturated-fat_100g] FLOAT NULL, 
     [proteins_100g] FLOAT NULL, 
     [sugars_100g] FLOAT NULL, 
+    [energy_serving] FLOAT NULL, 
+    [sodium_serving] FLOAT NULL, 
+    [salt_serving] FLOAT NULL, 
+    [fat_serving] FLOAT NULL, 
+    [saturated-fat_serving] FLOAT NULL, 
+    [proteins_serving] FLOAT NULL, 
+    [sugars_serving] FLOAT NULL, 
     PRIMARY KEY CLUSTERED ([id] ASC)
 );
 
