@@ -29,15 +29,6 @@ namespace LevelUpAPI.Model
         public virtual DbSet<SleepEntries> SleepEntries { get; set; }
         public virtual DbSet<Users> Users { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=.\\MSSQLSERVER01;Database=levelup;Trusted_Connection=True;");
-            }
-        }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Advices>(entity =>
@@ -179,13 +170,15 @@ namespace LevelUpAPI.Model
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Protein100g).HasColumnName("protein_100g");
+                entity.Property(e => e.Proteins100g).HasColumnName("proteins_100g");
 
                 entity.Property(e => e.Salt100g).HasColumnName("salt_100g");
 
-                entity.Property(e => e.SaturedFat100g).HasColumnName("satured_fat_100g");
+                entity.Property(e => e.SaturatedFat100g).HasColumnName("saturated-fat_100g");
 
                 entity.Property(e => e.Sodium100g).HasColumnName("sodium_100g");
+
+                entity.Property(e => e.Sugars100g).HasColumnName("sugars_100g");
             });
 
             modelBuilder.Entity<PhysicalActivites>(entity =>

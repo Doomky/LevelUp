@@ -10,14 +10,21 @@ namespace LevelUpAPI.Dbo
         private const string SODIUM_100G_KEY = "sodium_100g";
         private const string SALT_100G_KEY = "salt_100g";
         private const string FAT_100G_KEY = "fat_100g";
-        private const string SATURED_FAT_100G_KEY = "satured_fat_100g";
-        private const string PROTEIN_100G_KEY = "protein_100g";
+        private const string SATURATED_FAT_100G_KEY = "saturated-fat_100g";
+        private const string PROTEINS_100G_KEY = "proteins_100g";
+        private const string SUGARS_100_KEY = "sugars_100g";
 
 
-        private bool TryGetDouble(ProductData productData, string key, out double value)
+        private bool TryGetFloat(ProductData productData, string key, out float value)
         {
             value = 0;
-            return productData.Nutriments.TryGetValue(key, out string valueStr) && Double.TryParse(valueStr, out value);
+            if (productData.Nutriments.TryGetValue(key, out string valueStr))
+            {
+                valueStr = valueStr.Replace('.', ',');
+                if (float.TryParse(valueStr, out value))
+                    return true;
+            }
+            return false;
         }
 
         public OpenFoodFactsData()
@@ -32,39 +39,43 @@ namespace LevelUpAPI.Dbo
 
             if (productData.Nutriments != null)
             {
-                if (TryGetDouble(productData, ENERGY_100G_KEY, out double energy100g))
+                if (TryGetFloat(productData, ENERGY_100G_KEY, out float energy100g))
                 {
                     Energy100g = energy100g;
                 }
 
-                if (TryGetDouble(productData, SODIUM_100G_KEY, out double sodium100g))
+                if (TryGetFloat(productData, SODIUM_100G_KEY, out float sodium100g))
                 {
                     Sodium100g = sodium100g;
                 }
 
-                if (TryGetDouble(productData, SALT_100G_KEY, out double salt100g))
+                if (TryGetFloat(productData, SALT_100G_KEY, out float salt100g))
                 {
                     Salt100g = salt100g;
                 }
 
-                if (TryGetDouble(productData, FAT_100G_KEY, out double fat100g))
+                if (TryGetFloat(productData, FAT_100G_KEY, out float fat100g))
                 {
                     Fat100g = fat100g;
                 }
 
-                if (TryGetDouble(productData, SATURED_FAT_100G_KEY, out double saturedFat100g))
+                if (TryGetFloat(productData, SATURATED_FAT_100G_KEY, out float saturatedFat100g))
                 {
-                    SaturedFat100g = saturedFat100g;
+                    SaturatedFat100g = saturatedFat100g;
                 }
 
-                if (TryGetDouble(productData, PROTEIN_100G_KEY, out double protein100g))
+                if (TryGetFloat(productData, PROTEINS_100G_KEY, out float proteins100g))
                 {
-                    Protein100g = protein100g;
+                    Proteins100g = proteins100g;
+                }
+
+                if (TryGetFloat(productData, SUGARS_100_KEY, out float sugars100g))
+                {
+                    Sugars100g = sugars100g;
                 }
             }
             
         }
-
 
         public int Id { get; set; }
         public string Code { get; set; }
@@ -73,7 +84,8 @@ namespace LevelUpAPI.Dbo
         public double? Sodium100g { get; set; }
         public double? Salt100g { get; set; }
         public double? Fat100g { get; set; }
-        public double? SaturedFat100g { get; set; }
-        public double? Protein100g { get; set; }
+        public double? SaturatedFat100g { get; set; }
+        public double? Proteins100g { get; set; }
+        public double? Sugars100g { get; set; }
     }
 }
