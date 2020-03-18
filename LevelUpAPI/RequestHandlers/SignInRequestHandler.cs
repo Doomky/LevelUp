@@ -57,7 +57,7 @@ namespace LevelUpAPI
 
             string jsonAsString = tokenResponse.Json.ToString();
 
-            context.Response.StatusCode = StatusCodes.Status200OK;
+            context.Response.StatusCode = (int)tokenResponse.HttpStatusCode;
             context.Response.WriteAsync(jsonAsString).GetAwaiter().GetResult();
         }
     }
