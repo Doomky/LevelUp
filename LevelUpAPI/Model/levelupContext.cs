@@ -29,9 +29,14 @@ namespace LevelUpAPI.Model
         public virtual DbSet<SleepEntries> SleepEntries { get; set; }
         public virtual DbSet<Users> Users { get; set; }
 
-        /*protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-        }*/
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+                optionsBuilder.UseSqlServer("Server=.\\MSSQLSERVER01;Database=levelup;Trusted_Connection=True;");
+            }
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -53,7 +58,7 @@ namespace LevelUpAPI.Model
                     .WithMany(p => p.Advices)
                     .HasForeignKey(d => d.CategoryId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__advices__categor__52593CB8");
+                    .HasConstraintName("FK__advices__categor__151B244E");
             });
 
             modelBuilder.Entity<Avatars>(entity =>
@@ -158,13 +163,15 @@ namespace LevelUpAPI.Model
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
-                entity.Property(e => e.Code).HasColumnName("code");
-
-                entity.Property(e => e.Glucide)
+                entity.Property(e => e.Code)
                     .IsRequired()
-                    .HasColumnName("glucide")
-                    .HasMaxLength(255)
+                    .HasColumnName("code")
+                    .HasMaxLength(50)
                     .IsUnicode(false);
+
+                entity.Property(e => e.Energy100g).HasColumnName("energy_100g");
+
+                entity.Property(e => e.Fat100g).HasColumnName("fat_100g");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
@@ -172,11 +179,13 @@ namespace LevelUpAPI.Model
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Protein)
-                    .IsRequired()
-                    .HasColumnName("protein")
-                    .HasMaxLength(255)
-                    .IsUnicode(false);
+                entity.Property(e => e.Protein100g).HasColumnName("protein_100g");
+
+                entity.Property(e => e.Salt100g).HasColumnName("salt_100g");
+
+                entity.Property(e => e.SaturedFat100g).HasColumnName("satured_fat_100g");
+
+                entity.Property(e => e.Sodium100g).HasColumnName("sodium_100g");
             });
 
             modelBuilder.Entity<PhysicalActivites>(entity =>
@@ -241,13 +250,13 @@ namespace LevelUpAPI.Model
                     .WithMany(p => p.Quests)
                     .HasForeignKey(d => d.CategoryId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__quests__category__4222D4EF");
+                    .HasConstraintName("FK__quests__category__04E4BC85");
 
                 entity.HasOne(d => d.Type)
                     .WithMany(p => p.Quests)
                     .HasForeignKey(d => d.TypeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__quests__type_id__4316F928");
+                    .HasConstraintName("FK__quests__type_id__05D8E0BE");
             });
 
             modelBuilder.Entity<QuestsTypes>(entity =>

@@ -317,7 +317,7 @@ namespace LevelUpAPI.Dbo.OpenFoodFacts
         [JsonProperty(PropertyName = "serving_size")]
         public string ServingSize { get; set; }
         [JsonProperty(PropertyName = "sortkey")]
-        public int SortKey { get; set; }
+        public string SortKey { get; set; }
         [JsonProperty(PropertyName = "states")]
         public string States { get; set; }
         [JsonProperty(PropertyName = "states_hierarchy")]

@@ -37,6 +37,9 @@ namespace LevelUpClient.RequestHandler
                 case "users/google-id-token/remove":
                     requestHandler = new RemoveGoogleIdRequestHandler(fulladrress);
                     break;
+                case "openfoodfactsdatas/get":
+                    requestHandler = new GetOFFDataRequestHandler(fulladrress);
+                    break;
                 default:
                     Console.WriteLine("Unknown endpoint");
                     return;

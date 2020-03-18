@@ -50,6 +50,7 @@ namespace LevelUpAPI
             services.AddAutoMapper(typeof(AutomapperProfile));
             services.AddTransient<IAvatarRepository, AvatarRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IOFFDataRepository, OFFDataRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -28,7 +28,7 @@ namespace LevelUpAPI.DataAccess.OpenFoodFacts.Product
         public async Task<ProductData> GetAsync(string code)
         {
             var targetUri = new Uri(baseUri, string.Join('/', URLs.ServiceApiSuffix, string.Format("product/{0}.json", code)));
-            var body = await client.GetStringAsync(targetUri);
+            var body = await client.GetStringAsync(targetUri.ToString());
             var json = JObject.Parse(body);
             if (json["status"].ToObject<int>() != 1) return null;
             var product = json["product"].ToObject<ProductData>();
@@ -44,7 +44,7 @@ namespace LevelUpAPI.DataAccess.OpenFoodFacts.Product
             }
             var targetUri = new Uri(baseUri, string.Join('/', path) + ".json");
 
-            var body = await client.GetStringAsync(targetUri);
+            var body = await client.GetStringAsync(targetUri.ToString());
             var json = JObject.Parse(body);
             var products = json["products"].ToObject<List<ProductData>>();
             return products;

@@ -21,8 +21,7 @@ namespace LevelUpClient.RequestHandler
 
         public override SignOutRequest RequestBuilder()
         {
-            return new SignOutRequestBuilder()
-                .Build();
+            return new SignOutRequest();
         }
     }
 }
