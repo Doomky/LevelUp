@@ -23,10 +23,10 @@ namespace IdentityServer
 
         public async Task<Client> FindClientByIdAsync(string clientId)
         {
-            var user = await _userRepository.GetUserByLogin(clientId);
+            var user = await _userRepository.GetUserByLoginOrEmail(clientId, null);
             if (user != null)
             {
-                Secret secret = new Secret(user.PasswordHash.Sha256());
+                Secret secret = new Secret(user.PasswordHash);
                 Client client = new Client()
                 {
                     ClientId = user.Login,
