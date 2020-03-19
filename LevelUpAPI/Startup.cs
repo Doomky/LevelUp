@@ -32,10 +32,23 @@ namespace LevelUpAPI
 
         public IConfiguration Configuration { get; }
 
+        readonly string LevelUpSpecificOrigins = "_LevelUpSpecificOrigins";
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(LevelUpSpecificOrigins,
+                builder =>
+                {
+                    builder.WithOrigins()
+                           .AllowAnyOrigin()
+                           .AllowAnyHeader();
+                });
+            });
 
             services.AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", options =>
@@ -72,6 +85,7 @@ namespace LevelUpAPI
 
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseCors(LevelUpSpecificOrigins);
 
             app.UseHttpsRedirection();
 
