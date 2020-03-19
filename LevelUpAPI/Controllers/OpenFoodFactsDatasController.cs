@@ -15,10 +15,12 @@ namespace LevelUpAPI.Controllers
     public class OpenFoodFactsDatasController : ControllerBase
     {
         private readonly IOFFDataRepository _oFFDataRepository;
+        private readonly IFoodEntryRepository _foodEntryRepository;
 
-        public OpenFoodFactsDatasController(IOFFDataRepository oFFDataRepository)
+        public OpenFoodFactsDatasController(IOFFDataRepository oFFDataRepository, IFoodEntryRepository foodEntryRepository)
         {
             _oFFDataRepository = oFFDataRepository;
+            _foodEntryRepository = foodEntryRepository;
         }
 
         [HttpGet]
@@ -27,6 +29,14 @@ namespace LevelUpAPI.Controllers
         {
             GetOFFDataRequestHandler getOFFDataRequestHandler = new GetOFFDataRequestHandler(_oFFDataRepository, barcode);
             getOFFDataRequestHandler.Execute(HttpContext);
+        }
+
+        [HttpPost]
+        [Route("Post/{user-id}/{off-data-id}")]
+        public void AddFoodEntryForUser(string userid, string offdataid)
+        {
+            AddFoodEntryRequestHandler addFoodEntryRequestHandler = new AddFoodEntryRequestHandler(_foodEntryRepository, userid, offdataid);
+            addFoodEntryRequestHandler.Execute(HttpContext);
         }
     }
 }
