@@ -43,18 +43,29 @@ namespace LevelUpAPI
                 return;
             }
 
+            if (!string.IsNullOrEmpty(Request.EmailAddress))
+            {
+                Dbo.User user = _userRepository.GetUserByLoginOrEmail(null, Request.EmailAddress).GetAwaiter().GetResult();
+                
+                if (user != null)
+                {
+                    Request.Login = user.Login;
+                }
+            }
+
             string fullAddress = $"{HTTP}{address}:{port}";
             var client = new HttpClient();
             DiscoveryDocumentResponse discoDoc = null;
             discoDoc = client.GetDiscoveryDocumentAsync(fullAddress).GetAwaiter().GetResult();
-            TokenResponse tokenResponse = client.RequestClientCredentialsTokenAsync(new ClientCredentialsTokenRequest
+            ClientCredentialsTokenRequest clientCredentialsTokenRequest = new ClientCredentialsTokenRequest
             {
                 Address = discoDoc.TokenEndpoint,
                 ClientId = Request.Login,
                 ClientSecret = Request.PasswordHash,
                 Scope = "api1"
-            }).GetAwaiter().GetResult();
-
+            };
+            TokenResponse tokenResponse = client.RequestClientCredentialsTokenAsync(clientCredentialsTokenRequest).GetAwaiter().GetResult();
+            
             string jsonAsString = tokenResponse.Json.ToString();
 
             context.Response.StatusCode = (int)tokenResponse.HttpStatusCode;

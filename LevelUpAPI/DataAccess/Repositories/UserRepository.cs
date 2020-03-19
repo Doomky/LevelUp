@@ -68,11 +68,11 @@ namespace LevelUpAPI.DataAccess.Repositories
             return query.Any();
         }
 
-        public async Task<User> GetUserByLogin(string login)
+        public async Task<User> GetUserByLoginOrEmail(string login = null, string email = null)
         {
             var arr = await base.Get();
             var query = from users in arr
-                        where users.Login == login
+                        where (login != null && users.Login == login) || (email != null && users.Email == email)
                         select users;
             if (query.Any())
             {
@@ -87,7 +87,7 @@ namespace LevelUpAPI.DataAccess.Repositories
                 return null;
             foreach (var claim in claimsPrincipal.Claims)
                 if (claim.Type == "client_id")
-                    return await GetUserByLogin(claim.Value);
+                    return await GetUserByLoginOrEmail(claim.Value);
             return null;
         }
     }

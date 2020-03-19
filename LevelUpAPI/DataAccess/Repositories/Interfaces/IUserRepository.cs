@@ -17,7 +17,7 @@ namespace LevelUpAPI.DataAccess.Repositories.Interfaces
 
         public Task<Dbo.User> GetUserById(int id);
 
-        public Task<Dbo.User> GetUserByLogin(string login);
+        public Task<Dbo.User> GetUserByLoginOrEmail(string login = null, string email = null);
 
         public Task<bool> CanSignUp(SignUpRequest signUpRequest);
         public Task<Dbo.User> SignUp(SignUpRequest signUpRequest, int avatarId);

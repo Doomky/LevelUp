@@ -34,6 +34,7 @@ body: {bodyAsStr}");
         {
             return new ConsoleSignInRequestBuilder()
                     .WithLogin()
+                    .WithEmailAddress()
                     .WithPassword()
                     .Build();
         }

@@ -47,7 +47,8 @@ namespace LevelUpClient
         public ConsoleSignUpRequestBuilder WithPassword()
         {
             Console.Write("Password (will be hashed):");
-            Request.PasswordHash = Console.ReadLine().ToSha256();
+            String password = Console.ReadLine();
+            Request.PasswordHash = password.ToSha256();
             return this;
         }
     }
