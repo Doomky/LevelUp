@@ -52,7 +52,7 @@ namespace LevelUpAPI.DataAccess.Repositories
                 Firstname = signUpRequest.Firstname,
                 Lastname = signUpRequest.Lastname,
                 Email = signUpRequest.EmailAddress,
-                PasswordHash = signUpRequest.PasswordHash.Sha256(),
+                PasswordHash = signUpRequest.PasswordHash,
                 LastLoginDate = null,
                 AvatarId = avatarId
             };
