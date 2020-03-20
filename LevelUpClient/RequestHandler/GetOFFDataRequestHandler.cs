@@ -9,23 +9,14 @@ namespace LevelUpClient.RequestHandler
 {
     public class GetOFFDataRequestHandler : RequestHandler<GetOFFDataRequest>
     {
-        public GetOFFDataRequestHandler(string fullAdress) : base(fullAdress)
+        public GetOFFDataRequestHandler(string fullAddress) : base(fullAddress)
         {
         }
 
         public override void Execute(HttpClient httpClient)
         {
-            FullAdress += "/" + Request.Barcode;
-            HttpResponseMessage httpResponse = ExecuteMethod(httpClient).GetAwaiter().GetResult();
-            string bodyAsStr = "";
-            if (httpResponse.IsSuccessStatusCode)
-            {
-                bodyAsStr = httpResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-            }
-            Console.WriteLine(
-$@"response:
-status code: {(int)httpResponse.StatusCode} {httpResponse.StatusCode}
-body: {bodyAsStr}");
+            FullAddress += "/" + Request.Barcode;
+            base.Execute(httpClient);
         }
 
         public override GetOFFDataRequest RequestBuilder()

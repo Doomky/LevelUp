@@ -11,7 +11,7 @@ namespace LevelUpClient.RequestHandler
 {
     public class SignInRequestHandler : RequestHandler<SignInRequest>
     {
-        public SignInRequestHandler(string fullAdress) : base(fullAdress)
+        public SignInRequestHandler(string fullAddress) : base(fullAddress)
         {
         }
 

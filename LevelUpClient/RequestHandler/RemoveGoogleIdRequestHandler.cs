@@ -9,14 +9,9 @@ namespace LevelUpClient.RequestHandler
 {
     public class RemoveGoogleIdRequestHandler : RequestHandler<RemoveGoogleIdTokenRequest>
     {
-        public RemoveGoogleIdRequestHandler(string fullAdress) : base(fullAdress)
+        public RemoveGoogleIdRequestHandler(string fullAddress) : base(fullAddress)
         {
 
-        }
-
-        public override void Execute(HttpClient httpClient)
-        {
-            HttpResponseMessage httpResponse = ExecuteMethod(httpClient).GetAwaiter().GetResult();
         }
 
         public override RemoveGoogleIdTokenRequest RequestBuilder()

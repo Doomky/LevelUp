@@ -9,14 +9,9 @@ namespace LevelUpClient.RequestHandler
 {
     public class SetGoogleIdTokenRequestHandler : RequestHandler<SetGoogleIdTokenRequest>
     {
-        public SetGoogleIdTokenRequestHandler(string fullAdress) : base(fullAdress)
+        public SetGoogleIdTokenRequestHandler(string fullAddress) : base(fullAddress)
         {
 
-        }
-
-        public override void Execute(HttpClient httpClient)
-        {
-            HttpResponseMessage httpResponse = ExecuteMethod(httpClient).GetAwaiter().GetResult();
         }
 
         public override SetGoogleIdTokenRequest RequestBuilder()

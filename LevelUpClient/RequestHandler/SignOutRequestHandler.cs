@@ -10,13 +10,8 @@ namespace LevelUpClient.RequestHandler
 {
     public class SignOutRequestHandler : RequestHandler<SignOutRequest>
     {
-        public SignOutRequestHandler(string fullAdress) : base(fullAdress)
+        public SignOutRequestHandler(string fullAddress) : base(fullAddress)
         {
-        }
-
-        public override void Execute(HttpClient httpClient)
-        {
-            HttpResponseMessage httpResponse = ExecuteMethod(httpClient).GetAwaiter().GetResult();
         }
 
         public override SignOutRequest RequestBuilder()

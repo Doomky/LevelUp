@@ -10,13 +10,8 @@ namespace LevelUpClient.RequestHandler
 {
     public class ChangePasswordRequestHandler : RequestHandler<ChangePasswordRequest>
     {
-        public ChangePasswordRequestHandler(string fullAdress) : base(fullAdress)
+        public ChangePasswordRequestHandler(string fullAddress) : base(fullAddress)
         {
-        }
-
-        public override void Execute(HttpClient httpClient)
-        {
-            HttpResponseMessage httpResponse = ExecuteMethod(httpClient).GetAwaiter().GetResult();
         }
 
         public override ChangePasswordRequest RequestBuilder()

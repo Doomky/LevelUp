@@ -12,16 +12,29 @@ namespace LevelUpClient.RequestHandler
     public abstract class RequestHandler<TRequest> : IRequestHandler
         where TRequest : Request
     {
-        protected RequestHandler(string fullAdress)
+        protected RequestHandler(string fullAddress)
         {
-            FullAdress = fullAdress;
+            FullAddress = fullAddress;
         }
 
         public TRequest Request { get; set; }
-        public string FullAdress { get; set; }
+        public string FullAddress { get; set; }
 
         public abstract TRequest RequestBuilder();
-        public abstract void Execute(HttpClient httpClient);
+        public virtual void Execute(HttpClient httpClient)
+        {
+            HttpResponseMessage httpResponse = ExecuteMethod(httpClient).GetAwaiter().GetResult();
+            string bodyAsStr = "";
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                bodyAsStr = httpResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            }
+            Console.WriteLine(
+$@"response:
+status code: {(int)httpResponse.StatusCode} {httpResponse.StatusCode}
+body: {bodyAsStr}");
+        }
+
         public void Handle(HttpClient httpClient)
         {
             Request = RequestBuilder();
@@ -33,11 +46,11 @@ namespace LevelUpClient.RequestHandler
             switch (Request.MethodType)
             {
                 case LevelUpRequests.Request.Method.GET:
-                    return await httpClient.GetAsync(FullAdress);
+                    return await httpClient.GetAsync(FullAddress);
                 case LevelUpRequests.Request.Method.POST:
                     string jsonString = JsonSerializer.Serialize<TRequest>(Request);
                     HttpContent httpContent = new StringContent(jsonString);
-                    return await httpClient.PostAsync(FullAdress, httpContent);
+                    return await httpClient.PostAsync(FullAddress, httpContent);
                 default:
                     throw new NotSupportedException(Request.MethodType + " is not supported yet");
             }

@@ -8,7 +8,7 @@ namespace LevelUpClient.RequestHandler.Interfaces
 {
     public interface IRequestHandler 
     {
-        public string FullAdress { get; set; }
+        public string FullAddress { get; set; }
 
         public void Execute(HttpClient httpClient);
 
