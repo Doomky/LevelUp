@@ -36,6 +36,8 @@ namespace IdentityServer
             services.AddAutoMapper(typeof(AutomapperProfile));
             services.AddTransient<IAvatarRepository, AvatarRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IOFFDataRepository, OFFDataRepository>();
+            services.AddTransient<IFoodEntryRepository, FoodEntryRepository>();
 
             var builder = services.AddIdentityServer()
                 .AddClientStore<CredentialsClientStore>()
