@@ -1,5 +1,6 @@
 ﻿using IdentityModel.Client;
 using LevelUpRequests;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -17,16 +18,17 @@ namespace LevelUpClient.RequestHandler
         public override void Execute(HttpClient httpClient)
         {
             HttpResponseMessage httpResponse = ExecuteMethod(httpClient).GetAwaiter().GetResult();
-            string bodyAsStr = "";
+            string tokenAsStr = "";
             if (httpResponse.IsSuccessStatusCode)
             {
-                bodyAsStr = httpResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                tokenAsStr = httpResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult();
             }
             Console.WriteLine(
 $@"response:
 status code: {(int)httpResponse.StatusCode} {httpResponse.StatusCode}
-body: {bodyAsStr}");
-            string accessToken = "";
+body: {tokenAsStr}");
+            JObject tokenAsJson = JObject.Parse(tokenAsStr);
+            string accessToken = tokenAsJson.TryGetString("access_token");
             httpClient.SetBearerToken(accessToken);
         }
 
