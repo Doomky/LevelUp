@@ -12,24 +12,19 @@ namespace LevelUpAPI.RequestHandlers
 {
     public class AddFoodEntryRequestHandler : RequestHandler<AddFoodEntryRequest>
     {
-        private readonly string _userId;
-        private readonly string _offDataId;
-
         private readonly IFoodEntryRepository _FoodEntryRepository;
 
-        public AddFoodEntryRequestHandler(IFoodEntryRepository foodEntryRepository, string userId, string offDataId)
+        public AddFoodEntryRequestHandler(IFoodEntryRepository foodEntryRepository)
         {
             _FoodEntryRepository = foodEntryRepository;
-            _userId = userId;
-            _offDataId = offDataId;
         }
 
         protected override void ExecuteRequest(HttpContext context)
         {
             FoodEntry foodEntryData = _FoodEntryRepository.Insert(new FoodEntry()
             {
-                UserId = int.Parse(_userId),
-                OpenFoodFactsDataId = int.Parse(_offDataId),
+                UserId = Request.UserId,
+                OpenFoodFactsDataId = Request.OFFDataId,
                 Datetime = DateTime.Now
             }).GetAwaiter().GetResult();
 

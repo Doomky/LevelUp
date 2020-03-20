@@ -6,8 +6,8 @@ namespace LevelUpRequests
 {
     public class AddFoodEntryRequest : Request
     {
-        public string UserId { get; set; }
-        public string OFFDataId { get; set; }
+        public int UserId { get; set; }
+        public int OFFDataId { get; set; }
 
         public AddFoodEntryRequest() : base(Method.POST)
         {

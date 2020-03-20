@@ -15,7 +15,7 @@ namespace LevelUpAPI
 
         protected virtual async Task<HttpContext> CheckHeader(HttpContext context)
         {
-            return await Task<HttpContext>.FromResult(context); 
+            return await Task.FromResult(context); 
         }
         protected virtual async Task<HttpContext> CheckBody(HttpContext context)
         {
@@ -50,7 +50,7 @@ namespace LevelUpAPI
                     return;
                 ExecuteRequest(context);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 context.Response.StatusCode = StatusCodes.Status500InternalServerError;
             }
