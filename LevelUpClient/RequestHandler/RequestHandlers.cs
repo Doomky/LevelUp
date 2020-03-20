@@ -8,37 +8,40 @@ namespace LevelUpClient.RequestHandler
 {
     public static class RequestHandlers
     {
-        public static void HandleEndpoint(HttpClient httpClient, string endpoint, string fulladrress)
+        public static void HandleEndpoint(HttpClient httpClient, string endpoint, string fulladdress)
         {
             IRequestHandler requestHandler = null;
             switch (endpoint)
             {
                 case "users/signin":
-                    requestHandler = new SignInRequestHandler(fulladrress);
+                    requestHandler = new SignInRequestHandler(fulladdress);
                     break;
                 case "users/signup":
-                    requestHandler = new SignUpRequestHandler(fulladrress);
+                    requestHandler = new SignUpRequestHandler(fulladdress);
                     break;
                 case "users/signout":
-                    requestHandler = new SignOutRequestHandler(fulladrress);
+                    requestHandler = new SignOutRequestHandler(fulladdress);
                     break;
                 case "users/change-password":
-                    requestHandler = new ChangePasswordRequestHandler(fulladrress);
+                    requestHandler = new ChangePasswordRequestHandler(fulladdress);
                     break;
                 case "users/user-info":
-                    requestHandler = new UserInfoRequestHandler(fulladrress);
+                    requestHandler = new UserInfoRequestHandler(fulladdress);
                     break;
                 case "users/change-user-info":
-                    requestHandler = new ChangeUserInfoRequestHandler(fulladrress);
+                    requestHandler = new ChangeUserInfoRequestHandler(fulladdress);
                     break;
                 case "users/google-id-token/set":
-                    requestHandler = new SetGoogleIdTokenRequestHandler(fulladrress);
+                    requestHandler = new SetGoogleIdTokenRequestHandler(fulladdress);
                     break;
                 case "users/google-id-token/remove":
-                    requestHandler = new RemoveGoogleIdRequestHandler(fulladrress);
+                    requestHandler = new RemoveGoogleIdRequestHandler(fulladdress);
                     break;
-                case "openfoodfactsdatas/get":
-                    requestHandler = new GetOFFDataRequestHandler(fulladrress);
+                case "openfoodfactsdatas":
+                    requestHandler = new GetOFFDataRequestHandler(fulladdress);
+                    break;
+                case "foodentry/add":
+                    requestHandler = new AddFoodEntryRequestHandler(fulladdress);
                     break;
                 default:
                     Console.WriteLine("Unknown endpoint");
