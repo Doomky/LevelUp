@@ -13,14 +13,10 @@ namespace LevelUpClient.RequestBuilders
             while (!isOk)
             {
                 Console.Write("User id:");
-                try
+                if (int.TryParse(Console.ReadLine(), out int userId))
                 {
-                    Request.UserId = int.Parse(Console.ReadLine());
+                    Request.UserId = userId;
                     isOk = true;
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error: {ex.Message}");
                 }
             }
             return this;
@@ -32,14 +28,10 @@ namespace LevelUpClient.RequestBuilders
             while (!isOk)
             {
                 Console.Write("OpenFoodFact id:");
-                try
+                if(int.TryParse(Console.ReadLine(), out int offDataId))
                 {
-                    Request.OFFDataId = int.Parse(Console.ReadLine());
+                    Request.OFFDataId = offDataId;
                     isOk = true;
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error: {ex.Message}");
                 }
             }
             return this;
