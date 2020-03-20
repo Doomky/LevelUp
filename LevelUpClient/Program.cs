@@ -29,58 +29,6 @@ namespace LevelUpClient
             string fullAddress = $"{HTTP}{address}:{port}";
             var client = new HttpClient();
             
-            //DiscoveryDocumentResponse discoDoc = null;
-
-            //do
-            //{
-            //    try
-            //    {
-            //        discoDoc = await client.GetDiscoveryDocumentAsync(fullAddress);
-            //        if (discoDoc.IsError)
-            //        {
-            //            Console.WriteLine($"Discovery Document:\n { discoDoc.Error }");
-            //        }
-            //        else
-            //        {
-            //            Console.WriteLine($"Discovery Document:\n { discoDoc.HttpResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult() }");
-            //            break;
-            //        }
-            //    }
-            //    catch (Exception e)
-            //    {
-
-            //    }
-
-            //    discoDoc = null;
-            //    Console.WriteLine("Please enter the Identity Server port:");
-            //    port = Console.ReadLine();
-            //    fullAddress = $"{HTTP}{address}:{port}";
-            //} while (discoDoc == null);
-
-
-            //// request token
-            //var tokenResponse = await client.RequestClientCredentialsTokenAsync(new ClientCredentialsTokenRequest
-            //{
-            //    Address = discoDoc.TokenEndpoint,
-            //    ClientId = "client",
-            //    ClientSecret = "secret",
-            //    Scope = "api1"
-            //});
-
-            //if (tokenResponse.IsError)
-            //{
-            //    Console.WriteLine(tokenResponse.Error);
-            //    return;
-            //}
-
-            //client.SetBearerToken(tokenResponse.AccessToken);
-
-            //Console.WriteLine(
-            //    @$"token response:
-            //        access token: {tokenResponse.AccessToken}
-            //        identity token: {tokenResponse.IdentityToken}
-            //        expire in: {tokenResponse.ExpiresIn}");
-
             // call api
             while (true)
             {
@@ -91,26 +39,7 @@ namespace LevelUpClient
                     Console.Write("endpoint:");
                     string endpoint = Console.ReadLine();
                     fullAddress = $"{HTTPS}{address}:{port}/{endpoint}";
-
                     RequestHandler.RequestHandlers.HandleEndpoint(client, endpoint, fullAddress);
-//                    Request request = ConsoleRequests.Create(endpoint);
-//                    if (request != null)
-//                    {
-//                        fullAddress = $"{HTTPS}{address}:{port}/{endpoint}";
-//                        Console.WriteLine(fullAddress);
-//                        string jsonString = JsonSerializer.Serialize<SignInRequest>((SignInRequest)request);
-//                        HttpContent httpContent = new StringContent(jsonString);
-//                        HttpResponseMessage httpResponse = await client.PostAsync(fullAddress, httpContent);
-//                        string bodyAsStr = "";
-//                        if (httpResponse.IsSuccessStatusCode)
-//                        {
-//                            bodyAsStr = await httpResponse.Content.ReadAsStringAsync();
-//                        }
-//                        Console.WriteLine(
-//$@"response:
-//status code: {(int)httpResponse.StatusCode} {httpResponse.StatusCode}
-//body: {bodyAsStr}");
-//                    }
                 }
                 catch (Exception e)
                 {
