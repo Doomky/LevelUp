@@ -16,7 +16,16 @@ namespace LevelUpClient.RequestHandler
         public override void Execute(HttpClient httpClient)
         {
             FullAdress += "/" + Request.Barcode;
-           HttpResponseMessage httpResponse = ExecuteMethod(httpClient).GetAwaiter().GetResult();
+            HttpResponseMessage httpResponse = ExecuteMethod(httpClient).GetAwaiter().GetResult();
+            string bodyAsStr = "";
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                bodyAsStr = httpResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            }
+            Console.WriteLine(
+$@"response:
+status code: {(int)httpResponse.StatusCode} {httpResponse.StatusCode}
+body: {bodyAsStr}");
         }
 
         public override GetOFFDataRequest RequestBuilder()
