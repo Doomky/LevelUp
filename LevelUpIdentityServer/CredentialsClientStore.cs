@@ -26,7 +26,7 @@ namespace IdentityServer
             var user = await _userRepository.GetUserByLoginOrEmail(clientId, null);
             if (user != null)
             {
-                Secret secret = new Secret(user.PasswordHash);
+                Secret secret = new Secret(user.PasswordHash.Sha256());
                 Client client = new Client()
                 {
                     ClientId = user.Login,
