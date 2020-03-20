@@ -40,6 +40,9 @@ namespace LevelUpClient.RequestHandler
                 case "openfoodfactsdatas/get":
                     requestHandler = new GetOFFDataRequestHandler(fulladrress);
                     break;
+                case "foodentry/update":
+                    requestHandler = new UpdateFoodEntryRequestHandler(fulladrress);
+                    break;
                 default:
                     Console.WriteLine("Unknown endpoint");
                     return;
