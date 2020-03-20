@@ -44,7 +44,7 @@ namespace LevelUpClient.RequestHandler
                     requestHandler = new AddFoodEntryRequestHandler(fulladdress);
                     break;
                 case "foodentry/update":
-                    requestHandler = new UpdateFoodEntryRequestHandler(fulladrress);
+                    requestHandler = new UpdateFoodEntryRequestHandler(fulladdress);
                     break;
                 default:
                     Console.WriteLine("Unknown endpoint");
