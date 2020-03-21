@@ -12,6 +12,11 @@ namespace LevelUpAPI.RequestHandlers
     {
         private readonly IFoodEntryRepository _foodEntryRepository;
 
+        public UpdateFoodEntryRequestHandler(IFoodEntryRepository foodEntryRepository)
+        {
+            _foodEntryRepository = foodEntryRepository;
+        }
+
         protected override void ExecuteRequest(HttpContext context)
         {
             Dbo.FoodEntry foodEntry = new Dbo.FoodEntry()

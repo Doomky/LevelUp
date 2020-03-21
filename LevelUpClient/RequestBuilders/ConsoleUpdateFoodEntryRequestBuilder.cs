@@ -9,25 +9,46 @@ namespace LevelUpClient.RequestBuilders
     {
         public ConsoleUpdateFoodEntryRequestBuilder WithId()
         {
-            Console.Write("Id: ");
-            if (int.TryParse(Console.ReadLine(), out int userId))
-                Request.Id = userId;
+            bool done = false;
+            while (!done)
+            {
+                Console.Write("Id: ");
+                if (int.TryParse(Console.ReadLine(), out int userId))
+                {
+                    Request.Id = userId;
+                    done = true;
+                }
+            }
             return this;
         }
 
         public ConsoleUpdateFoodEntryRequestBuilder WithUserId()
         {
-            Console.Write("User Id: ");
-            if (int.TryParse(Console.ReadLine(), out int userId))
-                Request.UserId = userId;
+            bool done = false;
+            while (!done)
+            {
+                Console.Write("User Id: ");
+                if (int.TryParse(Console.ReadLine(), out int userId))
+                {
+                    Request.UserId = userId;
+                    done = true;
+                }
+            }
             return this;
         }
 
         public ConsoleUpdateFoodEntryRequestBuilder WithOFFDataId()
         {
-            Console.Write("OFF Data Id: ");
-            if (int.TryParse(Console.ReadLine(), out int offDataId))
-                Request.OFFDataId = offDataId;
+            bool done = false;
+            while (!done)
+            {
+                Console.Write("OFF Data Id: ");
+                if (int.TryParse(Console.ReadLine(), out int offDataId))
+                {
+                    Request.OFFDataId = offDataId;
+                    done = true;
+                }
+            }
             return this;
         }
     }

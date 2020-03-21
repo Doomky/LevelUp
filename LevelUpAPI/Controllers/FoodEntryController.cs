@@ -26,5 +26,13 @@ namespace LevelUpAPI.Controllers
             AddFoodEntryRequestHandler addFoodEntryRequestHandler = new AddFoodEntryRequestHandler(_foodEntryRepository);
             addFoodEntryRequestHandler.Execute(HttpContext);
         }
+
+        [HttpPost]
+        [Route("update")]
+        public void UpdateFoodEntry()
+        {
+            UpdateFoodEntryRequestHandler updateFoodEntryRequestHandler = new UpdateFoodEntryRequestHandler(_foodEntryRepository);
+            updateFoodEntryRequestHandler.Execute(HttpContext);
+        }
     }
 }
