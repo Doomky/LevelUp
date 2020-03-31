@@ -22,6 +22,7 @@ namespace LevelUpAPI.Model
         public virtual DbSet<NbFoodEntriesByLogin> NbFoodEntriesByLogin { get; set; }
         public virtual DbSet<NbPhysicalActivitiesEntriesByLogin> NbPhysicalActivitiesEntriesByLogin { get; set; }
         public virtual DbSet<OpenFoodFactsDatas> OpenFoodFactsDatas { get; set; }
+        public virtual DbSet<PasswordRecoveryDatas> PasswordRecoveryDatas { get; set; }
         public virtual DbSet<PhysicalActivites> PhysicalActivites { get; set; }
         public virtual DbSet<PhysicalActivitesEntries> PhysicalActivitesEntries { get; set; }
         public virtual DbSet<Quests> Quests { get; set; }
@@ -193,6 +194,31 @@ namespace LevelUpAPI.Model
                 entity.Property(e => e.Sugars100g).HasColumnName("sugars_100g");
 
                 entity.Property(e => e.SugarsServing).HasColumnName("sugars_serving");
+            });
+
+            modelBuilder.Entity<PasswordRecoveryDatas>(entity =>
+            {
+                entity.ToTable("password_recovery_datas");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Date)
+                    .HasColumnName("date")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Hash)
+                    .IsRequired()
+                    .HasColumnName("hash")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.UserId).HasColumnName("user_id");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.PasswordRecoveryDatas)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_password_recovery_user_id_key");
             });
 
             modelBuilder.Entity<PhysicalActivites>(entity =>

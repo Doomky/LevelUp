@@ -23,6 +23,7 @@ namespace LevelUpAPI.DataAccess
             AddTwoWayMapping<Dbo.User, Model.Users>();
             AddTwoWayMapping<Dbo.NbFoodEntriesByLogin, Model.NbFoodEntriesByLogin>();
             AddTwoWayMapping<Dbo.NbPhysicalActivitiesEntriesByLogin, Model.NbPhysicalActivitiesEntriesByLogin>();
+            AddTwoWayMapping<Dbo.PasswordRecoveryData, Model.PasswordRecoveryDatas>();
         }
 
         public void AddTwoWayMapping<T1, T2>()

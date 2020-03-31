@@ -12,6 +12,7 @@ using LevelUpAPI.Dbo;
 using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.RequestHandlers;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Configuration;
 
 namespace LevelUpAPI.Controllers
 {
@@ -23,13 +24,17 @@ namespace LevelUpAPI.Controllers
         private readonly levelupContext _context;
         private readonly IAvatarRepository _avatarRepository;
         private readonly IUserRepository _userRepository;
+        private readonly IPasswordRecoveryDataRepository _passwordRecoveryDataRepository;
+        private readonly IConfiguration Configuration;
 
-        public UsersController(ILogger<UsersController> logger, levelupContext context, IAvatarRepository avatarRepository, IUserRepository userRepository)
+        public UsersController(ILogger<UsersController> logger, levelupContext context, IAvatarRepository avatarRepository, IUserRepository userRepository, IPasswordRecoveryDataRepository passwordRecoveryDataRepository, IConfiguration configuration)
         {
             _logger = logger;
             _context = context;
             _avatarRepository = avatarRepository;
             _userRepository = userRepository;
+            _passwordRecoveryDataRepository = passwordRecoveryDataRepository;
+            Configuration = configuration;
         }
 
         [HttpPost]
@@ -46,6 +51,22 @@ namespace LevelUpAPI.Controllers
         {
             SignUpRequestHandler signUpRequestHandler = new SignUpRequestHandler(_avatarRepository, _userRepository);
             signUpRequestHandler.Execute(HttpContext);
+        }
+
+        [HttpPost]
+        [Route("forgot-password")]
+        public void ForgotPassword()
+        {
+            ForgotPasswordRequestHandler forgotPasswordRequestHandler = new ForgotPasswordRequestHandler(_userRepository, _passwordRecoveryDataRepository, Configuration);
+            forgotPasswordRequestHandler.Execute(HttpContext);
+        }
+
+        [HttpPost]
+        [Route("password-recovery")]
+        public void PasswordRecovery()
+        {
+            PasswordRecoveryRequestHandler passwordRecoveryRequestHandler = new PasswordRecoveryRequestHandler(_passwordRecoveryDataRepository, _userRepository);
+            passwordRecoveryRequestHandler.Execute(HttpContext);
         }
 
         [HttpPost]

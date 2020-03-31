@@ -22,6 +22,9 @@ namespace LevelUpClient.RequestHandler
                 case "users/signout":
                     requestHandler = new SignOutRequestHandler(fulladdress);
                     break;
+                case "users/forgot-password":
+                    requestHandler = new ForgotPasswordRequestHandler(fulladdress);
+                    break;
                 case "users/change-password":
                     requestHandler = new ChangePasswordRequestHandler(fulladdress);
                     break;
@@ -45,6 +48,9 @@ namespace LevelUpClient.RequestHandler
                     break;
                 case "foodentry/update":
                     requestHandler = new UpdateFoodEntryRequestHandler(fulladdress);
+                    break;
+                case "users/password-recovery":
+                    requestHandler = new PasswordRecoveryRequestHandler(fulladdress);
                     break;
                 default:
                     Console.WriteLine("Unknown endpoint");

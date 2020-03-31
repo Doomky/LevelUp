@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+  <Operation Name="Rename Refactor" Key="44a9b4bf-6596-4f13-a46b-b556de89049e" ChangeDateTime="03/30/2020 19:54:14">
+    <Property Name="ElementName" Value="[dbo].[password_recovery_datas].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[password_recovery_datas]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="id" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="72c5d3d5-56fa-4171-8c3f-17a03e18e57e" ChangeDateTime="03/30/2020 19:54:52">
+    <Property Name="ElementName" Value="[dbo].[password_recovery_datas].[user]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[password_recovery_datas]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="user_id" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="3a1ea6a8-2604-49c8-a353-2693cefd482d" ChangeDateTime="03/30/2020 19:57:06">
+    <Property Name="ElementName" Value="[dbo].[FK_password_recovery_datas_ToTable (user_id)]" />
+    <Property Name="ElementType" Value="SqlForeignKeyConstraint" />
+    <Property Name="ParentElementName" Value="[dbo].[password_recovery_datas]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[FK_password_recovery_user_id_key]" />
+  </Operation>
+</Operations>

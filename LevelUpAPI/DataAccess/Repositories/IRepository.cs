@@ -10,6 +10,6 @@ namespace LevelUpAPI.DataAccess.Repositories
         Task<IEnumerable<ModelEntity>> Get(int? id);
         Task<ModelEntity> Insert(ModelEntity entity);
         Task<ModelEntity> Update(ModelEntity entity);
-        Task<bool> Delete(long idEntity);
+        Task<bool> Delete(int idEntity);
     }
 }

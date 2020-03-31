@@ -37,7 +37,12 @@ namespace LevelUpAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+
+            services.AddMvc(options => {
+                options.EnableEndpointRouting = false;
+            });
+
+            //services.AddControllers();
 
             services.AddCors(options =>
             {
@@ -60,11 +65,13 @@ namespace LevelUpAPI
 
             services.AddDbContext<levelupContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddAutoMapper(typeof(AutomapperProfile));
             services.AddTransient<IAvatarRepository, AvatarRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IOFFDataRepository, OFFDataRepository>();
             services.AddTransient<IFoodEntryRepository, FoodEntryRepository>();
+            services.AddTransient<IPasswordRecoveryDataRepository, PasswordRecoveryDataRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -89,6 +96,8 @@ namespace LevelUpAPI
             app.UseCors(LevelUpSpecificOrigins);
 
             app.UseHttpsRedirection();
+
+            app.UseMvcWithDefaultRoute();
 
             app.UseEndpoints(endpoints =>
             {
