@@ -21,4 +21,32 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="[FK_password_recovery_user_id_key]" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="1ef009c2-e31f-4569-a0d3-16a160ce377c" ChangeDateTime="03/31/2020 16:50:33">
+    <Property Name="ElementName" Value="[dbo].[open_food_facts_categories].[Category]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[open_food_facts_categories]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="category_id" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="9783483e-7e19-4138-9bfd-241d490461a8" ChangeDateTime="03/31/2020 16:50:36">
+    <Property Name="ElementName" Value="[dbo].[open_food_facts_categories].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[open_food_facts_categories]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="id" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="893015b6-f500-4091-a2db-b9c0a555d071" ChangeDateTime="03/31/2020 16:52:46">
+    <Property Name="ElementName" Value="[dbo].[open_food_datas_categories].[Categoryid]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[open_food_datas_categories]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="name" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="5e3da766-3322-4dd0-9af3-229113fffb65" ChangeDateTime="03/31/2020 16:52:51">
+    <Property Name="ElementName" Value="[dbo].[open_food_datas_categories].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[open_food_datas_categories]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="id" />
+  </Operation>
 </Operations>

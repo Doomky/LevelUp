@@ -21,7 +21,9 @@ namespace LevelUpAPI.Model
         public virtual DbSet<FoodEntries> FoodEntries { get; set; }
         public virtual DbSet<NbFoodEntriesByLogin> NbFoodEntriesByLogin { get; set; }
         public virtual DbSet<NbPhysicalActivitiesEntriesByLogin> NbPhysicalActivitiesEntriesByLogin { get; set; }
+        public virtual DbSet<OpenFoodFactsCategories> OpenFoodFactsCategories { get; set; }
         public virtual DbSet<OpenFoodFactsDatas> OpenFoodFactsDatas { get; set; }
+        public virtual DbSet<OpenFoodFactsDatasCategories> OpenFoodFactsDatasCategories { get; set; }
         public virtual DbSet<PasswordRecoveryDatas> PasswordRecoveryDatas { get; set; }
         public virtual DbSet<PhysicalActivites> PhysicalActivites { get; set; }
         public virtual DbSet<PhysicalActivitesEntries> PhysicalActivitesEntries { get; set; }
@@ -149,6 +151,19 @@ namespace LevelUpAPI.Model
                 entity.Property(e => e.Total).HasColumnName("total");
             });
 
+            modelBuilder.Entity<OpenFoodFactsCategories>(entity =>
+            {
+                entity.ToTable("open_food_facts_categories");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasColumnName("name")
+                    .HasMaxLength(10)
+                    .IsFixedLength();
+            });
+
             modelBuilder.Entity<OpenFoodFactsDatas>(entity =>
             {
                 entity.ToTable("open_food_facts_datas");
@@ -194,6 +209,29 @@ namespace LevelUpAPI.Model
                 entity.Property(e => e.Sugars100g).HasColumnName("sugars_100g");
 
                 entity.Property(e => e.SugarsServing).HasColumnName("sugars_serving");
+            });
+
+            modelBuilder.Entity<OpenFoodFactsDatasCategories>(entity =>
+            {
+                entity.ToTable("open_food_facts_datas_categories");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.CategoryId).HasColumnName("category_id");
+
+                entity.Property(e => e.DataId).HasColumnName("data_id");
+
+                entity.HasOne(d => d.Category)
+                    .WithMany(p => p.OpenFoodFactsDatasCategories)
+                    .HasForeignKey(d => d.CategoryId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_open_food_facts_categories_ToTable");
+
+                entity.HasOne(d => d.Data)
+                    .WithMany(p => p.OpenFoodFactsDatasCategories)
+                    .HasForeignKey(d => d.DataId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_open_food_facts_categories_ToTable_1");
             });
 
             modelBuilder.Entity<PasswordRecoveryDatas>(entity =>

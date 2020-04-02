@@ -8,6 +8,7 @@ namespace LevelUpAPI.Model
         public OpenFoodFactsDatas()
         {
             FoodEntries = new HashSet<FoodEntries>();
+            OpenFoodFactsDatasCategories = new HashSet<OpenFoodFactsDatasCategories>();
         }
 
         public int Id { get; set; }
@@ -29,5 +30,6 @@ namespace LevelUpAPI.Model
         public double? SugarsServing { get; set; }
 
         public virtual ICollection<FoodEntries> FoodEntries { get; set; }
+        public virtual ICollection<OpenFoodFactsDatasCategories> OpenFoodFactsDatasCategories { get; set; }
     }
 }
