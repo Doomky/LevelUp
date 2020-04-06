@@ -4,8 +4,10 @@
     [type_id]        INT NOT NULL,
     [progress_value] INT NOT NULL,
     [progress_count] INT NOT NULL,
+    [user_id] INT NOT NULL, 
     PRIMARY KEY CLUSTERED ([id] ASC),
     FOREIGN KEY ([category_id]) REFERENCES [dbo].[categories] ([id]),
-    FOREIGN KEY ([type_id]) REFERENCES [dbo].[quests_types] ([id])
+    FOREIGN KEY ([type_id]) REFERENCES [dbo].[quests_types] ([id]),
+    FOREIGN KEY ([user_id]) REFERENCES [dbo].[users] ([id])
 );
 

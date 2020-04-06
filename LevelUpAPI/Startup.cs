@@ -70,6 +70,10 @@ namespace LevelUpAPI
             services.AddTransient<IOFFCategoryRepository, OFFCategoryRepository>();
             services.AddTransient<IOFFDatasCategoryRepository, OFFDatasCategoryRepository>();
 
+            services.AddTransient<ICategoryRepository, CategoryRepository>();
+            services.AddTransient<IQuestTypeRepository, QuestTypeRepository>();
+            services.AddTransient<IQuestRepository, QuestRepository>();
+
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
             {

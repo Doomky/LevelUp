@@ -74,10 +74,15 @@ namespace LevelUpAPI.Model
             {
                 entity.ToTable("categories");
 
+                entity.HasIndex(e => e.Name)
+                    .HasName("UQ__categori__72E12F1B6439E58C")
+                    .IsUnique();
+
                 entity.Property(e => e.Id).HasColumnName("id");
 
-                entity.Property(e => e.Category)
-                    .HasColumnName("category")
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasColumnName("name")
                     .HasMaxLength(255)
                     .IsUnicode(false);
             });
@@ -317,6 +322,8 @@ namespace LevelUpAPI.Model
 
                 entity.Property(e => e.TypeId).HasColumnName("type_id");
 
+                entity.Property(e => e.UserId).HasColumnName("user_id");
+
                 entity.HasOne(d => d.Category)
                     .WithMany(p => p.Quests)
                     .HasForeignKey(d => d.CategoryId)
@@ -328,16 +335,27 @@ namespace LevelUpAPI.Model
                     .HasForeignKey(d => d.TypeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__quests__type_id__05D8E0BE");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.Quests)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__quests__user_id__2CBDA3B5");
             });
 
             modelBuilder.Entity<QuestsTypes>(entity =>
             {
                 entity.ToTable("quests_types");
 
+                entity.HasIndex(e => e.Name)
+                    .HasName("UQ__quests_t__72E12F1BD8348DF6")
+                    .IsUnique();
+
                 entity.Property(e => e.Id).HasColumnName("id");
 
-                entity.Property(e => e.Type)
-                    .HasColumnName("type")
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasColumnName("name")
                     .HasMaxLength(255)
                     .IsUnicode(false);
             });
