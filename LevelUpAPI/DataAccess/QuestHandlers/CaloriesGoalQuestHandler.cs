@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static LevelUpAPI.DataAccess.QuestHandlers.Interfaces.IQuestHandler;
 
 namespace LevelUpAPI.DataAccess.QuestHandlers
 {
@@ -13,7 +14,7 @@ namespace LevelUpAPI.DataAccess.QuestHandlers
         public const string CALORIES_KEY = "Calories";
 
 
-        public override void Update(UpdateQuestRequest updateQuestRequest)
+        public override UpdateResult Update(UpdateQuestRequest updateQuestRequest)
         {
             if (updateQuestRequest.Datas != null)
             {
@@ -25,6 +26,10 @@ namespace LevelUpAPI.DataAccess.QuestHandlers
                     }
                 }
             }
+            if (Quest.ProgressValue <= Quest.ProgressCount)
+                return UpdateResult.InProgress;
+            else
+                return UpdateResult.Failed;
         }
     }
 }

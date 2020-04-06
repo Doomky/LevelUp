@@ -9,6 +9,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.Tasks;
+using static LevelUpAPI.DataAccess.QuestHandlers.Interfaces.IQuestHandler;
 
 namespace LevelUpAPI.RequestHandlers
 {
@@ -50,8 +51,20 @@ namespace LevelUpAPI.RequestHandlers
             {
                 QuestHandler questHandler = QuestHandlers.Create(quest, _questTypeRepository);
                 if (questHandler != null)
-                    questHandler.Update(Request);
-                _questRepository.Update(quest).GetAwaiter().GetResult();
+                {
+                    switch (questHandler.Update(Request))
+                    {
+                        case UpdateResult.InProgress:
+                            break;
+                        case UpdateResult.Failed:
+                            break;
+                        case UpdateResult.Finished:
+                            break;
+                        default:
+                            break;
+                    }
+                    _questRepository.Update(quest).GetAwaiter().GetResult();
+                }
             }
         }
     }

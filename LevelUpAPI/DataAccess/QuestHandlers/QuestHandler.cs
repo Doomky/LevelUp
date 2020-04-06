@@ -11,6 +11,6 @@ namespace LevelUpAPI.DataAccess.QuestHandlers
     public abstract class QuestHandler : IQuestHandler
     {
         public Quest Quest { get; set; }
-        public abstract void Update(UpdateQuestRequest updateQuestRequest);
+        public abstract IQuestHandler.UpdateResult Update(UpdateQuestRequest updateQuestRequest);
     }
 }
