@@ -16,7 +16,8 @@ namespace LevelUpClient.RequestHandler
 
         public override RemoveGoogleIdTokenRequest RequestBuilder()
         {
-            return new ConsoleRemoveGoogleIdRequestBuilder().Build();
+            return new ConsoleRemoveGoogleIdRequestBuilder()
+                .Build();
         }
     }
 }

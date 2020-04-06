@@ -48,5 +48,14 @@ namespace LevelUpAPI.Controllers
             AddQuestRequestHandler addQuestRequestHandler = new AddQuestRequestHandler(_userRepository, _questRepository, _questTypeRepository, _categoryRepository);
             addQuestRequestHandler.Execute(HttpContext);
         }
+
+        [HttpPost]
+        [Route("remove")]
+        public void Remove()
+        {
+            RemoveQuestRequestHandler removeQuestRequestHandler = new RemoveQuestRequestHandler(_userRepository, _questRepository);
+            removeQuestRequestHandler.Execute(HttpContext);
+        }
+
     }
 }
