@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.RequestHandlers;
@@ -19,6 +17,11 @@ namespace LevelUpAPI.Controllers
             _foodEntryRepository = foodEntryRepository;
         }
 
+        /// <summary>
+        /// Add a new food entry with a specific OpenFoodFacts data id for the user.
+        /// </summary>
+        /// <response code="200">The new food entry was correctly added for the user.</response>
+        /// <response code="204">The entry is malformed.</response>
         [HttpPost]
         [Route("add")]
         public void AddFoodEntry()
@@ -27,6 +30,11 @@ namespace LevelUpAPI.Controllers
             addFoodEntryRequestHandler.Execute(HttpContext);
         }
 
+        /// <summary>
+        /// Update an existing food entry with a specific OpenFoodFacts data is for the user.
+        /// </summary>
+        /// <response code="200">The new food entry was correctly updated for the user.</response>
+        /// <response code="400">The entry does not exists.</response>
         [HttpPost]
         [Route("update")]
         public void UpdateFoodEntry()

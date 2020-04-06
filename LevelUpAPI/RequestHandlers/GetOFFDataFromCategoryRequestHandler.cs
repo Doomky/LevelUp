@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace LevelUpAPI.RequestHandlers
@@ -13,17 +14,26 @@ namespace LevelUpAPI.RequestHandlers
     public class GetOFFDataFromCategoryRequestHandler : RequestHandler<GetOFFDataFromCategoryRequest>
     {
         private readonly IOFFDatasCategoryRepository _oFFDatasCategoryRepository;
-        private readonly string categoryName;
+        private readonly string _categoryName;
 
         public GetOFFDataFromCategoryRequestHandler(IOFFDatasCategoryRepository oFFDatasCategoryRepository, string categoryName)
         {
             _oFFDatasCategoryRepository = oFFDatasCategoryRepository;
-            this.categoryName = categoryName;
+            _categoryName = categoryName;
         }
 
         protected override void ExecuteRequest(HttpContext context)
         {
-            var dataCategories = _oFFDatasCategoryRepository.GetByCategoryName(categoryName).GetAwaiter().GetResult();
+            OpenFoodFactsDatasCategory openFoodFactsDataCategory = _oFFDatasCategoryRepository.GetByCategoryName(_categoryName).GetAwaiter().GetResult();
+
+            if (openFoodFactsDataCategory != null)
+            {
+                string openFoodFactsDataCategoryJson = JsonSerializer.Serialize(openFoodFactsDataCategory);
+                context.Response.StatusCode = StatusCodes.Status200OK;
+                context.Response.WriteAsync(openFoodFactsDataCategoryJson).GetAwaiter().GetResult();
+            }
+            else
+                context.Response.StatusCode = StatusCodes.Status204NoContent;
         }
     }
 }

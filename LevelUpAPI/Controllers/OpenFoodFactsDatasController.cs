@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.RequestHandlers;
@@ -21,6 +19,11 @@ namespace LevelUpAPI.Controllers
             _oFFDataRepository = oFFDataRepository;
         }
 
+        /// <summary>
+        /// Get an OpenFoodFacts(OFF) product from a barcode. 
+        /// </summary>
+        /// <response code="200">The OFF product exists.</response>
+        /// <response code="204">The OFF product was not found for this barcode in the database.</response>
         [HttpGet]
         [Route("{barcode}")]
         public void GetOpenFoodFactsDataFromBarcode(string barcode)
@@ -29,6 +32,11 @@ namespace LevelUpAPI.Controllers
             getOFFDataRequestHandler.Execute(HttpContext);
         }
 
+        /// <summary>
+        /// Get the first OpenFoodFacts(OFF) product of a category. 
+        /// </summary>
+        /// <response code="200">The category exists and an OFF product was found.</response>
+        /// <response code="204">The category was not found in the database or the category is empty.</response>
         [HttpGet]
         [Route("category/{categoryName}")]
         public void GetOpenFoodFactsDataFromCategory(string categoryName)

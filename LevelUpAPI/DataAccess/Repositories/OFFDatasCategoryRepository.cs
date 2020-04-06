@@ -47,7 +47,6 @@ namespace LevelUpAPI.DataAccess.Repositories
                 category = await _oFFCategoryRepository.Insert(category);
                 if (category != null)
                 {
-
                     OpenFoodFactsData openFoodFactsData = await _oFFDataRepository.InsertFromCategory(name);
 
                     if (openFoodFactsData != null)
@@ -62,7 +61,7 @@ namespace LevelUpAPI.DataAccess.Repositories
                     }
                 }
             }
-             return null;
+            return null;
         }
     }
 }
