@@ -75,6 +75,11 @@ namespace LevelUpAPI
             services.AddTransient<IOFFDataRepository, OFFDataRepository>();
             services.AddTransient<IOFFCategoryRepository, OFFCategoryRepository>();
             services.AddTransient<IOFFDatasCategoryRepository, OFFDatasCategoryRepository>();
+
+            services.AddTransient<ICategoryRepository, CategoryRepository>();
+            services.AddTransient<IQuestTypeRepository, QuestTypeRepository>();
+            
+            services.AddTransient<IQuestRepository, QuestRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
