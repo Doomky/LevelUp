@@ -2,6 +2,7 @@
 using LevelUpRequests;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Text;
 
 namespace LevelUpClient.RequestHandler
@@ -10,6 +11,11 @@ namespace LevelUpClient.RequestHandler
     {
         public GetQuestRequestHandler(string fullAddress) : base(fullAddress)
         {
+        }
+
+        public override void Execute(HttpClient httpClient)
+        {
+            base.Execute(httpClient);
         }
 
         public override GetQuestRequest RequestBuilder()

@@ -24,5 +24,23 @@ namespace LevelUpAPI.DataAccess.Repositories
                 return DataAccess.Category.AsEnum(category);
             return Dbo.Category.CategoryAsEnum.Undefined;
         }
+
+        public async Task<Dbo.Category> GetByName(string name)
+        {
+            try
+            {
+                List<Categories> query = null;
+                query = await _set.AsNoTracking().ToListAsync();
+                var arr = _mapper.Map<Dbo.Category[]>(query);
+                return arr
+                    .Where(category => category.Name == name)
+                    .First();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Cannot get this entry", ex);
+                return null;
+            }
+        }
     }
 }

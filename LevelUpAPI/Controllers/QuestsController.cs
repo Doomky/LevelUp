@@ -33,6 +33,14 @@ namespace LevelUpAPI.Controllers
             getQuestRequestHandler.Execute(HttpContext);
         }
 
+        [HttpGet]
+        [Route("category/{categoryName}")]
+        public void GetByCategory(string categoryName)
+        {
+            GetQuestByCategoryRequestHandler getQuestByCategoryRequestHandler = new GetQuestByCategoryRequestHandler(_userRepository, _questRepository, _categoryRepository, categoryName);
+            getQuestByCategoryRequestHandler.Execute(HttpContext);
+        }
+
         [HttpPost]
         [Route("update")]
         public void Update()

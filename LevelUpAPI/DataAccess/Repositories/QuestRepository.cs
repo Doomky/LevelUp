@@ -23,5 +23,12 @@ namespace LevelUpAPI.DataAccess.Repositories
             var getAll = await base.Get();
             return getAll.Where(quest => quest.UserId == user.Id);
         }
+
+        public async Task<IEnumerable<Quest>> Get(User user, int categoryId)
+        {
+            var getAll = await base.Get();
+            return getAll
+                .Where(quest => quest.UserId == user.Id && quest.CategoryId == categoryId);
+        }
     }
 }

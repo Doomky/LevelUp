@@ -7,9 +7,9 @@ using System.Text;
 
 namespace LevelUpClient.RequestHandler
 {
-    public class GetOFFDataFromCategoryRequestHandler : RequestHandler<GetOFFDataFromCategoryRequest>
+    public class GetQuestByCategoryRequestHandler : RequestHandler<GetQuestByCategoryRequest>
     {
-        public GetOFFDataFromCategoryRequestHandler(string fullAddress) : base(fullAddress)
+        public GetQuestByCategoryRequestHandler(string fullAddress) : base(fullAddress)
         {
         }
 
@@ -19,9 +19,9 @@ namespace LevelUpClient.RequestHandler
             base.Execute(httpClient);
         }
 
-        public override GetOFFDataFromCategoryRequest RequestBuilder()
+        public override GetQuestByCategoryRequest RequestBuilder()
         {
-            return new ConsoleGetOFFDataFromCategoryRequestBuilder()
+            return new ConsoleGetQuestByCategoryRequestBuilder()
                 .WithCategory()
                 .Build();
         }

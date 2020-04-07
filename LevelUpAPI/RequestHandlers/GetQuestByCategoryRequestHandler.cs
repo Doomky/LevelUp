@@ -11,21 +11,25 @@ using System.Threading.Tasks;
 
 namespace LevelUpAPI.RequestHandlers
 {
-    public class GetQuestRequestHandler : RequestHandler<GetQuestRequest>
+    public class GetQuestByCategoryRequestHandler : RequestHandler<GetQuestByCategoryRequest>
     {
         private readonly IUserRepository _userRepository;
         private readonly IQuestRepository _questRepository;
-
-        public GetQuestRequestHandler(IUserRepository userRepository, IQuestRepository questRepository)
+        private readonly ICategoryRepository _categoryRepository;
+        private readonly string _categoryName;
+        
+        public GetQuestByCategoryRequestHandler(IUserRepository userRepository, IQuestRepository questRepository, ICategoryRepository categoryRepository, string categoryName)
         {
             _userRepository = userRepository;
             _questRepository = questRepository;
+            _categoryRepository = categoryRepository;
+            _categoryName = categoryName; 
         }
 
         protected override void ExecuteRequest(HttpContext context)
         {
             ClaimsPrincipal claims = context.User;
-            
+
             if (claims == null)
             {
                 context.Response.StatusCode = StatusCodes.Status401Unauthorized;
@@ -42,8 +46,15 @@ namespace LevelUpAPI.RequestHandlers
                 return;
             }
 
-            IEnumerable<Quest> quests = _questRepository.Get(user).GetAwaiter().GetResult();
+            Category category = _categoryRepository.GetByName(_categoryName).GetAwaiter().GetResult();
+            if (category == null)
+            {
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                context.Response.WriteAsync("the category does not exit").GetAwaiter().GetResult();
+                return;
+            }
 
+            IEnumerable<Quest> quests = _questRepository.Get(user, category.Id ).GetAwaiter().GetResult();
             string questsJson = JsonSerializer.Serialize<IEnumerable<Quest>>(quests);
             context.Response.StatusCode = StatusCodes.Status200OK;
             context.Response.WriteAsync(questsJson).GetAwaiter().GetResult();
