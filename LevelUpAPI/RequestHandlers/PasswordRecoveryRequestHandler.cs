@@ -1,11 +1,8 @@
-﻿using LevelUpAPI.DataAccess.Repositories.Interfaces;
-using LevelUpAPI.Dbo;
-using LevelUpRequests;
+﻿using System;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using LevelUpRequests;
+using LevelUpAPI.DataAccess.Repositories.Interfaces;
+using LevelUpAPI.Dbo;
 
 namespace LevelUpAPI.RequestHandlers
 {
@@ -22,6 +19,13 @@ namespace LevelUpAPI.RequestHandlers
 
         protected override void ExecuteRequest(HttpContext context)
         {
+            if (Request == null || string.IsNullOrWhiteSpace(Request.Hash)
+                || string.IsNullOrWhiteSpace(Request.PasswordHash))
+            {
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                return;
+            }
+
             PasswordRecoveryData passwordRecoveryData = _passwordRecoveryDataRepository.GetByHash(Request.Hash).GetAwaiter().GetResult();
             if (passwordRecoveryData != null)
             {
@@ -33,6 +37,8 @@ namespace LevelUpAPI.RequestHandlers
                 }
                 _passwordRecoveryDataRepository.Delete(passwordRecoveryData.Id).GetAwaiter().GetResult();
             }
+            else
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
         }
     }
 }

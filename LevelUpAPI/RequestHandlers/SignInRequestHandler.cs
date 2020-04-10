@@ -1,19 +1,11 @@
-﻿using IdentityModel.Client;
-using LevelUpAPI.Model;
-using Microsoft.AspNetCore.Http;
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.IO;
+﻿using System;
 using System.Net.Http;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
-using IdentityServer4.Models;
+using Microsoft.AspNetCore.Http;
+using IdentityModel.Client;
 using LevelUpRequests;
 using LevelUpAPI.DataAccess.Repositories.Interfaces;
 
-namespace LevelUpAPI
+namespace LevelUpAPI.RequestHandlers
 {
     public class SignInRequestHandler : RequestHandler<SignInRequest>
     {
@@ -31,7 +23,8 @@ namespace LevelUpAPI
 
         protected override void ExecuteRequest(HttpContext context)
         {
-            if (Request == null)
+            if (Request == null || string.IsNullOrWhiteSpace(Request.PasswordHash)
+                || (string.IsNullOrWhiteSpace(Request.Login) && string.IsNullOrWhiteSpace(Request.EmailAddress)))
             {
                 context.Response.StatusCode = StatusCodes.Status400BadRequest;
                 return;
@@ -55,8 +48,7 @@ namespace LevelUpAPI
 
             string fullAddress = $"{HTTP}{address}:{port}";
             var client = new HttpClient();
-            DiscoveryDocumentResponse discoDoc = null;
-            discoDoc = client.GetDiscoveryDocumentAsync(fullAddress).GetAwaiter().GetResult();
+            DiscoveryDocumentResponse discoDoc = client.GetDiscoveryDocumentAsync(fullAddress).GetAwaiter().GetResult();
             ClientCredentialsTokenRequest clientCredentialsTokenRequest = new ClientCredentialsTokenRequest
             {
                 Address = discoDoc.TokenEndpoint,

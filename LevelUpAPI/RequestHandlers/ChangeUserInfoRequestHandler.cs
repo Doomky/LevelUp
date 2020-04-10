@@ -1,11 +1,8 @@
-﻿using LevelUpAPI.DataAccess.Repositories.Interfaces;
-using LevelUpRequests;
-using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Security.Claims;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using LevelUpRequests;
+using LevelUpAPI.DataAccess.Repositories.Interfaces;
 
 namespace LevelUpAPI.RequestHandlers
 {
@@ -20,6 +17,12 @@ namespace LevelUpAPI.RequestHandlers
 
         protected override void ExecuteRequest(HttpContext context)
         {
+            if (Request == null)
+            {
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                return;
+            }
+
             ClaimsPrincipal claims = context.User;
             if (claims == null)
             {
@@ -37,19 +40,19 @@ namespace LevelUpAPI.RequestHandlers
                 return;
             }
 
-            if (Request.NewEmail != user.Email && !string.IsNullOrEmpty(Request.NewEmail))
+            if (Request.NewEmail != user.Email && !string.IsNullOrWhiteSpace(Request.NewEmail))
             {
                 user.Email = Request.NewEmail;
             }
-            if (Request.NewFirstname != user.Firstname && !string.IsNullOrEmpty(Request.NewFirstname))
+            if (Request.NewFirstname != user.Firstname && !string.IsNullOrWhiteSpace(Request.NewFirstname))
             {
                 user.Firstname = Request.NewFirstname;
             }
-            if (Request.NewLastname != user.Lastname && !string.IsNullOrEmpty(Request.NewLastname))
+            if (Request.NewLastname != user.Lastname && !string.IsNullOrWhiteSpace(Request.NewLastname))
             {
                 user.Lastname = Request.NewLastname;
             }
-            if (Request.NewGoogleId != user.GoogleId && !string.IsNullOrEmpty(Request.NewGoogleId))
+            if (Request.NewGoogleId != user.GoogleId && !string.IsNullOrWhiteSpace(Request.NewGoogleId))
             {
                 user.GoogleId = Request.NewGoogleId;
             }

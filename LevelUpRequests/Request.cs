@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace LevelUpRequests
 {
@@ -11,20 +9,11 @@ namespace LevelUpRequests
             GET,
             POST,
         }
-
-        private Method _methodType;
-        public Method MethodType 
-        { 
-            get => _methodType;
-            private set 
-            {
-                _methodType = value; 
-            }
-        }
+        public Method MethodType { get; private set; }
 
         protected Request(Method methodType)
         {
-            this.MethodType = methodType;
+            MethodType = methodType;
         }
     }
 }

@@ -1,16 +1,12 @@
-﻿using IdentityModel;
+﻿using System;
+using System.ComponentModel;
+using System.Net;
+using System.Net.Mail;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Dbo;
 using LevelUpRequests;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Net;
-using System.Net.Mail;
-using System.Threading.Tasks;
 
 namespace LevelUpAPI.RequestHandlers
 {
@@ -40,27 +36,34 @@ namespace LevelUpAPI.RequestHandlers
 
         protected override void ExecuteRequest(HttpContext context)
         {
-            Dbo.User user = _userRepository.GetUserByLoginOrEmail(Request.Login, Request.EmailAddress).GetAwaiter().GetResult();
+            if (Request == null || (string.IsNullOrWhiteSpace(Request.Login)
+                && string.IsNullOrWhiteSpace(Request.EmailAddress)))
+            {
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                return;
+            }
+
+            User user = _userRepository.GetUserByLoginOrEmail(Request.Login, Request.EmailAddress).GetAwaiter().GetResult();
             if (user != null)
             {
                 PasswordRecoveryData passwordRecoveryData = new PasswordRecoveryData()
                 {
                     UserId = user.Id,
                     Date = DateTime.Now,
-                    Hash = String.Format("{0:X}", DateTime.Now.ToString().GetHashCode())
+                    Hash = string.Format("{0:X}", DateTime.Now.ToString().GetHashCode())
                 };
 
                 passwordRecoveryData = _passwordRecoveryDataRepository.Insert(passwordRecoveryData).GetAwaiter().GetResult();
 
                 var section = Configuration.GetSection(EMAIL_SECTION);
 
-                var client = new System.Net.Mail.SmtpClient()
+                var client = new SmtpClient()
                 {
                     Host = section.GetValue<string>(CLIENT_HOST_KEY),
                     Port = section.GetValue<int>(CLIENT_Port_KEY),
                     EnableSsl = true,
                     UseDefaultCredentials = false,
-                    DeliveryMethod = System.Net.Mail.SmtpDeliveryMethod.Network,
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
                     Credentials = new NetworkCredential(
                         section.GetValue<string>(CRENDENTIAL_LOGIN_KEY),
                         section.GetValue<string>(CRENDENTIAL_PASSWORD_KEY))
@@ -93,6 +96,8 @@ LevelUp";
                     client.SendAsync(message, userState);
                 }
             }
+            else
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
         }
 
 
@@ -100,7 +105,7 @@ LevelUp";
         private static void SendCompletedCallback(object sender, AsyncCompletedEventArgs e)
         {
             // Get the unique identifier for this asynchronous operation.
-            String token = (string)e.UserState;
+            string token = (string)e.UserState;
 
             if (e.Cancelled)
             {

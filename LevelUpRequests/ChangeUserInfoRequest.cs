@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace LevelUpRequests
 {
@@ -13,7 +11,6 @@ namespace LevelUpRequests
 
         public ChangeUserInfoRequest() : base(Method.POST)
         {
-
         }
     }
 }

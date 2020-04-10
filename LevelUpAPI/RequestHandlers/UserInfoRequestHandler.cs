@@ -1,12 +1,9 @@
-﻿using LevelUpAPI.DataAccess.Repositories.Interfaces;
-using LevelUpRequests;
-using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Security.Claims;
 using System.Text.Json;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using LevelUpRequests;
+using LevelUpAPI.DataAccess.Repositories.Interfaces;
 
 namespace LevelUpAPI.RequestHandlers
 {
@@ -40,7 +37,7 @@ namespace LevelUpAPI.RequestHandlers
 
             Dbo.UserInfo userInfo = new Dbo.UserInfo(user);
 
-            string userInfoJson = JsonSerializer.Serialize<Dbo.UserInfo>(userInfo);
+            string userInfoJson = JsonSerializer.Serialize(userInfo);
 
             context.Response.StatusCode = StatusCodes.Status200OK;
             context.Response.WriteAsync(userInfoJson).GetAwaiter().GetResult();
