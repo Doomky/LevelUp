@@ -14,6 +14,7 @@ namespace LevelUpAPI.Dbo
             Lastname = user.Lastname;
             Email = user.Email;
             LastLoginDate = user.LastLoginDate;
+            GoogleLinked = (user.GoogleRefreshToken != null);
         }
 
         public string Login { get; set; }
@@ -21,5 +22,7 @@ namespace LevelUpAPI.Dbo
         public string Lastname { get; set; }
         public string Email { get; set; }
         public DateTime? LastLoginDate { get; set; }
+
+        public bool GoogleLinked { get; set; }
     }
 }

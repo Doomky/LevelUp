@@ -12,6 +12,7 @@ using LevelUpAPI.Dbo;
 using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.RequestHandlers;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 
 namespace LevelUpAPI.Controllers
 {
@@ -73,19 +74,19 @@ namespace LevelUpAPI.Controllers
         }
 
         [HttpPost]
-        [Route("google-id-token/set")]
-        public void SetGoogleIdToken()
+        [Route("link-google-account")]
+        public void LinkGoogleAccount()
         {
-            SetGoogleIdTokenRequestHandler setGoogleIdTokenRequestHandler = new SetGoogleIdTokenRequestHandler(_userRepository);
-            setGoogleIdTokenRequestHandler.Execute(HttpContext);
+            LinkGoogleAccountRequestHandler LinGoogleAccountRequestHandler = new LinkGoogleAccountRequestHandler(_userRepository);
+            LinGoogleAccountRequestHandler.Execute(HttpContext);
         }
 
         [HttpGet]
-        [Route("google-id-token/remove")]
-        public void RemoveGoogleIdToken()
+        [Route("unlink-google-account")]
+        public void UnlinkGoogleAccount()
         {
-            RemoveGoogleIdTokenRequestHandler removeGoogleIdTokenRequestHandler = new RemoveGoogleIdTokenRequestHandler(_userRepository);
-            removeGoogleIdTokenRequestHandler.Execute(HttpContext);
+            UnlinkGoogleAccountRequestHandler UnlinkGoogleAccountRequestHandler = new UnlinkGoogleAccountRequestHandler(_userRepository);
+            UnlinkGoogleAccountRequestHandler.Execute(HttpContext);
         }
     }
 }

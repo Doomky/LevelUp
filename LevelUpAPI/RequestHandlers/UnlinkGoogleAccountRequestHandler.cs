@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace LevelUpAPI.RequestHandlers
 {
-    public class RemoveGoogleIdTokenRequestHandler : RequestHandler<RemoveGoogleIdTokenRequest>
+    public class UnlinkGoogleAccountRequestHandler : RequestHandler<UnlinkGoogleAccountRequest>
     {
         private IUserRepository _userRepository;
 
-        public RemoveGoogleIdTokenRequestHandler(IUserRepository userRepository)
+        public UnlinkGoogleAccountRequestHandler(IUserRepository userRepository)
         {
             _userRepository = userRepository;
         }
@@ -37,7 +37,9 @@ namespace LevelUpAPI.RequestHandlers
                 return;
             }
 
-            user.GoogleId = null;
+            user.GoogleAccessExpiration = null;
+            user.GoogleAccessToken = null;
+            user.GoogleRefreshToken = null;
             _userRepository.Update(user);
             context.Response.StatusCode = StatusCodes.Status200OK;
         }

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace LevelUpClient.RequestBuilders
 {
-    public class ConsoleSetGoogleIdRequestBuilder : RequestBuilder<SetGoogleIdTokenRequest>
+    public class ConsoleSetGoogleIdRequestBuilder : RequestBuilder<LinkGoogleAccountRequest>
     {
         public ConsoleSetGoogleIdRequestBuilder WithGoogleId()
         {
