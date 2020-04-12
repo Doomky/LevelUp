@@ -10,10 +10,14 @@
     [google_access_token]      VARCHAR (2048) NULL,
     [google_refresh_token]     VARCHAR (512)  NULL,
     [google_access_expiration] DATETIME       NULL,
-    [creation_date] DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, 
+    [creation_date]            DATETIME       NOT NULL DEFAULT CURRENT_TIMESTAMP, 
     CONSTRAINT [PK__users__3213E83F2198F0BB] PRIMARY KEY CLUSTERED ([id] ASC),
     CONSTRAINT [FK__users__avatar_id__398D8EEE] FOREIGN KEY ([avatar_id]) REFERENCES [dbo].[avatars] ([id])
 );
+
+
+
+
 
 
 
