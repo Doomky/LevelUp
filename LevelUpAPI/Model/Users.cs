@@ -8,7 +8,9 @@ namespace LevelUpAPI.Model
         public Users()
         {
             FoodEntries = new HashSet<FoodEntries>();
+            PasswordRecoveryDatas = new HashSet<PasswordRecoveryDatas>();
             PhysicalActivitesEntries = new HashSet<PhysicalActivitesEntries>();
+            Quests = new HashSet<Quests>();
             SleepEntries = new HashSet<SleepEntries>();
         }
 
@@ -26,7 +28,9 @@ namespace LevelUpAPI.Model
 
         public virtual Avatars Avatar { get; set; }
         public virtual ICollection<FoodEntries> FoodEntries { get; set; }
+        public virtual ICollection<PasswordRecoveryDatas> PasswordRecoveryDatas { get; set; }
         public virtual ICollection<PhysicalActivitesEntries> PhysicalActivitesEntries { get; set; }
+        public virtual ICollection<Quests> Quests { get; set; }
         public virtual ICollection<SleepEntries> SleepEntries { get; set; }
     }
 }

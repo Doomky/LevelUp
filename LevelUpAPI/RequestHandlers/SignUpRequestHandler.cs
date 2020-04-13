@@ -1,17 +1,7 @@
-﻿using IdentityModel.Client;
-using IdentityServer4.Models;
-using LevelUpAPI.DataAccess.Repositories;
-using LevelUpAPI.DataAccess.Repositories.Interfaces;
-using LevelUpAPI.Model;
-using LevelUpRequests;
+﻿using System;
 using Microsoft.AspNetCore.Http;
-using Serilog;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Text.Json;
+using LevelUpAPI.DataAccess.Repositories.Interfaces;
+using LevelUpRequests;
 
 namespace LevelUpAPI
 {
@@ -33,7 +23,11 @@ namespace LevelUpAPI
 
         protected override void ExecuteRequest(HttpContext context)
         {
-            if (Request == null)
+            if (Request == null || string.IsNullOrWhiteSpace(Request.Login)
+                || string.IsNullOrWhiteSpace(Request.Firstname)
+                || string.IsNullOrWhiteSpace(Request.Lastname)
+                || string.IsNullOrWhiteSpace(Request.EmailAddress)
+                || string.IsNullOrWhiteSpace(Request.PasswordHash))
             {
                 context.Response.StatusCode = StatusCodes.Status400BadRequest;
                 return;
@@ -48,19 +42,8 @@ namespace LevelUpAPI
             {
                 Dbo.Avatar avatar = _avatarRepository.Create().GetAwaiter().GetResult();
                 Dbo.User user = _userRepository.SignUp(Request, avatar.Id).GetAwaiter().GetResult();
-
-                /*string fullAddress = $"{HTTP}{address}:{port}/{endpoint}";
-                var client = new HttpClient();
-                string jsonString = JsonSerializer.Serialize<ClientCredentialsRequest>(new ClientCredentialsRequest()
-                {
-                    Id = user.Id,
-                    Login = user.Login,
-                    PasswordHash = user.PasswordHash
-                });
-
-                HttpContent httpContent = new StringContent(jsonString);
-                HttpResponseMessage httpResponse = client.PostAsync(fullAddress, httpContent).GetAwaiter().GetResult();*/
-                context.Response.StatusCode = StatusCodes.Status200OK;
+                if (user != null)
+                    context.Response.StatusCode = StatusCodes.Status200OK;
                 return;
             }
         }

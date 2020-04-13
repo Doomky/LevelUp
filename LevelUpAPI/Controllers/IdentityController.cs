@@ -1,14 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace LevelUpAPI
 {
-    [Microsoft.AspNetCore.Mvc.Route("identity")]
+    [Route("identity")]
     [Authorize]
     public class IdentityController : ControllerBase
     {

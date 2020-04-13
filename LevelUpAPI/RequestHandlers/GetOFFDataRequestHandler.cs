@@ -24,23 +24,23 @@ namespace LevelUpAPI.RequestHandlers
 
         protected override void ExecuteRequest(HttpContext context)
         {
-            OpenFoodFactsData openFoodFactData = _OFFDataRepository.GetByBarcode(_barcode).GetAwaiter().GetResult();
+            OpenFoodFactsData openFoodFactsData = _OFFDataRepository.GetByBarcode(_barcode).GetAwaiter().GetResult();
 
-            if (openFoodFactData != null )
+            if (openFoodFactsData != null)
             {
-                string openFoodFactDataJson = JsonSerializer.Serialize<OpenFoodFactsData>(openFoodFactData);
+                string openFoodFactsDataJson = JsonSerializer.Serialize(openFoodFactsData);
                 context.Response.StatusCode = StatusCodes.Status200OK;
-                context.Response.WriteAsync(openFoodFactDataJson).GetAwaiter().GetResult();
+                context.Response.WriteAsync(openFoodFactsDataJson).GetAwaiter().GetResult();
             }
             else
             {
-                openFoodFactData = _OFFDataRepository.InsertFromBarcode(_barcode).GetAwaiter().GetResult();
+                openFoodFactsData = _OFFDataRepository.InsertFromBarcode(_barcode).GetAwaiter().GetResult();
 
-                if (openFoodFactData != null)
+                if (openFoodFactsData != null)
                 {
-                    string openFoodFactDataJson = JsonSerializer.Serialize<OpenFoodFactsData>(openFoodFactData);
+                    string openFoodFactsDataJson = JsonSerializer.Serialize(openFoodFactsData);
                     context.Response.StatusCode = StatusCodes.Status200OK;
-                    context.Response.WriteAsync(openFoodFactDataJson).GetAwaiter().GetResult();
+                    context.Response.WriteAsync(openFoodFactsDataJson).GetAwaiter().GetResult();
                 }
                 else
                 {

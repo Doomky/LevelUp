@@ -1,11 +1,8 @@
-﻿using LevelUpAPI.DataAccess.Repositories.Interfaces;
-using LevelUpRequests;
-using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Security.Claims;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using LevelUpRequests;
+using LevelUpAPI.DataAccess.Repositories.Interfaces;
 
 namespace LevelUpAPI.RequestHandlers
 {

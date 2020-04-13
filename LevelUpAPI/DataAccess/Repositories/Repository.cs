@@ -86,7 +86,7 @@ namespace LevelUpAPI.DataAccess.Repositories
             return _mapper.Map<ModelEntity>(dbEntity);
         }
 
-        public virtual async Task<bool> Delete(long idEntity)
+        public virtual async Task<bool> Delete(int idEntity)
         {
             DBEntity dbEntity = _set.Find(idEntity);
 

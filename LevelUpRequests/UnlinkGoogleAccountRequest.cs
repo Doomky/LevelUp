@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace LevelUpRequests
 {
@@ -8,7 +6,6 @@ namespace LevelUpRequests
     {
         public UnlinkGoogleAccountRequest() :  base(Method.GET)
         {
-
         }
     }
 }

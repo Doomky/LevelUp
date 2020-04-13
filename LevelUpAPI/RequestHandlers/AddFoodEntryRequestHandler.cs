@@ -30,7 +30,7 @@ namespace LevelUpAPI.RequestHandlers
 
             if (foodEntryData != null)
             {
-                string foodEntryJson = JsonSerializer.Serialize<FoodEntry>(foodEntryData);
+                string foodEntryJson = JsonSerializer.Serialize(foodEntryData);
                 context.Response.StatusCode = StatusCodes.Status200OK;
                 context.Response.WriteAsync(foodEntryJson).GetAwaiter().GetResult();
             }

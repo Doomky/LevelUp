@@ -21,7 +21,10 @@ namespace LevelUpAPI.Model
         public virtual DbSet<FoodEntries> FoodEntries { get; set; }
         public virtual DbSet<NbFoodEntriesByLogin> NbFoodEntriesByLogin { get; set; }
         public virtual DbSet<NbPhysicalActivitiesEntriesByLogin> NbPhysicalActivitiesEntriesByLogin { get; set; }
+        public virtual DbSet<OpenFoodFactsCategories> OpenFoodFactsCategories { get; set; }
         public virtual DbSet<OpenFoodFactsDatas> OpenFoodFactsDatas { get; set; }
+        public virtual DbSet<OpenFoodFactsDatasCategories> OpenFoodFactsDatasCategories { get; set; }
+        public virtual DbSet<PasswordRecoveryDatas> PasswordRecoveryDatas { get; set; }
         public virtual DbSet<PhysicalActivites> PhysicalActivites { get; set; }
         public virtual DbSet<PhysicalActivitesEntries> PhysicalActivitesEntries { get; set; }
         public virtual DbSet<Quests> Quests { get; set; }
@@ -80,10 +83,15 @@ namespace LevelUpAPI.Model
             {
                 entity.ToTable("categories");
 
+                entity.HasIndex(e => e.Name)
+                    .HasName("UQ__categori__72E12F1B6439E58C")
+                    .IsUnique();
+
                 entity.Property(e => e.Id).HasColumnName("id");
 
-                entity.Property(e => e.Category)
-                    .HasColumnName("category")
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasColumnName("name")
                     .HasMaxLength(255)
                     .IsUnicode(false);
             });
@@ -157,6 +165,19 @@ namespace LevelUpAPI.Model
                 entity.Property(e => e.Total).HasColumnName("total");
             });
 
+            modelBuilder.Entity<OpenFoodFactsCategories>(entity =>
+            {
+                entity.ToTable("open_food_facts_categories");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasColumnName("name")
+                    .HasMaxLength(10)
+                    .IsFixedLength();
+            });
+
             modelBuilder.Entity<OpenFoodFactsDatas>(entity =>
             {
                 entity.ToTable("open_food_facts_datas");
@@ -202,6 +223,54 @@ namespace LevelUpAPI.Model
                 entity.Property(e => e.Sugars100g).HasColumnName("sugars_100g");
 
                 entity.Property(e => e.SugarsServing).HasColumnName("sugars_serving");
+            });
+
+            modelBuilder.Entity<OpenFoodFactsDatasCategories>(entity =>
+            {
+                entity.ToTable("open_food_facts_datas_categories");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.CategoryId).HasColumnName("category_id");
+
+                entity.Property(e => e.DataId).HasColumnName("data_id");
+
+                entity.HasOne(d => d.Category)
+                    .WithMany(p => p.OpenFoodFactsDatasCategories)
+                    .HasForeignKey(d => d.CategoryId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_open_food_facts_categories_ToTable");
+
+                entity.HasOne(d => d.Data)
+                    .WithMany(p => p.OpenFoodFactsDatasCategories)
+                    .HasForeignKey(d => d.DataId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_open_food_facts_categories_ToTable_1");
+            });
+
+            modelBuilder.Entity<PasswordRecoveryDatas>(entity =>
+            {
+                entity.ToTable("password_recovery_datas");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Date)
+                    .HasColumnName("date")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Hash)
+                    .IsRequired()
+                    .HasColumnName("hash")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.UserId).HasColumnName("user_id");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.PasswordRecoveryDatas)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_password_recovery_user_id_key");
             });
 
             modelBuilder.Entity<PhysicalActivites>(entity =>
@@ -262,6 +331,8 @@ namespace LevelUpAPI.Model
 
                 entity.Property(e => e.TypeId).HasColumnName("type_id");
 
+                entity.Property(e => e.UserId).HasColumnName("user_id");
+
                 entity.HasOne(d => d.Category)
                     .WithMany(p => p.Quests)
                     .HasForeignKey(d => d.CategoryId)
@@ -272,17 +343,29 @@ namespace LevelUpAPI.Model
                     .WithMany(p => p.Quests)
                     .HasForeignKey(d => d.TypeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__quests__type_id__3D5E1FD2");
+                    .HasConstraintName("FK__quests__type_id__05D8E0BE");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.Quests)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__quests__user_id__2CBDA3B5");
+
             });
 
             modelBuilder.Entity<QuestsTypes>(entity =>
             {
                 entity.ToTable("quests_types");
 
+                entity.HasIndex(e => e.Name)
+                    .HasName("UQ__quests_t__72E12F1BD8348DF6")
+                    .IsUnique();
+
                 entity.Property(e => e.Id).HasColumnName("id");
 
-                entity.Property(e => e.Type)
-                    .HasColumnName("type")
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasColumnName("name")
                     .HasMaxLength(255)
                     .IsUnicode(false);
             });

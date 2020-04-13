@@ -22,42 +22,5 @@ namespace IdentityServer
             {
                 new ApiResource("api1", "My API")
             };
-
-        //public static Dictionary<int, Client> _clients = new Dictionary<int,Client>();
-
-        //public static IEnumerable<Client> Clients => _clients;
-
-        //public static IEnumerable<Client> GetClients()
-        //{
-        //    try
-        //    {
-        //        using (var dbcontext = new levelupContext())
-        //        {
-        //            foreach (var user in dbcontext.Users)
-        //            {
-        //                if (!_clients.ContainsKey(user.Id))
-        //                {
-        //                    Client client = new Client()
-        //                    {
-        //                        ClientId = user.Login,
-        //                        ClientSecrets =
-        //                    {
-        //                        new Secret(user.PasswordHash),
-        //                    },
-        //                        AllowedGrantTypes = GrantTypes.ClientCredentials,
-
-        //                        AllowedScopes = { "api1" }
-        //                    };
-        //                    _clients.Add(user.Id, client);
-        //                }
-        //            }
-        //        }
-        //    }
-        //    catch (System.Exception)
-        //    {
-
-        //    }
-        //    return _clients.Values.ToList();
-        //}
     }
 }

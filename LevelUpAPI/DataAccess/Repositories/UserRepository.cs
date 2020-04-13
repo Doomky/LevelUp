@@ -1,27 +1,24 @@
-﻿using AutoMapper;
-using IdentityServer4.Models;
+﻿using System;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using AutoMapper;
 using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Dbo;
 using LevelUpAPI.Model;
 using LevelUpRequests;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Security.Principal;
-using System.Threading.Tasks;
 
 namespace LevelUpAPI.DataAccess.Repositories
 {
-    public class UserRepository : Repository<Model.Users, Dbo.User>, IUserRepository
+    public class UserRepository : Repository<Users, User>, IUserRepository
     {
         public UserRepository(levelupContext context, ILogger<UserRepository> logger, IMapper mapper) : base(context, context.Users, logger, mapper)
         {
 
         }
 
-        public async Task<Dbo.User> GetUserById(int id)
+        public async Task<User> GetUserById(int id)
         {
             var arr = await base.Get(id);
             if (arr.Any())
@@ -44,9 +41,9 @@ namespace LevelUpAPI.DataAccess.Repositories
             return !query.Any();
         }
 
-        public async Task<Dbo.User> SignUp(SignUpRequest signUpRequest, int avatarId)
+        public async Task<User> SignUp(SignUpRequest signUpRequest, int avatarId)
         {
-            Dbo.User user = new Dbo.User()
+            User user = new User()
             {
                 Login = signUpRequest.Login,
                 Firstname = signUpRequest.Firstname,
@@ -56,7 +53,7 @@ namespace LevelUpAPI.DataAccess.Repositories
                 LastLoginDate = null,
                 AvatarId = avatarId
             };
-            return user = await Insert(user);
+            return await Insert(user);
         }
 
         public async Task<bool> CanSignIn(SignInRequest signInRequest)

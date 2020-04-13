@@ -1,15 +1,8 @@
-﻿using IdentityModel.Client;
-using LevelUpAPI.DataAccess.Repositories.Interfaces;
-using LevelUpRequests;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
+﻿using System;
 using System.Security.Claims;
-using System.Security.Principal;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using LevelUpRequests;
+using LevelUpAPI.DataAccess.Repositories.Interfaces;
 
 namespace LevelUpAPI.RequestHandlers
 {
@@ -28,6 +21,13 @@ namespace LevelUpAPI.RequestHandlers
 
         protected override void ExecuteRequest(HttpContext context)
         {
+            if (Request == null || string.IsNullOrWhiteSpace(Request.PasswordHash)
+                || string.IsNullOrWhiteSpace(Request.NewPasswordHash))
+            {
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                return;
+            }
+
             ClaimsPrincipal claims = context.User;
             if (claims == null)
             {

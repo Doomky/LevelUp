@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace LevelUpRequests
 {
@@ -8,7 +6,6 @@ namespace LevelUpRequests
     {
         public string PasswordHash { get; set; }
         public string NewPasswordHash { get; set; }
-
         public ChangePasswordRequest() : base(Method.POST)
         {
         }

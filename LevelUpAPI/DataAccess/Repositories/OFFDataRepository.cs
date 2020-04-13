@@ -45,5 +45,16 @@ namespace LevelUpAPI.DataAccess.Repositories
             }
             return null;
         }
+
+        public async Task<OpenFoodFactsData> InsertFromCategory(string categoryName)
+        {
+            HttpClient httpClient = new HttpClient();
+            ProductApi productApi = new ProductApi(Utils.BuildBaseUri(), ref httpClient);
+            ProductData productData = await productApi.GetFromCategoryAsync(categoryName);
+
+            OpenFoodFactsData openFoodFactsData = new OpenFoodFactsData(productData);
+
+            return await base.Insert(openFoodFactsData);
+        }
     }
 }

@@ -16,7 +16,8 @@ namespace LevelUpClient.RequestHandler
 
         public override UnlinkGoogleAccountRequest RequestBuilder()
         {
-            return new ConsoleRemoveGoogleIdRequestBuilder().Build();
+            return new ConsoleRemoveGoogleIdRequestBuilder()
+                .Build();
         }
     }
 }

@@ -13,6 +13,7 @@ namespace LevelUpClient.RequestHandler
             IRequestHandler requestHandler = null;
             switch (endpoint)
             {
+                // User
                 case "users/signin":
                     requestHandler = new SignInRequestHandler(fulladdress);
                     break;
@@ -21,6 +22,9 @@ namespace LevelUpClient.RequestHandler
                     break;
                 case "users/signout":
                     requestHandler = new SignOutRequestHandler(fulladdress);
+                    break;
+                case "users/forgot-password":
+                    requestHandler = new ForgotPasswordRequestHandler(fulladdress);
                     break;
                 case "users/change-password":
                     requestHandler = new ChangePasswordRequestHandler(fulladdress);
@@ -31,20 +35,47 @@ namespace LevelUpClient.RequestHandler
                 case "users/change-user-info":
                     requestHandler = new ChangeUserInfoRequestHandler(fulladdress);
                     break;
+                case "users/password-recovery":
+                    requestHandler = new PasswordRecoveryRequestHandler(fulladdress);
+                    break;
                 case "users/google-id-token/set":
                     requestHandler = new SetGoogleIdTokenRequestHandler(fulladdress);
                     break;
                 case "users/google-id-token/remove":
                     requestHandler = new RemoveGoogleIdRequestHandler(fulladdress);
                     break;
+
+                // OpenFoodFacts
                 case "openfoodfactsdatas":
                     requestHandler = new GetOFFDataRequestHandler(fulladdress);
                     break;
+                case "openfoodfactsdatas/category":
+                    requestHandler = new GetOFFDataFromCategoryRequestHandler(fulladdress);
+                    break;
+
+                // FoodEntry
                 case "foodentry/add":
                     requestHandler = new AddFoodEntryRequestHandler(fulladdress);
                     break;
                 case "foodentry/update":
                     requestHandler = new UpdateFoodEntryRequestHandler(fulladdress);
+                    break;
+
+                // quest
+                case "quests":
+                    requestHandler = new GetQuestRequestHandler(fulladdress);
+                    break;
+                case "quests/category":
+                    requestHandler = new GetQuestByCategoryRequestHandler(fulladdress);
+                    break; 
+                case "quests/update":
+                    requestHandler = new UpdateQuestRequestHandler(fulladdress);
+                    break;
+                case "quests/add":
+                    requestHandler = new AddQuestRequestHandler(fulladdress);
+                    break;
+                case "quests/remove":
+                    requestHandler = new RemoveQuestRequestHandler(fulladdress);
                     break;
                 default:
                     Console.WriteLine("Unknown endpoint");

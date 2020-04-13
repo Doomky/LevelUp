@@ -25,6 +25,24 @@ namespace LevelUpAPI.DataAccess.OpenFoodFacts.Product
             throw new NotImplementedException();
         }
 
+        public async Task<ProductData> GetFromCategoryAsync(string categoryName)
+        {
+            var targetUri = new Uri(baseUri, string.Join('/', string.Format("category/{0}.json", categoryName)));
+            var body = await client.GetStringAsync(targetUri.ToString());
+            var json = JObject.Parse(body);
+
+            try
+            {
+                string barcode = json["products"][0]["code"].ToString();
+                return await GetAsync(barcode);
+            }
+            catch (Exception e)
+            {
+
+            }
+            return null;
+        }
+
         public async Task<ProductData> GetAsync(string code)
         {
             var targetUri = new Uri(baseUri, string.Join('/', URLs.ServiceApiSuffix, string.Format("product/{0}.json", code)));
