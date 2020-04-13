@@ -8,6 +8,10 @@ using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Dbo;
 using LevelUpAPI.Model;
 using LevelUpRequests;
+using System.Net.Http;
+using Newtonsoft.Json.Linq;
+using IdentityModel.Client;
+using System.Collections.Generic;
 
 namespace LevelUpAPI.DataAccess.Repositories
 {
@@ -18,12 +22,51 @@ namespace LevelUpAPI.DataAccess.Repositories
 
         }
 
+        private async Task<User> RefreshUserAccessToken(User user)
+        {
+            var values = new Dictionary<string, string>
+            {
+                { "client_id", "498756810683-agbruikv9b2j9hjs59rrbpb6j13l0l41.apps.googleusercontent.com" },
+                { "client_secret", "9QrjOKzI4ldnqXx_uqcrbOK0" },
+                { "grant_type", "refresh_token" },
+                { "refresh_token", user.GoogleRefreshToken.ToString() }
+            };
+            var httpClient = new HttpClient();
+            var content = new FormUrlEncodedContent(values);
+            HttpResponseMessage httpResponse = httpClient.PostAsync("https://oauth2.googleapis.com/token", content)
+                                                         .GetAwaiter()
+                                                         .GetResult();
+            var response = httpResponse.Content.ReadAsStringAsync()
+                                               .GetAwaiter()
+                                               .GetResult();
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                JObject tokenAsJson = JObject.Parse(response);
+                user.GoogleAccessToken = tokenAsJson.TryGetString("access_token");
+                int expires_in = (int)tokenAsJson.TryGetInt("expires_in");
+                user.GoogleAccessExpiration = DateTime.Now.AddSeconds(expires_in);
+                user = await Update(user);
+                return user;
+            }
+            return user;
+        }
+        private async Task<User> CheckGoogleAccessValidityAsync(User user)
+        {
+            if (user.GoogleRefreshToken == null
+                || (user.GoogleAccessToken != null && user.GoogleAccessExpiration > DateTime.Now))
+                return user;
+            return await RefreshUserAccessToken(user);
+        }
+
         public async Task<User> GetUserById(int id)
         {
             var arr = await base.Get(id);
             if (arr.Any())
             {
-                return arr.First();
+                User user = arr.First();
+                user = await CheckGoogleAccessValidityAsync(user);
+                if (user == null) return arr.First();
+                return user;
             }
             else
             {
@@ -73,7 +116,10 @@ namespace LevelUpAPI.DataAccess.Repositories
                         select users;
             if (query.Any())
             {
-                return query.First();
+                User user = query.First();
+                user = await CheckGoogleAccessValidityAsync(user);
+                if (user == null) return query.First();
+                return user;
             }
             return null;
         }
