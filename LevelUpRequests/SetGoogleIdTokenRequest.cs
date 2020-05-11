@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace LevelUpRequests
 {
@@ -9,7 +7,6 @@ namespace LevelUpRequests
         public string GoogleIdToken { get; set; }
         public SetGoogleIdTokenRequest() : base(Method.POST)
         {
-
         }
     }
 }

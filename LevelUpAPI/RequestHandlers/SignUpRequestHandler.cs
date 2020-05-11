@@ -1,17 +1,7 @@
-﻿using IdentityModel.Client;
-using IdentityServer4.Models;
-using LevelUpAPI.DataAccess.Repositories;
-using LevelUpAPI.DataAccess.Repositories.Interfaces;
-using LevelUpAPI.Model;
-using LevelUpRequests;
+﻿using System;
 using Microsoft.AspNetCore.Http;
-using Serilog;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Text.Json;
+using LevelUpAPI.DataAccess.Repositories.Interfaces;
+using LevelUpRequests;
 
 namespace LevelUpAPI
 {
@@ -33,7 +23,11 @@ namespace LevelUpAPI
 
         protected override void ExecuteRequest(HttpContext context)
         {
-            if (Request == null)
+            if (Request == null || string.IsNullOrWhiteSpace(Request.Login)
+                || string.IsNullOrWhiteSpace(Request.Firstname)
+                || string.IsNullOrWhiteSpace(Request.Lastname)
+                || string.IsNullOrWhiteSpace(Request.EmailAddress)
+                || string.IsNullOrWhiteSpace(Request.PasswordHash))
             {
                 context.Response.StatusCode = StatusCodes.Status400BadRequest;
                 return;
