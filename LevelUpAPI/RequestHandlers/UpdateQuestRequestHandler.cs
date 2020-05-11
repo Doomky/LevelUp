@@ -54,11 +54,11 @@ namespace LevelUpAPI.RequestHandlers
                 {
                     switch (questHandler.Update(Request))
                     {
-                        case UpdateResult.InProgress:
+                        case QuestState.InProgress:
                             break;
-                        case UpdateResult.Failed:
+                        case QuestState.Failed:
                             break;
-                        case UpdateResult.Finished:
+                        case QuestState.Finished:
                             break;
                         default:
                             break;

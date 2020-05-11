@@ -27,11 +27,13 @@ namespace LevelUpAPI.DataAccess.Quests
                 return null;
 
             Quest quest = new Quest()
-            { 
+            {
                 TypeId = addQuestRequest.TypeId,
                 CategoryId = addQuestRequest.CategoryId,
                 UserId = user.Id,
                 XpValue = 100,
+                CreationDate = DateTime.Now,
+                ExpirationDate = DateTime.Now.AddDays(1)
             };
 
             return Initialize(quest, user, questTypeAsEnum, addQuestRequest);

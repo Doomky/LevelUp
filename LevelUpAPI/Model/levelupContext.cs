@@ -321,6 +321,16 @@ namespace LevelUpAPI.Model
 
                 entity.Property(e => e.CategoryId).HasColumnName("category_id");
 
+                entity.Property(e => e.CreationDate)
+                    .HasColumnName("creation_date")
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.ExpirationDate)
+                    .HasColumnName("expiration_date")
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
                 entity.Property(e => e.ProgressCount).HasColumnName("progress_count");
 
                 entity.Property(e => e.ProgressValue).HasColumnName("progress_value");
@@ -329,7 +339,9 @@ namespace LevelUpAPI.Model
 
                 entity.Property(e => e.UserId).HasColumnName("user_id");
 
-                entity.Property(e => e.XpValue).HasColumnName("xp_value");
+                entity.Property(e => e.XpValue)
+                    .HasColumnName("xp_value")
+                    .HasDefaultValueSql("((100))");
 
                 entity.HasOne(d => d.Category)
                     .WithMany(p => p.Quests)
