@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using LevelUpAPI.DataAccess.Repositories.Interfaces;
+using LevelUpAPI.Dbo;
 using LevelUpAPI.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -26,6 +27,22 @@ namespace LevelUpAPI.DataAccess.Repositories
                 XpMax = 10
             };
             return await base.Insert(avatar);
+        }
+
+        public async Task<Avatar> GetByUser(User user)
+        {
+            try
+            {
+                var avatar = await (from avatars in _context.Avatars.AsNoTracking()
+                       where avatars.Id == user.AvatarId
+                       select avatars).FirstOrDefaultAsync();
+                return _mapper.Map<Avatar>(avatar);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Cannot get this entry", ex);
+                return null;
+            }
         }
     }
 }

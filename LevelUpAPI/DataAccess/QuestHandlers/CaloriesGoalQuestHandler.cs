@@ -13,8 +13,15 @@ namespace LevelUpAPI.DataAccess.QuestHandlers
     {
         public const string CALORIES_KEY = "Calories";
 
+        public override QuestState GetState()
+        {
+            if (Quest.ProgressValue <= Quest.ProgressCount)
+                return Quest.ExpirationDate <= DateTime.Now ? QuestState.Finished : QuestState.InProgress;
+            else
+                return QuestState.Failed;
+        }
 
-        public override UpdateResult Update(UpdateQuestRequest updateQuestRequest)
+        public override QuestState Update(UpdateQuestRequest updateQuestRequest)
         {
             if (updateQuestRequest.Data != null)
             {
@@ -26,10 +33,7 @@ namespace LevelUpAPI.DataAccess.QuestHandlers
                     }
                 }
             }
-            if (Quest.ProgressValue <= Quest.ProgressCount)
-                return UpdateResult.InProgress;
-            else
-                return UpdateResult.Failed;
+            return GetState();
         }
     }
 }

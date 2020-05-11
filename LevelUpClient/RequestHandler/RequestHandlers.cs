@@ -80,6 +80,9 @@ namespace LevelUpClient.RequestHandler
                 case "quests/remove":
                     requestHandler = new RemoveQuestRequestHandler(fulladdress);
                     break;
+                case "quests/claim":
+                    requestHandler = new ClaimQuestsRequestHandler(fulladdress);
+                    break;
                 default:
                     Console.WriteLine("Unknown endpoint");
                     return;

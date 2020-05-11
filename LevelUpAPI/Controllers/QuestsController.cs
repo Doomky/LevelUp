@@ -17,15 +17,16 @@ namespace LevelUpAPI.Controllers
         private readonly IUserRepository _userRepository;
         private readonly IQuestTypeRepository _questTypeRepository;
         private readonly ICategoryRepository _categoryRepository;
+        private readonly IAvatarRepository _avatarRepository;
 
-        public QuestsController(IQuestRepository questRepository, IUserRepository userRepository, IQuestTypeRepository questTypeRepository, ICategoryRepository categoryRepository)
+        public QuestsController(IQuestRepository questRepository, IUserRepository userRepository, IQuestTypeRepository questTypeRepository, ICategoryRepository categoryRepository, IAvatarRepository avatarRepository)
         {
             _questRepository = questRepository;
             _userRepository = userRepository;
             _questTypeRepository = questTypeRepository;
             _categoryRepository = categoryRepository;
+            _avatarRepository = avatarRepository;
         }
-
 
         /// <summary>
         /// Get the all quests from the signin user. 
@@ -124,5 +125,17 @@ namespace LevelUpAPI.Controllers
             removeQuestRequestHandler.Execute(HttpContext);
         }
 
+        /// <summary>
+        /// Claim the reward for a quest. Send the quest id inside the body
+        /// </summary>
+        /// <response code="200">The quest has been claimed. the response has informations on wether the state during the claim</response>
+        /// <response code="400">The quest has not been claimed probably because the quest does not exist or still in progress </response>
+        [HttpPost]
+        [Route("claim")]
+        public void Claim()
+        {
+            ClaimQuestsRequestHandler claimQuestsRequestHandler = new ClaimQuestsRequestHandler(_userRepository, _questRepository, _questTypeRepository, _avatarRepository);
+            claimQuestsRequestHandler.Execute(HttpContext);
+        }
     }
 }

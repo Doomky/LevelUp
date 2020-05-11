@@ -9,7 +9,7 @@ namespace LevelUpAPI.DataAccess.QuestHandlers.Interfaces
 {
     public interface IQuestHandler
     {
-        public enum UpdateResult
+        public enum QuestState
         {
             InProgress,
             Failed,
@@ -17,6 +17,8 @@ namespace LevelUpAPI.DataAccess.QuestHandlers.Interfaces
         }
 
         public Quest Quest { get; set; }
-        public UpdateResult Update(UpdateQuestRequest updateQuestRequest);
+        public QuestState Update(UpdateQuestRequest updateQuestRequest);
+
+        public QuestState GetState();
     }
 }
