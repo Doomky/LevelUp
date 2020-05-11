@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace LevelUpAPI.RequestHandlers
@@ -28,6 +29,12 @@ namespace LevelUpAPI.RequestHandlers
 
         protected override void ExecuteRequest(HttpContext context)
         {
+            if (Request == null)
+            {
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                return;
+            }
+
             ClaimsPrincipal claims = context.User;
 
             if (claims == null)
@@ -37,7 +44,7 @@ namespace LevelUpAPI.RequestHandlers
                 return;
             }
 
-            Dbo.User user = _userRepository.GetUserByClaims(claims).GetAwaiter().GetResult();
+            User user = _userRepository.GetUserByClaims(claims).GetAwaiter().GetResult();
 
             if (user == null)
             {
@@ -49,8 +56,16 @@ namespace LevelUpAPI.RequestHandlers
             Quest quest = Quests.Create(Request, user, _questTypeRepository, _categoryRepository).GetAwaiter().GetResult();
 
             quest = _questRepository.Insert(quest).GetAwaiter().GetResult();
-
-            context.Response.StatusCode = StatusCodes.Status200OK;
+            if (quest != null)
+            {
+                string questJson = JsonSerializer.Serialize(quest);
+                context.Response.StatusCode = StatusCodes.Status200OK;
+                context.Response.WriteAsync(questJson).GetAwaiter().GetResult();
+            }
+            else
+            {
+                context.Response.StatusCode = StatusCodes.Status204NoContent;
+            }
         }
     }
 }

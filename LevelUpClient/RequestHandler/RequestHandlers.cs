@@ -60,6 +60,9 @@ namespace LevelUpClient.RequestHandler
                 case "foodentry/update":
                     requestHandler = new UpdateFoodEntryRequestHandler(fulladdress);
                     break;
+                case "foodentry/remove":
+                    requestHandler = new RemoveFoodEntryRequestHandler(fulladdress);
+                    break;
 
                 // quest
                 case "quests":

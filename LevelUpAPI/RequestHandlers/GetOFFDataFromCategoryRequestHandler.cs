@@ -1,5 +1,4 @@
-﻿using LevelUpAPI.DataAccess.OpenFoodFacts.Product;
-using LevelUpAPI.DataAccess.Repositories.Interfaces;
+﻿using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Dbo;
 using LevelUpRequests;
 using Microsoft.AspNetCore.Http;
@@ -24,6 +23,12 @@ namespace LevelUpAPI.RequestHandlers
 
         protected override void ExecuteRequest(HttpContext context)
         {
+            if (Request == null)
+            {
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                return;
+            }
+
             OpenFoodFactsDatasCategory openFoodFactsDataCategory = _oFFDatasCategoryRepository.GetByCategoryName(_categoryName).GetAwaiter().GetResult();
 
             if (openFoodFactsDataCategory != null)

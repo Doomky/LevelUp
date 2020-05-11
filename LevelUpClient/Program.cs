@@ -24,20 +24,23 @@ namespace LevelUpClient
         /// <param name="address"></param>
         /// <param name="port"></param>
         /// <returns></returns>
-        public static async Task Main(string address = "localhost", string port = "5000")
+        public static async Task Main(string address = "localhost", string port = "44381")
         {
-            string fullAddress = $"{HTTP}{address}:{port}";
+            string endpoint;
+            string fullAddress;
+
             var client = new HttpClient();
-            
+
+            //Console.Write("port: ");
+            //port = Console.ReadLine();
+
             // call api
             while (true)
             {
                 try
                 {
-                    Console.Write("port: ");
-                    port = Console.ReadLine();
                     Console.Write("endpoint:");
-                    string endpoint = Console.ReadLine();
+                    endpoint = Console.ReadLine();
                     fullAddress = $"{HTTPS}{address}:{port}/{endpoint}";
                     RequestHandler.RequestHandlers.HandleEndpoint(client, endpoint, fullAddress);
                 }

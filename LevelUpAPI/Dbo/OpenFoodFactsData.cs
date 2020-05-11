@@ -44,7 +44,7 @@ namespace LevelUpAPI.Dbo
         public OpenFoodFactsData(ProductData productData)
         {
             Code = productData.Code;
-            Name = productData.GenericName;
+            Name = productData.GenericName != null ? productData.GenericName : productData.ProductName;
 
             if (productData.Nutriments != null)
             {

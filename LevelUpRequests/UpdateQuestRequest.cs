@@ -6,7 +6,7 @@ namespace LevelUpRequests
 {
     public class UpdateQuestRequest : Request
     {
-        public Dictionary<string, string> Datas { get; set; }
+        public Dictionary<string, string> Data { get; set; }
 
         public UpdateQuestRequest() : base(Method.POST)
         {

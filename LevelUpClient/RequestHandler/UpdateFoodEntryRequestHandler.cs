@@ -19,6 +19,7 @@ namespace LevelUpClient.RequestHandler
                         .WithId()
                         .WithUserId()
                         .WithOFFDataId()
+                        .WithDatetime()
                         .Build();
         }
     }

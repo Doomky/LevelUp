@@ -12,6 +12,7 @@ namespace LevelUpAPI.Model
         public int ProgressCount { get; set; }
         public int UserId { get; set; }
         public int? XpValue { get; set; }
+
         public virtual Categories Category { get; set; }
         public virtual QuestsTypes Type { get; set; }
         public virtual Users User { get; set; }
