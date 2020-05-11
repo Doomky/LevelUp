@@ -5,6 +5,7 @@
     [progress_value] INT NOT NULL,
     [progress_count] INT NOT NULL,
     [user_id] INT NOT NULL, 
+    [xp_value] INT NULL DEFAULT 100, 
     PRIMARY KEY CLUSTERED ([id] ASC),
     FOREIGN KEY ([category_id]) REFERENCES [dbo].[categories] ([id]),
     FOREIGN KEY ([type_id]) REFERENCES [dbo].[quests_types] ([id]),

@@ -189,6 +189,11 @@ namespace LevelUpAPI.Model
 
                 entity.Property(e => e.FatServing).HasColumnName("fat_serving");
 
+                entity.Property(e => e.ImgUrl)
+                    .HasColumnName("img_url")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasColumnName("name")
@@ -324,6 +329,8 @@ namespace LevelUpAPI.Model
 
                 entity.Property(e => e.UserId).HasColumnName("user_id");
 
+                entity.Property(e => e.XpValue).HasColumnName("xp_value");
+
                 entity.HasOne(d => d.Category)
                     .WithMany(p => p.Quests)
                     .HasForeignKey(d => d.CategoryId)
@@ -390,6 +397,11 @@ namespace LevelUpAPI.Model
                 entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.AvatarId).HasColumnName("avatar_id");
+
+                entity.Property(e => e.CreationDate)
+                    .HasColumnName("creation_date")
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.Email)
                     .IsRequired()

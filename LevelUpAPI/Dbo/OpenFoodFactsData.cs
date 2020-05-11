@@ -24,7 +24,6 @@ namespace LevelUpAPI.Dbo
         private const string PROTEINS_SERVING_KEY = "proteins_serving";
         private const string SUGARS_SERVING_KEY = "sugars_serving";
 
-
         private bool TryGetFloat(ProductData productData, string key, out float value)
         {
             value = 0;
@@ -90,8 +89,9 @@ namespace LevelUpAPI.Dbo
 
                 if (TryGetFloat(productData, SUGARS_SERVING_KEY, out float sugarsServing))
                     SugarsServing = sugarsServing;
+
+                ImgUrl = productData.ImageURL;
             }
-            
         }
 
         public int Id { get; set; }
@@ -111,5 +111,6 @@ namespace LevelUpAPI.Dbo
         public double? SaturatedFatServing { get; set; }
         public double? ProteinsServing { get; set; }
         public double? SugarsServing { get; set; }
+        public string ImgUrl { get; set; }
     }
 }

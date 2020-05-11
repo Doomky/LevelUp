@@ -16,6 +16,7 @@
     [saturated-fat_serving] FLOAT NULL, 
     [proteins_serving] FLOAT NULL, 
     [sugars_serving] FLOAT NULL, 
+    [img_url] VARCHAR(50) NULL, 
     PRIMARY KEY CLUSTERED ([id] ASC)
 );
 

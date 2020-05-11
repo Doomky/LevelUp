@@ -30,7 +30,8 @@ namespace LevelUpAPI.DataAccess.Quests
             { 
                 TypeId = addQuestRequest.TypeId,
                 CategoryId = addQuestRequest.CategoryId,
-                UserId = user.Id
+                UserId = user.Id,
+                XpValue = 100,
             };
 
             return Initialize(quest, user, questTypeAsEnum, addQuestRequest);
