@@ -51,7 +51,7 @@ namespace LevelUpAPI.RequestHandlers
                 Id = Request.Id,
                 Datetime = Request.DateTime,
                 OpenFoodFactsDataId = Request.OFFDataId,
-                UserId = Request.UserId
+                UserId = user.Id
             };
 
             foodEntry = _foodEntryRepository.Update(foodEntry).GetAwaiter().GetResult();

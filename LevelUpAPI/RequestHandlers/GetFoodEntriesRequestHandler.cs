@@ -11,15 +11,15 @@ using System.Threading.Tasks;
 
 namespace LevelUpAPI.RequestHandlers
 {
-    public class AddFoodEntryRequestHandler : RequestHandler<AddFoodEntryRequest>
+    public class GetFoodEntriesRequestHandler : RequestHandler<GetFoodEntriesRequest>
     {
         private readonly IUserRepository _userRepository;
-        private readonly IFoodEntryRepository _FoodEntryRepository;
+        private readonly IFoodEntryRepository _foodEntryRepository;
 
-        public AddFoodEntryRequestHandler(IUserRepository userRepository, IFoodEntryRepository foodEntryRepository)
+        public GetFoodEntriesRequestHandler(IUserRepository userRepository, IFoodEntryRepository foodEntryRepository)
         {
             _userRepository = userRepository;
-            _FoodEntryRepository = foodEntryRepository;
+            _foodEntryRepository = foodEntryRepository;
         }
 
         protected override void ExecuteRequest(HttpContext context)
@@ -47,23 +47,16 @@ namespace LevelUpAPI.RequestHandlers
                 return;
             }
 
-            FoodEntry foodEntryData = _FoodEntryRepository.Insert(new FoodEntry()
-            {
-                UserId = user.Id,
-                OpenFoodFactsDataId = Request.OFFDataId,
-                Datetime = DateTime.Now
-            }).GetAwaiter().GetResult();
+            List<NbFoodEntriesByLogin> foodEntries = _foodEntryRepository.GetNbFoodEntries(user.Login);
 
-            if (foodEntryData != null)
+            if (foodEntries != null)
             {
-                string foodEntryJson = JsonSerializer.Serialize(foodEntryData);
+                string foodEntriesJson = JsonSerializer.Serialize(foodEntries);
                 context.Response.StatusCode = StatusCodes.Status200OK;
-                context.Response.WriteAsync(foodEntryJson).GetAwaiter().GetResult();
+                context.Response.WriteAsync(foodEntriesJson).GetAwaiter().GetResult();
             }
             else
-            {
-                context.Response.StatusCode = StatusCodes.Status204NoContent;
-            }
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
         }
     }
 }

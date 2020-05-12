@@ -17,7 +17,6 @@ namespace LevelUpClient.RequestHandler
         public override AddFoodEntryRequest RequestBuilder()
         {
             return new ConsoleAddFoodEntryRequestBuilder()
-                .WithUserId()
                 .WithOFFId()
                 .Build();
         }

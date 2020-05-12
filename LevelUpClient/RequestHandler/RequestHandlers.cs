@@ -54,6 +54,9 @@ namespace LevelUpClient.RequestHandler
                     break;
 
                 // FoodEntry
+                case "foodentry":
+                    requestHandler = new GetFoodEntryRequestHandler(fulladdress);
+                    break;
                 case "foodentry/add":
                     requestHandler = new AddFoodEntryRequestHandler(fulladdress);
                     break;

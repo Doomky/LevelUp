@@ -22,21 +22,6 @@ namespace LevelUpClient.RequestBuilders
             return this;
         }
 
-        public ConsoleUpdateFoodEntryRequestBuilder WithUserId()
-        {
-            bool done = false;
-            while (!done)
-            {
-                Console.Write("User Id: ");
-                if (int.TryParse(Console.ReadLine(), out int userId))
-                {
-                    Request.UserId = userId;
-                    done = true;
-                }
-            }
-            return this;
-        }
-
         public ConsoleUpdateFoodEntryRequestBuilder WithOFFDataId()
         {
             bool done = false;
