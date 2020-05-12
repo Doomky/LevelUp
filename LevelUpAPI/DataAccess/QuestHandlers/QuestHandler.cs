@@ -14,6 +14,8 @@ namespace LevelUpAPI.DataAccess.QuestHandlers
         public Quest Quest { get; set; }
         public abstract QuestState Update(UpdateQuestRequest updateQuestRequest);
 
+        public abstract QuestState Update(string key, string value);
+
         public abstract QuestState GetState();
     }
 }

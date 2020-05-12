@@ -21,17 +21,31 @@ namespace LevelUpAPI.DataAccess.QuestHandlers
                 return QuestState.Failed;
         }
 
+        private void UpdateCalories(string caloriesAsStr)
+        {
+            if (int.TryParse(caloriesAsStr, out int calories))
+            {
+                Quest.ProgressValue += calories;
+            }
+        }
+
         public override QuestState Update(UpdateQuestRequest updateQuestRequest)
         {
             if (updateQuestRequest.Datas != null)
             {
                 if (updateQuestRequest.Datas.TryGetValue(CALORIES_KEY, out string caloriesAsStr))
                 {
-                    if (int.TryParse(caloriesAsStr, out int calories))
-                    {
-                        Quest.ProgressValue += calories;
-                    }
+                    UpdateCalories(caloriesAsStr);
                 }
+            }
+            return GetState();
+        }
+
+        public override QuestState Update(string key, string value)
+        {
+            if (key.Equals(CALORIES_KEY))
+            {
+                UpdateCalories(value);
             }
             return GetState();
         }

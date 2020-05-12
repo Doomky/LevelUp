@@ -11,11 +11,21 @@ namespace LevelUpAPI.Controllers
     public class FoodEntryController : ControllerBase
     {
         private readonly IFoodEntryRepository _foodEntryRepository;
+        private readonly IOFFDataRepository _offDataRepository;
+        private readonly IQuestRepository _questRepository;
+        private readonly IQuestTypeRepository _questTypeRepository;
+        private readonly IUserRepository _userRepository;
 
-        public FoodEntryController(IFoodEntryRepository foodEntryRepository)
+        public FoodEntryController(IFoodEntryRepository foodEntryRepository, IOFFDataRepository offDataRepository, IQuestRepository questRepository, IQuestTypeRepository questTypeRepository, IUserRepository userRepository)
         {
             _foodEntryRepository = foodEntryRepository;
+            _offDataRepository = offDataRepository;
+            _questRepository = questRepository;
+            _questTypeRepository = questTypeRepository;
+            _userRepository = userRepository;
         }
+
+
 
         /// <summary>
         /// Add a new food entry with a specific OpenFoodFacts data id for the user.
@@ -26,7 +36,7 @@ namespace LevelUpAPI.Controllers
         [Route("add")]
         public void AddFoodEntry()
         {
-            AddFoodEntryRequestHandler addFoodEntryRequestHandler = new AddFoodEntryRequestHandler(_foodEntryRepository);
+            AddFoodEntryRequestHandler addFoodEntryRequestHandler = new AddFoodEntryRequestHandler(_foodEntryRepository, _offDataRepository, _questRepository, _questTypeRepository, _userRepository);
             addFoodEntryRequestHandler.Execute(HttpContext);
         }
 

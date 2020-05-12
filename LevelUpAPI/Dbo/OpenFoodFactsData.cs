@@ -36,6 +36,11 @@ namespace LevelUpAPI.Dbo
             return false;
         }
 
+        private float KjToKcal(float kj)
+        {
+            return kj / 4.184f;
+        }
+
         public OpenFoodFactsData()
         {
 

@@ -95,8 +95,11 @@ namespace LevelUpAPI.Controllers
         }
 
         /// <summary>
-        /// Claim the reward for a quest. Send the quest id inside the body
+        /// Claim the reward for a quest. Send the quest id inside the body.
         /// </summary>
+        /// <return>
+        /// an object with the fields: state describing the state of the claiming and xp_gained for the xp gained by validating the quest.
+        /// </return>
         /// <response code="200">The quest has been claimed. the response has informations on wether the state during the claim</response>
         /// <response code="400">The quest has not been claimed probably because the quest does not exist or still in progress </response>
         [HttpPost]
