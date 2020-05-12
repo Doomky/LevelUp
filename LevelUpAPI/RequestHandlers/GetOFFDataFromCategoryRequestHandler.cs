@@ -33,12 +33,16 @@ namespace LevelUpAPI.RequestHandlers
 
             if (openFoodFactsDataCategory != null)
             {
-                string openFoodFactsDataCategoryJson = JsonSerializer.Serialize(openFoodFactsDataCategory);
-                context.Response.StatusCode = StatusCodes.Status200OK;
-                context.Response.WriteAsync(openFoodFactsDataCategoryJson).GetAwaiter().GetResult();
+                OpenFoodFactsData openFoodFactsData = _oFFDatasCategoryRepository.GetOFFDataByOFFCategory(openFoodFactsDataCategory).GetAwaiter().GetResult();
+                if (openFoodFactsData != null)
+                {
+                    string openFoodFactsDataCategoryJson = JsonSerializer.Serialize(openFoodFactsData);
+                    context.Response.StatusCode = StatusCodes.Status200OK;
+                    context.Response.WriteAsync(openFoodFactsDataCategoryJson).GetAwaiter().GetResult();
+                    return;
+                }
             }
-            else
-                context.Response.StatusCode = StatusCodes.Status204NoContent;
+            context.Response.StatusCode = StatusCodes.Status204NoContent;
         }
     }
 }

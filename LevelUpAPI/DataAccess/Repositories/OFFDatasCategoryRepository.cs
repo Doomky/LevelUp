@@ -39,5 +39,11 @@ namespace LevelUpAPI.DataAccess.Repositories
             }
             return null;
         }
+
+        public async Task<OpenFoodFactsData> GetOFFDataByOFFCategory(OpenFoodFactsDatasCategory dataCategory)
+        {
+            var openFoodFactsDatas = await _oFFDataRepository.Get(dataCategory.DataId);
+            return openFoodFactsDatas.FirstOrDefault();
+        }
     }
 }
