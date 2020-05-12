@@ -47,7 +47,7 @@ namespace LevelUpAPI.Controllers
         /// 
         /// </remarks>
         /// <response code="200">The new user has correctly signed up.</response>
-        /// <response code="400">If the request is malformed.</response>
+        /// <response code="400">The request is malformed.</response>
         /// <response code="409">The user already exists in the database.</response>
         [HttpPost]
         [Route("signup")]
@@ -70,7 +70,7 @@ namespace LevelUpAPI.Controllers
         /// 
         /// </remarks>
         /// <response code="200">The user has correctly signed in.</response>
-        /// <response code="400">If the request is malformed or the user does not exists.</response>
+        /// <response code="400">The request is malformed or the user does not exists.</response>
         [HttpPost]
         [Route("signin")]
         public void SignIn()
@@ -93,7 +93,7 @@ namespace LevelUpAPI.Controllers
         /// 
         /// </remarks>
         /// <response code="200">The user has correctly signed out.</response>
-        /// <response code="400">If the request is malformed or the user does not exists.</response>
+        /// <response code="400">The request is malformed or the user does not exists.</response>
         /// <response code="401">The user is not signed in.</response>
         [HttpPost]
         [Route("signout")]
@@ -115,7 +115,7 @@ namespace LevelUpAPI.Controllers
         /// 
         /// </remarks>
         /// <response code="200">The mail was correctly sent.</response>
-        /// <response code="400">If the request is malformed or the user does not exists.</response>
+        /// <response code="400">The request is malformed or the user does not exists.</response>
         [HttpPost]
         [Route("forgot-password")]
         public void ForgotPassword()
@@ -137,7 +137,7 @@ namespace LevelUpAPI.Controllers
         /// 
         /// </remarks>
         /// <response code="200">The new password is valid.</response>
-        /// <response code="400">If the request is malformed or the user does not exists.</response>
+        /// <response code="400">The request is malformed or the user does not exists.</response>
         [HttpPost]
         [Route("password-recovery")]
         public void PasswordRecovery()
@@ -159,7 +159,7 @@ namespace LevelUpAPI.Controllers
         /// 
         /// </remarks>
         /// <response code="200">The new password is valid.</response>
-        /// <response code="400">If the request is malformed or the user does not exists or his old password is incorrect.</response>
+        /// <response code="400">The request is malformed or the user does not exists or his old password is incorrect.</response>
         /// <response code="401">The user is not signed in.</response>
         [HttpPost]
         [Route("change-password")]
@@ -198,7 +198,7 @@ namespace LevelUpAPI.Controllers
         /// 
         /// </remarks>
         /// <response code="200">The user is connected and the new informations are correct.</response>
-        /// <response code="400">If the request is malformed or the user does not exists.</response>
+        /// <response code="400">The request is malformed or the user does not exists.</response>
         /// <response code="401">The user is not signed in.</response>
         [HttpPost]
         [Route("change-user-info")]
@@ -220,7 +220,7 @@ namespace LevelUpAPI.Controllers
         /// 
         /// </remarks>
         /// <response code="200">The user is connected and the Google account is correctly linked.</response>
-        /// <response code="400">If the request is malformed or the user does not exists.</response>
+        /// <response code="400">The request is malformed or the user does not exists.</response>
         /// <response code="401">The user is not signed in.</response>
         [HttpPost]
         [Route("google-id-token/set")]

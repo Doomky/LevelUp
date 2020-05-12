@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace LevelUpAPI.RequestHandlers
 {
-    public class UpdateFoodEntryRequestHandler : RequestHandler<UpdateFoodEntryRequest>
+    public class RemoveFoodEntryRequestHandler : RequestHandler<RemoveFoodEntryRequest>
     {
         private readonly IUserRepository _userRepository;
         private readonly IFoodEntryRepository _foodEntryRepository;
 
-        public UpdateFoodEntryRequestHandler(IUserRepository userRepository, IFoodEntryRepository foodEntryRepository)
+        public RemoveFoodEntryRequestHandler(IUserRepository userRepository, IFoodEntryRepository foodEntryRepository)
         {
             _userRepository = userRepository;
             _foodEntryRepository = foodEntryRepository;
@@ -46,19 +46,17 @@ namespace LevelUpAPI.RequestHandlers
                 return;
             }
 
-            FoodEntry foodEntry = new FoodEntry()
-            {
-                Id = Request.Id,
-                Datetime = Request.DateTime,
-                OpenFoodFactsDataId = Request.OFFDataId,
-                UserId = Request.UserId
-            };
-
-            foodEntry = _foodEntryRepository.Update(foodEntry).GetAwaiter().GetResult();
+            FoodEntry foodEntry = _foodEntryRepository.GetFoodEntryById(Request.Id);
             if (foodEntry == null)
             {
                 context.Response.StatusCode = StatusCodes.Status400BadRequest;
-                context.Response.WriteAsync("Could not update the given food entry, please check body data sanity");
+                context.Response.WriteAsync("Could not find the food entry, please check body data sanity");
+            }
+
+            if (!_foodEntryRepository.Delete(Request.Id).GetAwaiter().GetResult())
+            {
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                context.Response.WriteAsync("Could not remove the food entry");
             }
             else
             {

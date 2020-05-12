@@ -31,9 +31,9 @@ namespace LevelUpAPI.DataAccess.QuestHandlers
 
         public override QuestState Update(UpdateQuestRequest updateQuestRequest)
         {
-            if (updateQuestRequest.Datas != null)
+            if (updateQuestRequest.Data != null)
             {
-                if (updateQuestRequest.Datas.TryGetValue(CALORIES_KEY, out string caloriesAsStr))
+                if (updateQuestRequest.Data.TryGetValue(CALORIES_KEY, out string caloriesAsStr))
                 {
                     UpdateCalories(caloriesAsStr);
                 }

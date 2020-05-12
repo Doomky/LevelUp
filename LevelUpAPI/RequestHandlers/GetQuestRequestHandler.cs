@@ -24,6 +24,12 @@ namespace LevelUpAPI.RequestHandlers
 
         protected override void ExecuteRequest(HttpContext context)
         {
+            if (Request == null)
+            {
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                return;
+            }
+
             ClaimsPrincipal claims = context.User;
             
             if (claims == null)
@@ -33,7 +39,7 @@ namespace LevelUpAPI.RequestHandlers
                 return;
             }
 
-            Dbo.User user = _userRepository.GetUserByClaims(claims).GetAwaiter().GetResult();
+            User user = _userRepository.GetUserByClaims(claims).GetAwaiter().GetResult();
 
             if (user == null)
             {
@@ -44,7 +50,7 @@ namespace LevelUpAPI.RequestHandlers
 
             IEnumerable<Quest> quests = _questRepository.Get(user).GetAwaiter().GetResult();
 
-            string questsJson = JsonSerializer.Serialize<IEnumerable<Quest>>(quests);
+            string questsJson = JsonSerializer.Serialize(quests);
             context.Response.StatusCode = StatusCodes.Status200OK;
             context.Response.WriteAsync(questsJson).GetAwaiter().GetResult();
         }

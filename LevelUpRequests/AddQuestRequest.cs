@@ -8,7 +8,7 @@ namespace LevelUpRequests
     {
         public int CategoryId { get; set; }
         public int TypeId { get; set; }
-        public Dictionary<string, string> Datas { get; set; }
+        public Dictionary<string, string> Data { get; set; }
 
         public AddQuestRequest() : base(Method.POST)
         {

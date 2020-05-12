@@ -13,9 +13,9 @@ namespace LevelUpClient.RequestBuilders
             while (!done)
             {
                 Console.Write("Id: ");
-                if (int.TryParse(Console.ReadLine(), out int userId))
+                if (int.TryParse(Console.ReadLine(), out int Id))
                 {
-                    Request.Id = userId;
+                    Request.Id = Id;
                     done = true;
                 }
             }
@@ -46,6 +46,21 @@ namespace LevelUpClient.RequestBuilders
                 if (int.TryParse(Console.ReadLine(), out int offDataId))
                 {
                     Request.OFFDataId = offDataId;
+                    done = true;
+                }
+            }
+            return this;
+        }
+
+        public ConsoleUpdateFoodEntryRequestBuilder WithDatetime()
+        {
+            bool done = false;
+            while (!done)
+            {
+                Console.Write("Datetime: ");
+                if (DateTime.TryParse(Console.ReadLine(), out DateTime datetime))
+                {
+                    Request.DateTime = datetime;
                     done = true;
                 }
             }

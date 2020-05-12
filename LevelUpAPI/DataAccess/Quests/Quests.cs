@@ -12,7 +12,7 @@ namespace LevelUpAPI.DataAccess.Quests
 {
     public class Quests
     {
-        public static async Task<Dbo.Quest> Create(
+        public static async Task<Quest> Create(
             AddQuestRequest addQuestRequest,
             User user,
             IQuestTypeRepository questTypeRepository, 
@@ -39,7 +39,7 @@ namespace LevelUpAPI.DataAccess.Quests
             return Initialize(quest, user, questTypeAsEnum, addQuestRequest);
         }
 
-        private static Dbo.Quest Initialize(Dbo.Quest quest, User user, QuestTypeAsEmum questTypeAsEmum, AddQuestRequest addQuestRequest)
+        private static Quest Initialize(Quest quest, User user, QuestTypeAsEmum questTypeAsEmum, AddQuestRequest addQuestRequest)
         {
             switch (questTypeAsEmum)
             {
