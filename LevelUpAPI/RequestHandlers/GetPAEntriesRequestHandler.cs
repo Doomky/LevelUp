@@ -6,19 +6,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace LevelUpAPI.RequestHandlers
 {
-    public class UpdateFoodEntryRequestHandler : RequestHandler<UpdateFoodEntryRequest>
+    public class GetPAEntriesRequestHandler : RequestHandler<GetPAEntriesRequest>
     {
         private readonly IUserRepository _userRepository;
-        private readonly IFoodEntryRepository _foodEntryRepository;
+        private readonly IPhysicalActivitiesEntryRepository _physicalActivitiesEntryRepository;
 
-        public UpdateFoodEntryRequestHandler(IUserRepository userRepository, IFoodEntryRepository foodEntryRepository)
+        public GetPAEntriesRequestHandler(IUserRepository userRepository, IPhysicalActivitiesEntryRepository physicalActivitiesEntryRepository)
         {
             _userRepository = userRepository;
-            _foodEntryRepository = foodEntryRepository;
+            _physicalActivitiesEntryRepository = physicalActivitiesEntryRepository;
         }
 
         protected override void ExecuteRequest(HttpContext context)
@@ -30,6 +31,7 @@ namespace LevelUpAPI.RequestHandlers
             }
 
             ClaimsPrincipal claims = context.User;
+
             if (claims == null)
             {
                 context.Response.StatusCode = StatusCodes.Status401Unauthorized;
@@ -46,24 +48,16 @@ namespace LevelUpAPI.RequestHandlers
                 return;
             }
 
-            FoodEntry foodEntry = new FoodEntry()
-            {
-                Id = Request.Id,
-                Datetime = Request.DateTime,
-                OpenFoodFactsDataId = Request.OFFDataId,
-                UserId = user.Id
-            };
+            List<NbPhysicalActivitiesEntriesByLogin> PAEntries = _physicalActivitiesEntryRepository.GetNbPhysicalActivitiesEntries(user.Login);
 
-            foodEntry = _foodEntryRepository.Update(foodEntry).GetAwaiter().GetResult();
-            if (foodEntry == null)
+            if (PAEntries != null)
             {
-                context.Response.StatusCode = StatusCodes.Status400BadRequest;
-                context.Response.WriteAsync("Could not update the given food entry, please check body data sanity");
+                string PAEntriesJson = JsonSerializer.Serialize(PAEntries);
+                context.Response.StatusCode = StatusCodes.Status200OK;
+                context.Response.WriteAsync(PAEntriesJson).GetAwaiter().GetResult();
             }
             else
-            {
-                context.Response.StatusCode = StatusCodes.Status200OK;
-            }
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
         }
     }
 }

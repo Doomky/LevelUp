@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace LevelUpAPI.DataAccess.Repositories.Interfaces
 {
-    interface IPhysicalActivitiesEntryRepository
+    public interface IPhysicalActivitiesEntryRepository
     {
         public List<Dbo.NbPhysicalActivitiesEntriesByLogin> GetNbPhysicalActivitiesEntries(string login);
     }

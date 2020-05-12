@@ -28,18 +28,30 @@ namespace LevelUpAPI.Controllers
 
 
         /// <summary>
-        /// Add a new food entry with a specific OpenFoodFacts data id for the user.
+        /// Get all the food entries of the signed-in user.
+        /// </summary>
+        /// <response code="200">The food entries were found.</response>
+        /// <response code="400">The request is malformed or the user does not exist.</response>
+        /// <response code="401">The user is not signed in.</response>
+        [HttpGet]
+        public void GetFoodEntries()
+        {
+            GetFoodEntriesRequestHandler getFoodEntriesRequestHandler = new GetFoodEntriesRequestHandler(_userRepository, _foodEntryRepository);
+            getFoodEntriesRequestHandler.Execute(HttpContext);
+        }
+
+        /// <summary>
+        /// Add a new food entry with a specific OpenFoodFacts data id for the signed-in user.
         /// </summary>
         /// <remarks>
-        /// The body of the request must contains those fields:
+        /// The body of the request must contains this field:
         /// 
         ///     {
-        ///         "UserId"
         ///         "OFFDataId"
         ///     }
         /// 
         /// </remarks>
-        /// <response code="200">The new food entry was correctly added for the user.</response>
+        /// <response code="200">The new food entry was correctly added.</response>
         /// <response code="204">The entry is malformed.</response>
         /// <response code="400">The request is malformed or the user does not exist.</response>
         /// <response code="401">The user is not signed in.</response>
@@ -52,20 +64,19 @@ namespace LevelUpAPI.Controllers
         }
 
         /// <summary>
-        /// Update an existing food entry with a specific OpenFoodFacts data is for the user.
+        /// Update an existing food entry with a specific OpenFoodFacts data is for the signed-in user.
         /// </summary>
         /// <remarks>
         /// The body of the request must contains those fields:
         /// 
         ///     {
         ///         "Id"
-        ///         "UserId"
         ///         "OFFDataId"
         ///         "DateTime"
         ///     }
         /// 
         /// </remarks>
-        /// <response code="200">The new food entry was correctly updated for the user.</response>
+        /// <response code="200">The new food entry was correctly updated.</response>
         /// <response code="400">The entry does not exists or the request is malformed or the user does not exist.</response>
         /// <response code="401">The user is not signed in.</response>
         [HttpPost]
@@ -77,7 +88,7 @@ namespace LevelUpAPI.Controllers
         }
 
         /// <summary>
-        /// Remove an existing food entry with a specific id.
+        /// Remove an existing food entry with a specific id for the signed-in user.
         /// </summary>
         /// <remarks>
         /// The body of the request must contains this field:
@@ -87,8 +98,8 @@ namespace LevelUpAPI.Controllers
         ///     }
         /// 
         /// </remarks>
-        /// <response code="200">The food entry was correctly removed for the user.</response>
-        /// <response code="400">The entry does not exists or the request is malformed or the user does not exists.</response>
+        /// <response code="200">The food entry was correctly removed.</response>
+        /// <response code="400">The entry does not exists or the request is malformed or the user does not exist.</response>
         /// <response code="401">The user is not signed in.</response>
         [HttpPost]
         [Route("remove")]

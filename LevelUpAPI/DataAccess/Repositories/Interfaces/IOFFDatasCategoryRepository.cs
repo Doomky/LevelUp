@@ -10,5 +10,7 @@ namespace LevelUpAPI.DataAccess.Repositories.Interfaces
     public interface IOFFDatasCategoryRepository : IRepository<OpenFoodFactsDatasCategories, OpenFoodFactsDatasCategory>
     {
         public Task<OpenFoodFactsDatasCategory> GetByCategoryName(string name);
+
+        public Task<OpenFoodFactsData> GetOFFDataByOFFCategory(OpenFoodFactsDatasCategory dataCategory);
     }
 }

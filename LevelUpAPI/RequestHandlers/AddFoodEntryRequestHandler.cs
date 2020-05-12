@@ -56,7 +56,7 @@ namespace LevelUpAPI.RequestHandlers
 
             FoodEntry foodEntryData = _foodEntryRepository.Insert(new FoodEntry()
             {
-                UserId = Request.UserId,
+                UserId = user.Id,
                 OpenFoodFactsDataId = Request.OFFDataId,
                 Datetime = DateTime.Now
             }).GetAwaiter().GetResult();

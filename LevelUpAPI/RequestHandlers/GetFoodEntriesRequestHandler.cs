@@ -6,16 +6,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace LevelUpAPI.RequestHandlers
 {
-    public class UpdateFoodEntryRequestHandler : RequestHandler<UpdateFoodEntryRequest>
+    public class GetFoodEntriesRequestHandler : RequestHandler<GetFoodEntriesRequest>
     {
         private readonly IUserRepository _userRepository;
         private readonly IFoodEntryRepository _foodEntryRepository;
 
-        public UpdateFoodEntryRequestHandler(IUserRepository userRepository, IFoodEntryRepository foodEntryRepository)
+        public GetFoodEntriesRequestHandler(IUserRepository userRepository, IFoodEntryRepository foodEntryRepository)
         {
             _userRepository = userRepository;
             _foodEntryRepository = foodEntryRepository;
@@ -46,24 +47,16 @@ namespace LevelUpAPI.RequestHandlers
                 return;
             }
 
-            FoodEntry foodEntry = new FoodEntry()
-            {
-                Id = Request.Id,
-                Datetime = Request.DateTime,
-                OpenFoodFactsDataId = Request.OFFDataId,
-                UserId = user.Id
-            };
+            List<NbFoodEntriesByLogin> foodEntries = _foodEntryRepository.GetNbFoodEntries(user.Login);
 
-            foodEntry = _foodEntryRepository.Update(foodEntry).GetAwaiter().GetResult();
-            if (foodEntry == null)
+            if (foodEntries != null)
             {
-                context.Response.StatusCode = StatusCodes.Status400BadRequest;
-                context.Response.WriteAsync("Could not update the given food entry, please check body data sanity");
+                string foodEntriesJson = JsonSerializer.Serialize(foodEntries);
+                context.Response.StatusCode = StatusCodes.Status200OK;
+                context.Response.WriteAsync(foodEntriesJson).GetAwaiter().GetResult();
             }
             else
-            {
-                context.Response.StatusCode = StatusCodes.Status200OK;
-            }
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
         }
     }
 }

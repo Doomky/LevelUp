@@ -29,7 +29,7 @@ namespace LevelUpAPI.Controllers
         }
 
         /// <summary>
-        /// Get the all quests from the signin user. 
+        /// Get all the quests of the signed-in user. 
         /// </summary>
         /// <response code="200">The quests were found.</response>
         /// <response code="400">The request is malformed or the user does not exist.</response>
@@ -42,7 +42,7 @@ namespace LevelUpAPI.Controllers
         }
 
         /// <summary>
-        /// Get the all quests from the signin user in the specified category. 
+        /// Get all the quests of the signed-in user in the specified category. 
         /// </summary>
         /// <param name="categoryName">The category name the user want to get his quests for.</param>
         /// <response code="200">The quests from the category were found.</response>
@@ -57,7 +57,7 @@ namespace LevelUpAPI.Controllers
         }
 
         /// <summary>
-        /// Update all the quests from the signin user with the given data. 
+        /// Update all the quests of the signed-in user with the given data. 
         /// </summary>
         /// <remarks>
         /// The body of the request must contains this field:
@@ -79,7 +79,7 @@ namespace LevelUpAPI.Controllers
         }
 
         /// <summary>
-        /// Add the specified quest to the signin user with the given data. 
+        /// Add the specified quest to the signed-in user with the given data. 
         /// </summary>
         /// <remarks>
         /// The body of the request must contains those fields:
@@ -104,7 +104,7 @@ namespace LevelUpAPI.Controllers
         }
 
         /// <summary>
-        /// Remove the specified quest to the signin user. 
+        /// Remove the specified quest of the signed-in user. 
         /// </summary>
         /// <remarks>
         /// The body of the request must contains those fields:
@@ -126,13 +126,19 @@ namespace LevelUpAPI.Controllers
         }
 
         /// <summary>
-        /// Claim the reward for a quest. Send the quest id inside the body.
+        /// Claim the reward for a specified quest of the signed-in user.
         /// </summary>
-        /// <return>
-        /// an object with the fields: state describing the state of the claiming and xp_gained for the xp gained by validating the quest.
-        /// </return>
-        /// <response code="200">The quest has been claimed. the response has informations on wether the state during the claim</response>
-        /// <response code="400">The quest has not been claimed probably because the quest does not exist or still in progress </response>
+        /// <remarks>
+        /// The body of the request must contains those fields:
+        /// 
+        ///     {
+        ///         "QuestId"
+        ///     }
+        /// 
+        /// </remarks>
+        /// <response code="200">The quest has been claimed. The response contains informations on the state of the quest during the claim.</response>
+        /// <response code="400">The quest has not been claimed because the quest does not exist or is still in progress.</response>
+        /// <response code="401">The user is not signed in.</response>
         [HttpPost]
         [Route("claim")]
         public void Claim()
