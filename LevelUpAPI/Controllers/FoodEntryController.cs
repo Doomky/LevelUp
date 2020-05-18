@@ -40,6 +40,45 @@ namespace LevelUpAPI.Controllers
             getFoodEntriesRequestHandler.Execute(HttpContext);
         }
 
+
+        /// <summary>
+        /// Add a new food entry with a specific OpenFoodFacts data id for the signed-in user.
+        /// </summary>
+        /// <remarks>
+        /// The body of the request must contains this field:
+        /// 
+        ///     {
+        ///         "UserId"
+        ///         "Name" 
+        ///         "Energy100g"
+        ///         "Sodium100g"
+        ///         "Salt100g"
+        ///         "Fat100g"
+        ///         "SaturatedFat100g"
+        ///         "Proteins100g" 
+        ///         "Sugars100g"
+        ///         "EnergyServing" 
+        ///         "SodiumServing"
+        ///         "SaltServing"
+        ///         "FatServing" 
+        ///         "SaturatedFatServing" 
+        ///         "ProteinsServing"
+        ///         "SugarsServing" 
+        ///     }
+        /// 
+        /// </remarks>
+        /// <response code="200">The new food entry was correctly added.</response>
+        /// <response code="204">The entry is malformed.</response>
+        /// <response code="400">The request is malformed or the user does not exist.</response>
+        /// <response code="401">The user is not signed in.</response>
+        [HttpPost]
+        [Route("add/custom")]
+        public void AddCustomFoodEntry()
+        {
+            AddCustomFoodEntryRequestHandler addCustomFoodEntryRequestHandler = new AddCustomFoodEntryRequestHandler(_foodEntryRepository, _userRepository, _offDataRepository);
+            addCustomFoodEntryRequestHandler.Execute(HttpContext);
+        }
+
         /// <summary>
         /// Add a new food entry with a specific OpenFoodFacts data id for the signed-in user.
         /// </summary>

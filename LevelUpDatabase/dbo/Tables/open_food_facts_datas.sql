@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[open_food_facts_datas] (
     [id]      INT           IDENTITY (1, 1) NOT NULL,
-    [code]    VARCHAR(50)           NOT NULL,
+    [code]    VARCHAR(50)           NULL,
     [name]    VARCHAR (255) NOT NULL,
     [energy_100g] FLOAT NULL, 
     [sodium_100g] FLOAT NULL, 
@@ -17,6 +17,7 @@
     [proteins_serving] FLOAT NULL, 
     [sugars_serving] FLOAT NULL, 
     [img_url] VARCHAR(255) NULL, 
+    [is_custom] BIT NOT NULL DEFAULT 0, 
     PRIMARY KEY CLUSTERED ([id] ASC)
 );
 

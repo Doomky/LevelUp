@@ -1,18 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
-namespace LevelUpAPI.Model
+namespace LevelUpRequests
 {
-    public partial class OpenFoodFactsDatas
+    public class AddCustomFoodEntryRequest : Request
     {
-        public OpenFoodFactsDatas()
+        public AddCustomFoodEntryRequest() : base(Method.POST)
         {
-            FoodEntries = new HashSet<FoodEntries>();
-            OpenFoodFactsDatasCategories = new HashSet<OpenFoodFactsDatasCategories>();
         }
 
-        public int Id { get; set; }
-        public string Code { get; set; }
+        public int UserId { get; set; }
         public string Name { get; set; }
         public double? Energy100g { get; set; }
         public double? Sodium100g { get; set; }
@@ -28,10 +26,5 @@ namespace LevelUpAPI.Model
         public double? SaturatedFatServing { get; set; }
         public double? ProteinsServing { get; set; }
         public double? SugarsServing { get; set; }
-        public string ImgUrl { get; set; }
-        public bool IsCustom { get; set; }
-
-        public virtual ICollection<FoodEntries> FoodEntries { get; set; }
-        public virtual ICollection<OpenFoodFactsDatasCategories> OpenFoodFactsDatasCategories { get; set; }
     }
 }

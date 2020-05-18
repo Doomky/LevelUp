@@ -117,5 +117,6 @@ namespace LevelUpAPI.Dbo
         public double? ProteinsServing { get; set; }
         public double? SugarsServing { get; set; }
         public string ImgUrl { get; set; }
+        public bool IsCustom { get; set; }
     }
 }

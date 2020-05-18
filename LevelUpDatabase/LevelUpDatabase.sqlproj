@@ -82,4 +82,7 @@
   <ItemGroup>
     <RefactorLog Include="LevelUpDatabase.refactorlog" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Snapshots\LevelUpDatabase_20200514_15-46-03.dacpac" />
+  </ItemGroup>
 </Project>
