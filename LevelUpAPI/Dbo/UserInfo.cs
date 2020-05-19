@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace LevelUpAPI.Dbo
 {
     public class UserInfo
     {
-        public UserInfo(Dbo.User user)
+        public UserInfo(User user)
         {
             Login = user.Login;
             Firstname = user.Firstname;

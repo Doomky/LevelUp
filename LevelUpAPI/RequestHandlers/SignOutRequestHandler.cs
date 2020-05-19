@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Net.Http;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using IdentityModel.Client;
 using LevelUpRequests;
 using LevelUpAPI.DataAccess.Repositories.Interfaces;
+using LevelUpAPI.Dbo;
+using static LevelUpAPI.Helpers.ClaimsHelpers;
 
 namespace LevelUpAPI.RequestHandlers
 {
@@ -24,27 +25,9 @@ namespace LevelUpAPI.RequestHandlers
 
         protected override void ExecuteRequest(HttpContext context)
         {
-            if (Request == null || string.IsNullOrWhiteSpace(Request.AccessToken))
-            {
-                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+            (bool isOk, User user) = CheckClaimsForUser(Request, context, _userRepository);
+            if (!isOk || user == null)
                 return;
-            }
-
-            ClaimsPrincipal claims = context.User;
-            if (claims == null)
-            {
-                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                context.Response.WriteAsync("no claims").GetAwaiter().GetResult();
-                return;
-            }
-
-            Dbo.User user = _userRepository.GetUserByClaims(claims).GetAwaiter().GetResult();
-            if (user == null)
-            {
-                context.Response.StatusCode = StatusCodes.Status400BadRequest;
-                context.Response.WriteAsync("no user for this client_id").GetAwaiter().GetResult();
-                return;
-            }
 
             string fullAddress = $"{HTTP}{address}:{port}";
             var client = new HttpClient();
