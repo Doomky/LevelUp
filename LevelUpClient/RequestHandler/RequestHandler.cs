@@ -1,9 +1,7 @@
 ﻿using LevelUpClient.RequestHandler.Interfaces;
 using LevelUpRequests;
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -48,7 +46,7 @@ body: {bodyAsStr}");
                 case LevelUpRequests.Request.Method.GET:
                     return await httpClient.GetAsync(FullAddress);
                 case LevelUpRequests.Request.Method.POST:
-                    string jsonString = JsonSerializer.Serialize<TRequest>(Request);
+                    string jsonString = JsonSerializer.Serialize(Request);
                     HttpContent httpContent = new StringContent(jsonString);
                     return await httpClient.PostAsync(FullAddress, httpContent);
                 default:
