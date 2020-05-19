@@ -1,24 +1,25 @@
 ﻿using IdentityModel;
 using LevelUpRequests;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Net.Mail;
 
-namespace LevelUpClient
+namespace LevelUpClient.RequestBuilders
 {
     public class ConsoleSignInRequestBuilder : RequestBuilder<SignInRequest>
     {
-        public ConsoleSignInRequestBuilder WithLogin()
+        public ConsoleSignInRequestBuilder WithLoginOrEmailAddress()
         {
-            Console.Write("Login:");
-            Request.Login = Console.ReadLine();
-            return this;
-        }
-
-        public ConsoleSignInRequestBuilder WithEmailAddress()
-        {
-            Console.Write("Email Address:");
-            Request.EmailAddress = Console.ReadLine();
+            Console.Write("Login or Email Address:");
+            string result = Console.ReadLine();
+            try
+            {
+                MailAddress mailAddress = new MailAddress(result);
+                Request.EmailAddress = mailAddress.Address;
+            }
+            catch (FormatException)
+            {
+                Request.Login = result;
+            }
             return this;
         }
 

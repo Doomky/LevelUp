@@ -80,14 +80,12 @@ namespace LevelUpAPI.Controllers
         }
 
         /// <summary>
-        /// Signout in the user. 
+        /// Sign out the user.
         /// </summary>
         /// <remarks>
-        /// The body of the request must contains those fields:
+        /// The body of the request must contains this field:
         /// 
         ///     {
-        ///         "Login"
-        ///         "PasswordHash"
         ///         "AccessToken"
         ///     }
         /// 

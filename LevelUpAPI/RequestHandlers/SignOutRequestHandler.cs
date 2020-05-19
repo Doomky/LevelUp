@@ -24,9 +24,7 @@ namespace LevelUpAPI.RequestHandlers
 
         protected override void ExecuteRequest(HttpContext context)
         {
-            if (Request == null || string.IsNullOrWhiteSpace(Request.Login)
-                || string.IsNullOrWhiteSpace(Request.PasswordHash)
-                || string.IsNullOrWhiteSpace(Request.AccessToken))
+            if (Request == null || string.IsNullOrWhiteSpace(Request.AccessToken))
             {
                 context.Response.StatusCode = StatusCodes.Status400BadRequest;
                 return;
@@ -54,16 +52,14 @@ namespace LevelUpAPI.RequestHandlers
             TokenRevocationRequest tokenRevocationRequest = new TokenRevocationRequest
             {
                 Address = discoDoc.RevocationEndpoint,
-                ClientId = Request.Login,
-                ClientSecret = Request.PasswordHash,
-                Token = Request.AccessToken
+                ClientId = user.Login,
+                ClientSecret = user.PasswordHash,
+                Token = Request.AccessToken,
+                TokenTypeHint = "access_token"
             };
             TokenRevocationResponse tokenRevocationResponse = client.RevokeTokenAsync(tokenRevocationRequest).GetAwaiter().GetResult();
 
-            string jsonAsString = tokenRevocationResponse.Json.ToString();
-
             context.Response.StatusCode = (int)tokenRevocationResponse.HttpStatusCode;
-            context.Response.WriteAsync(jsonAsString).GetAwaiter().GetResult();
         }
     }
 }
