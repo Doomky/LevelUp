@@ -1,23 +1,19 @@
 ﻿// Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-using System.Linq;
-using System.Threading.Tasks;
 
+using System.Threading.Tasks;
 using IdentityServer4.Models;
 using IdentityServer4.Stores;
 using LevelUpAPI.DataAccess.Repositories.Interfaces;
-using LevelUpAPI.Model;
 
 namespace IdentityServer
 {
     public class CredentialsClientStore : IClientStore
     {
-        private readonly levelupContext _context;
         private readonly IUserRepository _userRepository;
 
-        public CredentialsClientStore(levelupContext context, IUserRepository userRepository)
+        public CredentialsClientStore(IUserRepository userRepository)
         {
-            _context = context;
             _userRepository = userRepository;
         }
 
