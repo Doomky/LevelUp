@@ -92,6 +92,9 @@ namespace LevelUpClient.RequestHandler
                 case "physicalactivities":
                     requestHandler = new GetPAEntriesRequestHandler(fulladdress);
                     break;
+                case "physicalactivities/add":
+                    requestHandler = new AddPAEntryRequestHandler(fulladdress);
+                    break;
 
                 default:
                     Console.WriteLine("Unknown endpoint");
