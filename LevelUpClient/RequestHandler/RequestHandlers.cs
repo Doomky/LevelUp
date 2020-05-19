@@ -68,7 +68,7 @@ namespace LevelUpClient.RequestHandler
                     requestHandler = new RemoveFoodEntryRequestHandler(fulladdress);
                     break;
 
-                // quest
+                // Quest
                 case "quests":
                     requestHandler = new GetQuestRequestHandler(fulladdress);
                     break;
@@ -87,6 +87,12 @@ namespace LevelUpClient.RequestHandler
                 case "quests/claim":
                     requestHandler = new ClaimQuestsRequestHandler(fulladdress);
                     break;
+
+                // Physical activities
+                case "physicalactivities":
+                    requestHandler = new GetPAEntriesRequestHandler(fulladdress);
+                    break;
+
                 default:
                     Console.WriteLine("Unknown endpoint");
                     return;
