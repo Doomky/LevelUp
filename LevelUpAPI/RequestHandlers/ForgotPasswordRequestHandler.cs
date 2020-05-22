@@ -22,6 +22,7 @@ namespace LevelUpAPI.RequestHandlers
         public const string CRENDENTIAL_PASSWORD_KEY = "Credential_password";
 
         public const string PASSWORD_RECOVERY_URL = "http://localhost:44381/password-recovery/";
+        public const string FRONT_PASSWORD_RECOVERY_URL = "http://localhost:3000/reset-password/";
 
         private readonly IUserRepository _userRepository;
         private readonly IPasswordRecoveryDataRepository _passwordRecoveryDataRepository;
@@ -82,7 +83,7 @@ namespace LevelUpAPI.RequestHandlers
 $@"Hi { user.Login},
 
 You ask for a password recovery because you forgot your password.
-In order to change your password, use the following link: { PASSWORD_RECOVERY_URL + passwordRecoveryData.Hash }
+In order to change your password, use the following link: { FRONT_PASSWORD_RECOVERY_URL + passwordRecoveryData.Hash }
 You will be asked to enter your new password and to confirm this password.
 
 Thanky you,
