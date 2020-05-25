@@ -7,6 +7,9 @@ using Microsoft.Extensions.Logging;
 using LevelUpAPI.Model;
 using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.RequestHandlers;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
+
 
 namespace LevelUpAPI.Controllers
 {
@@ -191,7 +194,6 @@ namespace LevelUpAPI.Controllers
         ///         "NewFirstname"
         ///         "NewLastname"
         ///         "NewEmail"
-        ///         "NewGoogleId"
         ///     }
         /// 
         /// </remarks>
@@ -213,7 +215,7 @@ namespace LevelUpAPI.Controllers
         /// The body of the request must contains this field:
         /// 
         ///     {
-        ///         "GoogleIdToken"
+        ///         "GoogleAuthCode"
         ///     }
         /// 
         /// </remarks>
@@ -221,11 +223,11 @@ namespace LevelUpAPI.Controllers
         /// <response code="400">The request is malformed or the user does not exists.</response>
         /// <response code="401">The user is not signed in.</response>
         [HttpPost]
-        [Route("google-id-token/set")]
-        public void SetGoogleIdToken()
+        [Route("link-google-account")]
+        public void LinkGoogleAccount()
         {
-            SetGoogleIdTokenRequestHandler setGoogleIdTokenRequestHandler = new SetGoogleIdTokenRequestHandler(_userRepository);
-            setGoogleIdTokenRequestHandler.Execute(HttpContext);
+            LinkGoogleAccountRequestHandler LinGoogleAccountRequestHandler = new LinkGoogleAccountRequestHandler(_userRepository);
+            LinGoogleAccountRequestHandler.Execute(HttpContext);
         }
 
         /// <summary>
@@ -235,11 +237,11 @@ namespace LevelUpAPI.Controllers
         /// <response code="400">The user does not exists.</response>
         /// <response code="401">The user is not signed in.</response>
         [HttpGet]
-        [Route("google-id-token/remove")]
-        public void RemoveGoogleIdToken()
+        [Route("unlink-google-account")]
+        public void UnlinkGoogleAccount()
         {
-            RemoveGoogleIdTokenRequestHandler removeGoogleIdTokenRequestHandler = new RemoveGoogleIdTokenRequestHandler(_userRepository);
-            removeGoogleIdTokenRequestHandler.Execute(HttpContext);
+            UnlinkGoogleAccountRequestHandler UnlinkGoogleAccountRequestHandler = new UnlinkGoogleAccountRequestHandler(_userRepository);
+            UnlinkGoogleAccountRequestHandler.Execute(HttpContext);
         }
     }
 }

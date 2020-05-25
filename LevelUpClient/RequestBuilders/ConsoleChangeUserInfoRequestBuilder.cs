@@ -27,12 +27,5 @@ namespace LevelUpClient.RequestBuilders
             Request.NewEmail = Console.ReadLine();
             return this;
         }
-
-        public ConsoleChangeUserInfoRequestBuilder WithNewGoogleId()
-        {
-            Console.Write("New Google Id (empty if no change): ");
-            Request.NewGoogleId = Console.ReadLine();
-            return this;
-        }
     }
 }

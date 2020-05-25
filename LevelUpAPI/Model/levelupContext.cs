@@ -52,7 +52,7 @@ namespace LevelUpAPI.Model
                     .WithMany(p => p.Advices)
                     .HasForeignKey(d => d.CategoryId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__advices__categor__151B244E");
+                    .HasConstraintName("FK__advices__categor__37A5467C");
             });
 
             modelBuilder.Entity<Avatars>(entity =>
@@ -348,7 +348,7 @@ namespace LevelUpAPI.Model
                     .WithMany(p => p.Quests)
                     .HasForeignKey(d => d.CategoryId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__quests__category__04E4BC85");
+                    .HasConstraintName("FK__quests__category__3C69FB99");
 
                 entity.HasOne(d => d.Type)
                     .WithMany(p => p.Quests)
@@ -361,6 +361,7 @@ namespace LevelUpAPI.Model
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__quests__user_id__2CBDA3B5");
+
             });
 
             modelBuilder.Entity<QuestsTypes>(entity =>
@@ -428,9 +429,18 @@ namespace LevelUpAPI.Model
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
-                entity.Property(e => e.GoogleId)
-                    .HasColumnName("google_id")
-                    .HasMaxLength(255)
+                entity.Property(e => e.GoogleAccessExpiration)
+                    .HasColumnName("google_access_expiration")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.GoogleAccessToken)
+                    .HasColumnName("google_access_token")
+                    .HasMaxLength(2048)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.GoogleRefreshToken)
+                    .HasColumnName("google_refresh_token")
+                    .HasMaxLength(512)
                     .IsUnicode(false);
 
                 entity.Property(e => e.LastLoginDate)

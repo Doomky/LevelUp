@@ -32,6 +32,7 @@ namespace LevelUpAPI
         public void ConfigureServices(IServiceCollection services)
         {
 
+
             services.AddMvc(options => {
                 options.EnableEndpointRouting = false;
             });
@@ -43,8 +44,8 @@ namespace LevelUpAPI
                 options.AddPolicy(LevelUpSpecificOrigins,
                 builder =>
                 {
-                    builder.WithOrigins()
-                           .AllowAnyOrigin()
+                    builder.AllowAnyOrigin()
+                           .AllowAnyMethod()
                            .AllowAnyHeader();
                 });
             });
@@ -108,6 +109,7 @@ namespace LevelUpAPI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors(LevelUpSpecificOrigins);
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
 
@@ -132,10 +134,8 @@ namespace LevelUpAPI
                
                 app.UseHsts();
             }
-
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseCors(LevelUpSpecificOrigins);
 
             app.UseHttpsRedirection();
 

@@ -36,11 +36,11 @@ namespace LevelUpClient.RequestHandler
                 case "users/password-recovery":
                     requestHandler = new PasswordRecoveryRequestHandler(fulladdress);
                     break;
-                case "users/google-id-token/set":
-                    requestHandler = new SetGoogleIdTokenRequestHandler(fulladdress);
+                case "users/link-google-account":
+                    requestHandler = new LinkGoogleAccountRequestHandler(fulladdress);
                     break;
-                case "users/google-id-token/remove":
-                    requestHandler = new RemoveGoogleIdRequestHandler(fulladdress);
+                case "users/unlink-google-account":
+                    requestHandler = new UnlinkGoogleAccountRequestHandler(fulladdress);
                     break;
 
                 // OpenFoodFacts

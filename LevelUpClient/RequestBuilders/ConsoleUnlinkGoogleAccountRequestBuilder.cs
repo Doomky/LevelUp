@@ -5,8 +5,7 @@ using System.Text;
 
 namespace LevelUpClient.RequestBuilders
 {
-    public class ConsoleRemoveGoogleIdRequestBuilder : RequestBuilder<UnlinkGoogleAccountRequest>
+    public class ConsoleUnlinkGoogleAccountRequestBuilder : RequestBuilder<UnlinkGoogleAccountRequest>
     {
-
     }
 }

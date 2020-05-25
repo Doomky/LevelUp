@@ -34,10 +34,7 @@ namespace LevelUpAPI.RequestHandlers
             {
                 user.Lastname = Request.NewLastname;
             }
-            if (Request.NewGoogleId != user.GoogleId && !string.IsNullOrWhiteSpace(Request.NewGoogleId))
-            {
-                user.GoogleId = Request.NewGoogleId;
-            }
+
             _userRepository.Update(user).GetAwaiter().GetResult();
 
             context.Response.StatusCode = StatusCodes.Status200OK;

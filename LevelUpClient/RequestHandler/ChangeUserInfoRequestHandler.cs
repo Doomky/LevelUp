@@ -1,8 +1,6 @@
 ﻿using LevelUpClient.RequestBuilders;
-using LevelUpClient.RequestHandler.Interfaces;
 using LevelUpRequests;
 using System;
-using System.Net.Http;
 
 namespace LevelUpClient.RequestHandler
 {
@@ -18,7 +16,6 @@ namespace LevelUpClient.RequestHandler
                 .WithNewFirstname()
                 .WithNewLastname()
                 .WithNewEmail()
-                .WithNewGoogleId()
                 .Build();
         }
     }
