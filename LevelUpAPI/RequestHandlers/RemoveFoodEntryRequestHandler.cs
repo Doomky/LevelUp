@@ -30,6 +30,7 @@ namespace LevelUpAPI.RequestHandlers
             {
                 context.Response.StatusCode = StatusCodes.Status400BadRequest;
                 context.Response.WriteAsync("Could not find the food entry, please check body data sanity");
+                return;
             }
 
             if (!_foodEntryRepository.Delete(Request.Id).GetAwaiter().GetResult())
