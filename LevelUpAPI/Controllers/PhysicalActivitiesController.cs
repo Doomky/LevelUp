@@ -59,5 +59,30 @@ namespace LevelUpAPI.Controllers
             AddPAEntryRequestHandler addPAEntryRequestHandler = new AddPAEntryRequestHandler(_userRepository, _physicalActivitiesRepository, _physicalActivitiesEntryRepository);
             addPAEntryRequestHandler.Execute(HttpContext);
         }
+
+        /// <summary>
+        /// Update a physical activity entry for the signed-in user. 
+        /// </summary>
+        /// <remarks>
+        /// The body of the request must contains those fields:
+        /// 
+        ///     {
+        ///         "Id"
+        ///         "NewName"
+        ///         "NewKCalPerHour"
+        ///     }
+        /// 
+        /// </remarks>
+        /// <response code="200">The physical activity entry was correctly updated.</response>
+        /// <response code="204">The entry is malformed.</response>
+        /// <response code="400">The request is malformed or the user does not exist.</response>
+        /// <response code="401">The user is not signed in.</response>
+        [HttpPost]
+        [Route("update")]
+        public void Update()
+        {
+            UpdatePAEntryRequestHandler updatePAEntryRequestHandler = new UpdatePAEntryRequestHandler(_userRepository, _physicalActivitiesRepository, _physicalActivitiesEntryRepository);
+            updatePAEntryRequestHandler.Execute(HttpContext);
+        }
     }
 }
