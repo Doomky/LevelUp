@@ -1,5 +1,4 @@
-﻿using LevelUpAPI.DataAccess.OpenFoodFacts.Product;
-using LevelUpAPI.DataAccess.Repositories.Interfaces;
+﻿using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Dbo;
 using LevelUpRequests;
 using Microsoft.AspNetCore.Http;
@@ -24,16 +23,26 @@ namespace LevelUpAPI.RequestHandlers
 
         protected override void ExecuteRequest(HttpContext context)
         {
+            if (Request == null)
+            {
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                return;
+            }
+
             OpenFoodFactsDatasCategory openFoodFactsDataCategory = _oFFDatasCategoryRepository.GetByCategoryName(_categoryName).GetAwaiter().GetResult();
 
             if (openFoodFactsDataCategory != null)
             {
-                string openFoodFactsDataCategoryJson = JsonSerializer.Serialize(openFoodFactsDataCategory);
-                context.Response.StatusCode = StatusCodes.Status200OK;
-                context.Response.WriteAsync(openFoodFactsDataCategoryJson).GetAwaiter().GetResult();
+                OpenFoodFactsData openFoodFactsData = _oFFDatasCategoryRepository.GetOFFDataByOFFCategory(openFoodFactsDataCategory).GetAwaiter().GetResult();
+                if (openFoodFactsData != null)
+                {
+                    string openFoodFactsDataCategoryJson = JsonSerializer.Serialize(openFoodFactsData);
+                    context.Response.StatusCode = StatusCodes.Status200OK;
+                    context.Response.WriteAsync(openFoodFactsDataCategoryJson).GetAwaiter().GetResult();
+                    return;
+                }
             }
-            else
-                context.Response.StatusCode = StatusCodes.Status204NoContent;
+            context.Response.StatusCode = StatusCodes.Status204NoContent;
         }
     }
 }

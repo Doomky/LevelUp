@@ -13,23 +13,41 @@ namespace LevelUpAPI.DataAccess.QuestHandlers
     {
         public const string CALORIES_KEY = "Calories";
 
-
-        public override UpdateResult Update(UpdateQuestRequest updateQuestRequest)
+        public override QuestState GetState()
         {
-            if (updateQuestRequest.Datas != null)
+            if (Quest.ProgressValue <= Quest.ProgressCount)
+                return Quest.ExpirationDate <= DateTime.Now ? QuestState.Finished : QuestState.InProgress;
+            else
+                return QuestState.Failed;
+        }
+
+        private void UpdateCalories(string caloriesAsStr)
+        {
+            if (int.TryParse(caloriesAsStr, out int calories))
             {
-                if (updateQuestRequest.Datas.TryGetValue(CALORIES_KEY, out string caloriesAsStr))
+                Quest.ProgressValue += calories;
+            }
+        }
+
+        public override QuestState Update(UpdateQuestRequest updateQuestRequest)
+        {
+            if (updateQuestRequest.Data != null)
+            {
+                if (updateQuestRequest.Data.TryGetValue(CALORIES_KEY, out string caloriesAsStr))
                 {
-                    if (int.TryParse(caloriesAsStr, out int calories))
-                    {
-                        Quest.ProgressValue += calories;
-                    }
+                    UpdateCalories(caloriesAsStr);
                 }
             }
-            if (Quest.ProgressValue <= Quest.ProgressCount)
-                return UpdateResult.InProgress;
-            else
-                return UpdateResult.Failed;
+            return GetState();
+        }
+
+        public override QuestState Update(string key, string value)
+        {
+            if (key.Equals(CALORIES_KEY))
+            {
+                UpdateCalories(value);
+            }
+            return GetState();
         }
     }
 }

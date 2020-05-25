@@ -1,10 +1,8 @@
 ﻿using IdentityModel;
 using LevelUpRequests;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace LevelUpClient
+namespace LevelUpClient.RequestBuilders
 {
     public class ConsoleSignUpRequestBuilder : RequestBuilder<SignUpRequest>
     {

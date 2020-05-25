@@ -37,31 +37,13 @@ namespace LevelUpAPI.DataAccess.Repositories
                     .Where(datasCategory => datasCategory.CategoryId == category.Id)
                     .FirstOrDefault();
             }
-            else
-            {
-                // we need to add the category
-                category = new OpenFoodFactsCategory()
-                {
-                    Name = name
-                };
-                category = await _oFFCategoryRepository.Insert(category);
-                if (category != null)
-                {
-                    OpenFoodFactsData openFoodFactsData = await _oFFDataRepository.InsertFromCategory(name);
-
-                    if (openFoodFactsData != null)
-                    {
-                        OpenFoodFactsDatasCategory openFoodFactsDatasCategory = new OpenFoodFactsDatasCategory()
-                        { 
-                            CategoryId = category.Id,
-                            DataId = openFoodFactsData.Id
-                        };
-
-                        return await base.Insert(openFoodFactsDatasCategory);
-                    }
-                }
-            }
             return null;
+        }
+
+        public async Task<OpenFoodFactsData> GetOFFDataByOFFCategory(OpenFoodFactsDatasCategory dataCategory)
+        {
+            var openFoodFactsDatas = await _oFFDataRepository.Get(dataCategory.DataId);
+            return openFoodFactsDatas.FirstOrDefault();
         }
     }
 }

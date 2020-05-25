@@ -1,5 +1,6 @@
 ﻿using IdentityModel.Client;
 using LevelUpAPI.DataAccess.Repositories.Interfaces;
+using LevelUpAPI.Dbo;
 using LevelUpRequests;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json.Linq;
@@ -13,6 +14,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Web;
+using static LevelUpAPI.Helpers.ClaimsHelpers;
 
 namespace LevelUpAPI.RequestHandlers
 {
@@ -27,22 +29,9 @@ namespace LevelUpAPI.RequestHandlers
 
         protected override void ExecuteRequest(HttpContext context)
         {
-            ClaimsPrincipal claims = context.User;
-            if (claims == null)
-            {
-                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                context.Response.WriteAsync("no claims").GetAwaiter().GetResult();
+            (bool isOk, User user) = CheckClaimsForUser(Request, context, _userRepository);
+            if (!isOk || user == null)
                 return;
-            }
-
-            Dbo.User user = _userRepository.GetUserByClaims(claims).GetAwaiter().GetResult();
-
-            if (user == null)
-            {
-                context.Response.StatusCode = StatusCodes.Status400BadRequest;
-                context.Response.WriteAsync("no user for this client_id").GetAwaiter().GetResult();
-                return;
-            }
 
             var values = new Dictionary<string, string>
             {

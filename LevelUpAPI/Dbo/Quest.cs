@@ -11,5 +11,8 @@ namespace LevelUpAPI.Dbo
         public int ProgressValue { get; set; }
         public int ProgressCount { get; set; }
         public int UserId { get; set; }
+        public int? XpValue { get; set; }
+        public DateTime CreationDate { get; set; }
+        public DateTime ExpirationDate { get; set; }
     }
 }

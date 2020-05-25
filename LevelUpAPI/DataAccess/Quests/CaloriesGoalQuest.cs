@@ -12,9 +12,9 @@ namespace LevelUpAPI.DataAccess.Quests
     {
         private const string CALORIES_GOAL_KEY = "CaloriesGoal";
 
-        public static Dbo.Quest Initialize(Dbo.Quest quest, Dbo.User user, QuestTypeAsEmum questTypeAsEmum, AddQuestRequest addQuestRequest)
+        public static Quest Initialize(Quest quest, User user, QuestTypeAsEmum questTypeAsEmum, AddQuestRequest addQuestRequest)
         {
-            if (addQuestRequest.Datas.TryGetValue(CALORIES_GOAL_KEY, out string caloriesGoalValue))
+            if (addQuestRequest.Data.TryGetValue(CALORIES_GOAL_KEY, out string caloriesGoalValue))
             {
                 if (int.TryParse(caloriesGoalValue, out int caloriesGoal))
                 {

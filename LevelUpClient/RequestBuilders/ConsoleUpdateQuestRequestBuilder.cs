@@ -15,7 +15,7 @@ namespace LevelUpClient.RequestBuilders
             ConsoleKey inputKey;
             string key;
             string value;
-            Request.Datas = new Dictionary<string, string>();
+            Request.Data = new Dictionary<string, string>();
             do
             {
                 Console.WriteLine("Type " + finishKey.ToString() + " to finish data dict");
@@ -27,8 +27,8 @@ namespace LevelUpClient.RequestBuilders
                 Console.Write("Value: ");
                 value = Console.ReadLine();
                 
-                if (!Request.Datas.ContainsKey(key))
-                    Request.Datas.Add(key, value);
+                if (!Request.Data.ContainsKey(key))
+                    Request.Data.Add(key, value);
                 else
                 {
                     Console.WriteLine("Data was not inserted because " + key + " was already existing");

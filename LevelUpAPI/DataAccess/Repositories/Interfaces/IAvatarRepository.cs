@@ -10,5 +10,6 @@ namespace LevelUpAPI.DataAccess.Repositories.Interfaces
     public interface IAvatarRepository : IRepository<Avatars, Avatar>
     {
         public Task<Dbo.Avatar> Create();
+        public Task<Dbo.Avatar> GetByUser(User user);
     }
 }

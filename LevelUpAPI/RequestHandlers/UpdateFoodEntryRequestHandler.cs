@@ -1,30 +1,36 @@
 ﻿using LevelUpAPI.DataAccess.Repositories.Interfaces;
+using LevelUpAPI.Dbo;
 using LevelUpRequests;
 using Microsoft.AspNetCore.Http;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using static LevelUpAPI.Helpers.ClaimsHelpers;
 
 namespace LevelUpAPI.RequestHandlers
 {
     public class UpdateFoodEntryRequestHandler : RequestHandler<UpdateFoodEntryRequest>
     {
+        private readonly IUserRepository _userRepository;
         private readonly IFoodEntryRepository _foodEntryRepository;
 
-        public UpdateFoodEntryRequestHandler(IFoodEntryRepository foodEntryRepository)
+        public UpdateFoodEntryRequestHandler(IUserRepository userRepository, IFoodEntryRepository foodEntryRepository)
         {
+            _userRepository = userRepository;
             _foodEntryRepository = foodEntryRepository;
         }
 
         protected override void ExecuteRequest(HttpContext context)
         {
-            Dbo.FoodEntry foodEntry = new Dbo.FoodEntry()
+            (bool isOk, User user) = CheckClaimsForUser(Request, context, _userRepository);
+            if (!isOk || user == null)
+                return;
+
+            FoodEntry foodEntry = new FoodEntry()
             {
                 Id = Request.Id,
                 Datetime = Request.DateTime,
                 OpenFoodFactsDataId = Request.OFFDataId,
-                UserId = Request.UserId
+                UserId = user.Id
             };
 
             foodEntry = _foodEntryRepository.Update(foodEntry).GetAwaiter().GetResult();

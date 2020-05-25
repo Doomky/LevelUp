@@ -174,8 +174,8 @@ namespace LevelUpAPI.Model
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasColumnName("name")
-                    .HasMaxLength(10)
-                    .IsFixedLength();
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<OpenFoodFactsDatas>(entity =>
@@ -185,7 +185,6 @@ namespace LevelUpAPI.Model
                 entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Code)
-                    .IsRequired()
                     .HasColumnName("code")
                     .HasMaxLength(50)
                     .IsUnicode(false);
@@ -197,6 +196,13 @@ namespace LevelUpAPI.Model
                 entity.Property(e => e.Fat100g).HasColumnName("fat_100g");
 
                 entity.Property(e => e.FatServing).HasColumnName("fat_serving");
+
+                entity.Property(e => e.ImgUrl)
+                    .HasColumnName("img_url")
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.IsCustom).HasColumnName("is_custom");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
@@ -325,6 +331,16 @@ namespace LevelUpAPI.Model
 
                 entity.Property(e => e.CategoryId).HasColumnName("category_id");
 
+                entity.Property(e => e.CreationDate)
+                    .HasColumnName("creation_date")
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.ExpirationDate)
+                    .HasColumnName("expiration_date")
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
                 entity.Property(e => e.ProgressCount).HasColumnName("progress_count");
 
                 entity.Property(e => e.ProgressValue).HasColumnName("progress_value");
@@ -332,6 +348,10 @@ namespace LevelUpAPI.Model
                 entity.Property(e => e.TypeId).HasColumnName("type_id");
 
                 entity.Property(e => e.UserId).HasColumnName("user_id");
+
+                entity.Property(e => e.XpValue)
+                    .HasColumnName("xp_value")
+                    .HasDefaultValueSql("((100))");
 
                 entity.HasOne(d => d.Category)
                     .WithMany(p => p.Quests)
@@ -400,6 +420,11 @@ namespace LevelUpAPI.Model
                 entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.AvatarId).HasColumnName("avatar_id");
+
+                entity.Property(e => e.CreationDate)
+                    .HasColumnName("creation_date")
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.Email)
                     .IsRequired()

@@ -75,6 +75,9 @@ namespace LevelUpAPI
             services.AddTransient<IQuestTypeRepository, QuestTypeRepository>();
             services.AddTransient<IQuestRepository, QuestRepository>();
 
+            services.AddTransient<IPhysicalActivitiesRepository, PhysicalActivitiesRepository>();
+            services.AddTransient<IPhysicalActivitiesEntryRepository, PhysicalActivitiesEntryRepository>();
+
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
             {

@@ -1,11 +1,9 @@
 ﻿using IdentityModel.Client;
+using LevelUpClient.RequestBuilders;
 using LevelUpRequests;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
-using System.Text.Json;
 
 namespace LevelUpClient.RequestHandler
 {
@@ -35,8 +33,7 @@ body: {tokenAsStr}");
         public override SignInRequest RequestBuilder()
         {
             return new ConsoleSignInRequestBuilder()
-                    .WithLogin()
-                    .WithEmailAddress()
+                    .WithLoginOrEmailAddress()
                     .WithPassword()
                     .Build();
         }

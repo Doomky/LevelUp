@@ -1,8 +1,6 @@
 ﻿using LevelUpClient.RequestHandler.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
 
 namespace LevelUpClient.RequestHandler
 {
@@ -54,14 +52,23 @@ namespace LevelUpClient.RequestHandler
                     break;
 
                 // FoodEntry
+                case "foodentry":
+                    requestHandler = new GetFoodEntryRequestHandler(fulladdress);
+                    break;
+                case "foodentry/add/custom":
+                    requestHandler = new AddCustomFoodEntryRequestHandler(fulladdress);
+                    break;
                 case "foodentry/add":
                     requestHandler = new AddFoodEntryRequestHandler(fulladdress);
                     break;
                 case "foodentry/update":
                     requestHandler = new UpdateFoodEntryRequestHandler(fulladdress);
                     break;
+                case "foodentry/remove":
+                    requestHandler = new RemoveFoodEntryRequestHandler(fulladdress);
+                    break;
 
-                // quest
+                // Quest
                 case "quests":
                     requestHandler = new GetQuestRequestHandler(fulladdress);
                     break;
@@ -77,6 +84,21 @@ namespace LevelUpClient.RequestHandler
                 case "quests/remove":
                     requestHandler = new RemoveQuestRequestHandler(fulladdress);
                     break;
+                case "quests/claim":
+                    requestHandler = new ClaimQuestsRequestHandler(fulladdress);
+                    break;
+
+                // Physical activities
+                case "physicalactivities":
+                    requestHandler = new GetPAEntriesRequestHandler(fulladdress);
+                    break;
+                case "physicalactivities/add":
+                    requestHandler = new AddPAEntryRequestHandler(fulladdress);
+                    break;
+                case "physicalactivities/update":
+                    requestHandler = new UpdatePAEntryRequestHandler(fulladdress);
+                    break;
+
                 default:
                     Console.WriteLine("Unknown endpoint");
                     return;

@@ -4,10 +4,9 @@ using LevelUpRequests;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.Tasks;
+using static LevelUpAPI.Helpers.ClaimsHelpers;
 
 namespace LevelUpAPI.RequestHandlers
 {
@@ -24,27 +23,13 @@ namespace LevelUpAPI.RequestHandlers
 
         protected override void ExecuteRequest(HttpContext context)
         {
-            ClaimsPrincipal claims = context.User;
-            
-            if (claims == null)
-            {
-                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                context.Response.WriteAsync("no claims").GetAwaiter().GetResult();
+            (bool isOk, User user) = CheckClaimsForUser(Request, context, _userRepository);
+            if (!isOk || user == null)
                 return;
-            }
-
-            Dbo.User user = _userRepository.GetUserByClaims(claims).GetAwaiter().GetResult();
-
-            if (user == null)
-            {
-                context.Response.StatusCode = StatusCodes.Status400BadRequest;
-                context.Response.WriteAsync("no user for this client_id").GetAwaiter().GetResult();
-                return;
-            }
 
             IEnumerable<Quest> quests = _questRepository.Get(user).GetAwaiter().GetResult();
 
-            string questsJson = JsonSerializer.Serialize<IEnumerable<Quest>>(quests);
+            string questsJson = JsonSerializer.Serialize(quests);
             context.Response.StatusCode = StatusCodes.Status200OK;
             context.Response.WriteAsync(questsJson).GetAwaiter().GetResult();
         }

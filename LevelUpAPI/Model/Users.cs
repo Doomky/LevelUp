@@ -25,6 +25,7 @@ namespace LevelUpAPI.Model
         public string GoogleAccessToken { get; set; }
         public string GoogleRefreshToken { get; set; }
         public DateTime? GoogleAccessExpiration { get; set; }
+        public DateTime CreationDate { get; set; }
 
         public virtual Avatars Avatar { get; set; }
         public virtual ICollection<FoodEntries> FoodEntries { get; set; }
