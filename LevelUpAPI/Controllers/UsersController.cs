@@ -194,7 +194,6 @@ namespace LevelUpAPI.Controllers
         ///         "NewFirstname"
         ///         "NewLastname"
         ///         "NewEmail"
-        ///         "NewGoogleId"
         ///     }
         /// 
         /// </remarks>
@@ -216,7 +215,7 @@ namespace LevelUpAPI.Controllers
         /// The body of the request must contains this field:
         /// 
         ///     {
-        ///         "GoogleIdToken"
+        ///         "GoogleAuthCode"
         ///     }
         /// 
         /// </remarks>
