@@ -7,21 +7,6 @@ namespace LevelUpClient.RequestBuilders
 {
     public class ConsoleAddCustomFoodEntryRequestBuilder : RequestBuilder<AddCustomFoodEntryRequest>
     {
-        public ConsoleAddCustomFoodEntryRequestBuilder WithUserId()
-        {
-            Console.Write("User Id: ");
-            bool isOk = false;
-            while (!isOk)
-            {
-                if (int.TryParse(Console.ReadLine(), out int userId))
-                {
-                    Request.UserId = userId;
-                    isOk = true;
-                }
-            }
-            return this;
-        }
-
         public ConsoleAddCustomFoodEntryRequestBuilder WithName()
         {
             Console.Write("Name: ");
@@ -142,7 +127,7 @@ namespace LevelUpClient.RequestBuilders
             {
                 if (double.TryParse(Console.ReadLine(), out double energyServing))
                 {
-                    Request.Energy100g = energyServing;
+                    Request.EnergyServing = energyServing;
                     isOk = true;
                 }
             }
@@ -215,9 +200,9 @@ namespace LevelUpClient.RequestBuilders
             bool isOk = false;
             while (!isOk)
             {
-                if (double.TryParse(Console.ReadLine(), out double proteins100g))
+                if (double.TryParse(Console.ReadLine(), out double proteinsServing))
                 {
-                    Request.Proteins100g = proteins100g;
+                    Request.ProteinsServing = proteinsServing;
                     isOk = true;
                 }
             }
@@ -230,9 +215,9 @@ namespace LevelUpClient.RequestBuilders
             bool isOk = false;
             while (!isOk)
             {
-                if (double.TryParse(Console.ReadLine(), out double sugars100g))
+                if (double.TryParse(Console.ReadLine(), out double sugarsServing))
                 {
-                    Request.Sugars100g = sugars100g;
+                    Request.SugarsServing = sugarsServing;
                     isOk = true;
                 }
             }

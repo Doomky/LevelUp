@@ -48,7 +48,6 @@ namespace LevelUpAPI.Controllers
         /// The body of the request must contains this field:
         /// 
         ///     {
-        ///         "UserId"
         ///         "Name" 
         ///         "Energy100g"
         ///         "Sodium100g"
