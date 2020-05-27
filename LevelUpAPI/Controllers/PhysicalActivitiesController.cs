@@ -37,6 +37,20 @@ namespace LevelUpAPI.Controllers
         }
 
         /// <summary>
+        /// Get the total entries for each physical activity of the signed-in user. 
+        /// </summary>
+        /// <response code="200">The physical activity entries were found.</response>
+        /// <response code="400">The request is malformed or the user does not exist.</response>
+        /// <response code="401">The user is not signed in.</response>
+        [HttpGet]
+        [Route("total")]
+        public void GetTotal()
+        {
+            GetTotalPAEntriesRequestHandler getTotalPAEntriesRequestHandler = new GetTotalPAEntriesRequestHandler(_userRepository, _physicalActivitiesEntryRepository);
+            getTotalPAEntriesRequestHandler.Execute(HttpContext);
+        }
+
+        /// <summary>
         /// Add a new physical activity entry for the signed-in user. 
         /// </summary>
         /// <remarks>
@@ -44,12 +58,13 @@ namespace LevelUpAPI.Controllers
         /// 
         ///     {
         ///         "Name"
-        ///         "kCalPerHour"
+        ///         "dateTimeStart"
+        ///         "dateTimeEnd"
         ///     }
         /// 
         /// </remarks>
         /// <response code="200">The physical activity entry was correctly added.</response>
-        /// <response code="204">The entry is malformed.</response>
+        /// <response code="204">The entry is malformed or the physical activity does not exist in database.</response>
         /// <response code="400">The request is malformed or the user does not exist.</response>
         /// <response code="401">The user is not signed in.</response>
         [HttpPost]
@@ -68,8 +83,8 @@ namespace LevelUpAPI.Controllers
         /// 
         ///     {
         ///         "Id"
-        ///         "NewName"
-        ///         "NewKCalPerHour"
+        ///         "NewDateTimeStart"
+        ///         "NewDateTimeEnd"
         ///     }
         /// 
         /// </remarks>
