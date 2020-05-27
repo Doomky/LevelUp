@@ -14,16 +14,31 @@ namespace LevelUpClient.RequestBuilders
             return this;
         }
 
-        public ConsoleAddPAEntryRequestBuilder WithKCalPerHour()
+        public ConsoleAddPAEntryRequestBuilder WithDatetimeStart()
         {
-            bool isOk = false;
-            while (!isOk)
+            bool done = false;
+            while (!done)
             {
-                Console.Write("kCal/hour:");
-                if (float.TryParse(Console.ReadLine(), out float kCalPerHour))
+                Console.Write("Datetime start: ");
+                if (DateTime.TryParse(Console.ReadLine(), out DateTime datetime))
                 {
-                    Request.kCalPerHour = kCalPerHour;
-                    isOk = true;
+                    Request.dateTimeStart = datetime;
+                    done = true;
+                }
+            }
+            return this;
+        }
+
+        public ConsoleAddPAEntryRequestBuilder WithDatetimeEnd()
+        {
+            bool done = false;
+            while (!done)
+            {
+                Console.Write("Datetime end: ");
+                if (DateTime.TryParse(Console.ReadLine(), out DateTime datetime))
+                {
+                    Request.dateTimeEnd = datetime;
+                    done = true;
                 }
             }
             return this;

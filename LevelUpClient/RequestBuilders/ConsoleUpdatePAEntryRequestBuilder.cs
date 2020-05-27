@@ -22,22 +22,30 @@ namespace LevelUpClient.RequestBuilders
             return this;
         }
 
-        public ConsoleUpdatePAEntryRequestBuilder WithNewName()
-        {
-            Console.Write("New name: ");
-            Request.NewName = Console.ReadLine();
-            return this;
-        }
-
-        public ConsoleUpdatePAEntryRequestBuilder WithNewKCalPerHour()
+        public ConsoleUpdatePAEntryRequestBuilder WithNewDatetimeStart()
         {
             bool done = false;
             while (!done)
             {
-                Console.Write("New KCalPerHour: ");
-                if (float.TryParse(Console.ReadLine(), out float NewKCalPerHour))
+                Console.Write("New Datetime start: ");
+                if (DateTime.TryParse(Console.ReadLine(), out DateTime datetime))
                 {
-                    Request.NewKCalPerHour = NewKCalPerHour;
+                    Request.NewDateTimeStart = datetime;
+                    done = true;
+                }
+            }
+            return this;
+        }
+
+        public ConsoleUpdatePAEntryRequestBuilder WithNewDatetimeEnd()
+        {
+            bool done = false;
+            while (!done)
+            {
+                Console.Write("New Datetime end: ");
+                if (DateTime.TryParse(Console.ReadLine(), out DateTime datetime))
+                {
+                    Request.NewDateTimeEnd = datetime;
                     done = true;
                 }
             }
