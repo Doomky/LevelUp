@@ -8,7 +8,8 @@ namespace LevelUpAPI.Model
         public int Id { get; set; }
         public int UserId { get; set; }
         public int PhysicalActivitesId { get; set; }
-        public DateTime? Datetime { get; set; }
+        public DateTime DatetimeStart { get; set; }
+        public DateTime DatetimeEnd { get; set; }
 
         public virtual PhysicalActivites PhysicalActivites { get; set; }
         public virtual Users User { get; set; }
