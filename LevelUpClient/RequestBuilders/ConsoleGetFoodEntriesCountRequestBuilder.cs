@@ -5,7 +5,8 @@ using System.Text;
 
 namespace LevelUpClient.RequestBuilders
 {
-    public class ConsoleGetFoodEntryRequestBuilder : RequestBuilder<GetFoodEntriesRequest>
+    public class ConsoleGetFoodEntriesCountRequestBuilder : RequestBuilder<GetFoodEntriesCountRequest>
     {
+
     }
 }

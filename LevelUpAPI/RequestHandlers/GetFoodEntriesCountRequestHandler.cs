@@ -5,17 +5,18 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Text.Json;
+using System.Linq;
 using System.Threading.Tasks;
 using static LevelUpAPI.Helpers.ClaimsHelpers;
 
 namespace LevelUpAPI.RequestHandlers
 {
-    public class GetFoodEntriesRequestHandler : RequestHandler<GetFoodEntriesRequest>
+    public class GetFoodEntriesCountRequestHandler : RequestHandler<GetFoodEntriesCountRequest>
     {
         private readonly IUserRepository _userRepository;
         private readonly IFoodEntryRepository _foodEntryRepository;
 
-        public GetFoodEntriesRequestHandler(IUserRepository userRepository, IFoodEntryRepository foodEntryRepository)
+        public GetFoodEntriesCountRequestHandler(IUserRepository userRepository, IFoodEntryRepository foodEntryRepository)
         {
             _userRepository = userRepository;
             _foodEntryRepository = foodEntryRepository;
@@ -27,8 +28,8 @@ namespace LevelUpAPI.RequestHandlers
             if (!isOk || user == null)
                 return;
 
-            IEnumerable<FoodEntry> foodEntries = _foodEntryRepository.GetFromUser(user.Login).GetAwaiter().GetResult();
-            
+            List<NbFoodEntriesByLogin> foodEntries = _foodEntryRepository.GetNbFoodEntries(user.Login);
+
             if (foodEntries != null)
             {
                 string foodEntriesJson = JsonSerializer.Serialize(foodEntries);

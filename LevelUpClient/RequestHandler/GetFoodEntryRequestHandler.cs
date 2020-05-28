@@ -6,16 +6,16 @@ using System.Text;
 
 namespace LevelUpClient.RequestHandler
 {
-    public class GetFoodEntryRequestHandler : RequestHandler<GetFoodEntriesRequest>
+    public class GetFoodEntriesRequestHandler : RequestHandler<GetFoodEntriesRequest>
     {
-        public GetFoodEntryRequestHandler(string fullAddress) : base(fullAddress)
+        public GetFoodEntriesRequestHandler(string fullAddress) : base(fullAddress)
         {
 
         }
 
         public override GetFoodEntriesRequest RequestBuilder()
         {
-            return new ConsoleGetFoodEntryRequestBuilder()
+            return new ConsoleGetFoodEntriesRequestBuilder()
                 .Build();
         }
     }

@@ -34,12 +34,25 @@ namespace LevelUpAPI.Controllers
         /// <response code="400">The request is malformed or the user does not exist.</response>
         /// <response code="401">The user is not signed in.</response>
         [HttpGet]
-        public void GetFoodEntries()
+        public void Get()
         {
             GetFoodEntriesRequestHandler getFoodEntriesRequestHandler = new GetFoodEntriesRequestHandler(_userRepository, _foodEntryRepository);
             getFoodEntriesRequestHandler.Execute(HttpContext);
         }
 
+        /// <summary>
+        /// Get the count of each type of food entries of the signed-in user.
+        /// </summary>
+        /// <response code="200">The food entries were found.</response>
+        /// <response code="400">The request is malformed or the user does not exist.</response>
+        /// <response code="401">The user is not signed in.</response>
+        [HttpGet]
+        [Route("count")]
+        public void GetCount()
+        {
+            GetFoodEntriesCountRequestHandler getFoodEntriesCountRequestHandler = new GetFoodEntriesCountRequestHandler(_userRepository, _foodEntryRepository);
+            getFoodEntriesCountRequestHandler.Execute(HttpContext);
+        }
 
         /// <summary>
         /// Add a new food entry with a specific OpenFoodFacts data id for the signed-in user.
@@ -72,7 +85,7 @@ namespace LevelUpAPI.Controllers
         /// <response code="401">The user is not signed in.</response>
         [HttpPost]
         [Route("add/custom")]
-        public void AddCustomFoodEntry()
+        public void AddCustom()
         {
             AddCustomFoodEntryRequestHandler addCustomFoodEntryRequestHandler = new AddCustomFoodEntryRequestHandler(_foodEntryRepository, _userRepository, _offDataRepository);
             addCustomFoodEntryRequestHandler.Execute(HttpContext);
@@ -95,7 +108,7 @@ namespace LevelUpAPI.Controllers
         /// <response code="401">The user is not signed in.</response>
         [HttpPost]
         [Route("add")]
-        public void AddFoodEntry()
+        public void Add()
         {
             AddFoodEntryRequestHandler addFoodEntryRequestHandler = new AddFoodEntryRequestHandler(_foodEntryRepository, _offDataRepository, _questRepository, _questTypeRepository, _userRepository);
             addFoodEntryRequestHandler.Execute(HttpContext);
@@ -119,7 +132,7 @@ namespace LevelUpAPI.Controllers
         /// <response code="401">The user is not signed in.</response>
         [HttpPost]
         [Route("update")]
-        public void UpdateFoodEntry()
+        public void Update()
         {
             UpdateFoodEntryRequestHandler updateFoodEntryRequestHandler = new UpdateFoodEntryRequestHandler(_userRepository, _foodEntryRepository);
             updateFoodEntryRequestHandler.Execute(HttpContext);
@@ -141,7 +154,7 @@ namespace LevelUpAPI.Controllers
         /// <response code="401">The user is not signed in.</response>
         [HttpPost]
         [Route("remove")]
-        public void RemoveFoodEntry()
+        public void Remove()
         {
             RemoveFoodEntryRequestHandler removeFoodEntryRequestHandler = new RemoveFoodEntryRequestHandler(_userRepository, _foodEntryRepository);
             removeFoodEntryRequestHandler.Execute(HttpContext);
