@@ -17,7 +17,13 @@ namespace LevelUpAPI.DataAccess.Repositories
         {
         }
 
-        public List<Dbo.NbPhysicalActivitiesEntriesByLogin> GetNbPhysicalActivitiesEntries(string login)
+        public List<Dbo.PhysicalActivitiesEntries> GetPhysicalActivityEntries(string login)
+        {
+            var result = _context.PhysicalActivitiesEntries.Where(x => x.Login == login);
+            return _mapper.Map<List<Dbo.PhysicalActivitiesEntries>>(result);
+        }
+
+        public List<Dbo.NbPhysicalActivitiesEntriesByLogin> GetTotalPhysicalActivitiesEntries(string login)
         {
             var result = _context.NbPhysicalActivitiesEntriesByLogin.Where(x => x.Login == login);
             return _mapper.Map<List<Dbo.NbPhysicalActivitiesEntriesByLogin>>(result);

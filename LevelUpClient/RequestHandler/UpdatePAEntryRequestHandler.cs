@@ -13,8 +13,8 @@ namespace LevelUpClient.RequestHandler
         {
             return new ConsoleUpdatePAEntryRequestBuilder()
                         .WithId()
-                        .WithNewName()
-                        .WithNewKCalPerHour()
+                        .WithNewDatetimeStart()
+                        .WithNewDatetimeEnd()
                         .Build();
         }
     }

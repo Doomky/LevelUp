@@ -17,7 +17,8 @@ namespace LevelUpClient.RequestHandler
         {
             return new ConsoleAddPAEntryRequestBuilder()
                 .WithName()
-                .WithKCalPerHour()
+                .WithDatetimeStart()
+                .WithDatetimeEnd()
                 .Build();
         }
     }

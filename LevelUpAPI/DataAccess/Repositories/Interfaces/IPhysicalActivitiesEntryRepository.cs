@@ -7,6 +7,7 @@ namespace LevelUpAPI.DataAccess.Repositories.Interfaces
 {
     public interface IPhysicalActivitiesEntryRepository : IRepository<PhysicalActivitesEntries, PhysicalActivityEntry>
     {
-        public List<Dbo.NbPhysicalActivitiesEntriesByLogin> GetNbPhysicalActivitiesEntries(string login);
+        public List<Dbo.PhysicalActivitiesEntries> GetPhysicalActivityEntries(string login);
+        public List<Dbo.NbPhysicalActivitiesEntriesByLogin> GetTotalPhysicalActivitiesEntries(string login);
     }
 }

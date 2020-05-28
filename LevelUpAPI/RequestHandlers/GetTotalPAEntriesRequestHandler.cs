@@ -4,18 +4,17 @@ using LevelUpRequests;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json;
 using static LevelUpAPI.Helpers.ClaimsHelpers;
 
 namespace LevelUpAPI.RequestHandlers
 {
-    public class GetPAEntriesRequestHandler : RequestHandler<GetPAEntriesRequest>
+    public class GetTotalPAEntriesRequestHandler : RequestHandler<GetPAEntriesRequest>
     {
         private readonly IUserRepository _userRepository;
         private readonly IPhysicalActivitiesEntryRepository _physicalActivitiesEntryRepository;
 
-        public GetPAEntriesRequestHandler(IUserRepository userRepository, IPhysicalActivitiesEntryRepository physicalActivitiesEntryRepository)
+        public GetTotalPAEntriesRequestHandler(IUserRepository userRepository, IPhysicalActivitiesEntryRepository physicalActivitiesEntryRepository)
         {
             _userRepository = userRepository;
             _physicalActivitiesEntryRepository = physicalActivitiesEntryRepository;
@@ -27,11 +26,11 @@ namespace LevelUpAPI.RequestHandlers
             if (!isOk || user == null)
                 return;
 
-            List<PhysicalActivitiesEntries> PAEntries = _physicalActivitiesEntryRepository.GetPhysicalActivityEntries(user.Login);
+            List<NbPhysicalActivitiesEntriesByLogin> totalPAEntries = _physicalActivitiesEntryRepository.GetTotalPhysicalActivitiesEntries(user.Login);
 
-            if (PAEntries != null)
+            if (totalPAEntries != null)
             {
-                string PAEntriesJson = JsonSerializer.Serialize(PAEntries);
+                string PAEntriesJson = JsonSerializer.Serialize(totalPAEntries);
                 context.Response.StatusCode = StatusCodes.Status200OK;
                 context.Response.WriteAsync(PAEntriesJson).GetAwaiter().GetResult();
             }

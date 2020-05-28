@@ -8,7 +8,7 @@ namespace LevelUpClient.RequestHandler
     {
         public static void HandleEndpoint(HttpClient httpClient, string endpoint, string fulladdress)
         {
-            IRequestHandler requestHandler = null;
+            IRequestHandler requestHandler;
             switch (endpoint)
             {
                 // User
@@ -93,6 +93,9 @@ namespace LevelUpClient.RequestHandler
 
                 // Physical activities
                 case "physicalactivities":
+                    requestHandler = new GetPAEntriesRequestHandler(fulladdress);
+                    break;
+                case "physicalactivities/total":
                     requestHandler = new GetPAEntriesRequestHandler(fulladdress);
                     break;
                 case "physicalactivities/add":

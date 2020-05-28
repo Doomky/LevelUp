@@ -36,24 +36,8 @@ namespace LevelUpAPI.RequestHandlers
                 return;
             }
 
-            PhysicalActivity PA = _physicalActivitiesRepository.GetPhysicalActivity(Request.NewName);
-            if (PA == null)
-            {
-                PA = new PhysicalActivity()
-                {
-                    Name = Request.NewName,
-                    KcalPerHour = (decimal)Request.NewKCalPerHour
-                };
-                PA = _physicalActivitiesRepository.Insert(PA).GetAwaiter().GetResult();
-                if (PA == null)
-                {
-                    context.Response.StatusCode = StatusCodes.Status204NoContent;
-                    return;
-                }
-            }
-
-            PAEntry.PhysicalActivitesId = PA.Id;
-            PAEntry.Datetime = DateTime.Now;
+            PAEntry.DatetimeStart = Request.NewDateTimeStart;
+            PAEntry.DatetimeEnd = Request.NewDateTimeEnd;
 
             PAEntry = _physicalActivitiesEntryRepository.Update(PAEntry).GetAwaiter().GetResult();
             if (PAEntry == null)
