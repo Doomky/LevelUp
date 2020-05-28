@@ -22,6 +22,8 @@ namespace LevelUpAPI.Helpers
         {
             switch (type)
             {
+                case "PhysicalActivities":
+                    return Dbo.Category.CategoryAsEnum.PhysicalActivity;
                 case "Nutrition":
                     return Dbo.Category.CategoryAsEnum.Nutrition;
                 default:
