@@ -9,16 +9,16 @@ using System.Threading.Tasks;
 
 namespace LevelUpAPI.DataAccess.Repositories
 {
-    public class PhysicalActivitiesRepository : Repository<PhysicalActivites, PhysicalActivity>, IPhysicalActivitiesRepository
+    public class PhysicalActivitiesRepository : Repository<PhysicalActivities, PhysicalActivity>, IPhysicalActivitiesRepository
     {
         public PhysicalActivitiesRepository(levelupContext context, ILogger<PhysicalActivitiesRepository> logger, IMapper mapper)
-            : base(context, context.PhysicalActivites, logger, mapper)
+            : base(context, context.PhysicalActivities, logger, mapper)
         {
         }
 
         public PhysicalActivity GetPhysicalActivity(string name)
         {
-            var result = _context.PhysicalActivites.Where(x => x.Name == name).FirstOrDefault();
+            var result = _context.PhysicalActivities.Where(x => x.Name == name).FirstOrDefault();
             return _mapper.Map<PhysicalActivity>(result);
         }
     }

@@ -42,10 +42,10 @@ namespace LevelUpAPI.DataAccess.Repositories
             return _mapper.Map<FoodEntry>(result);
         }
 
-        public List<Dbo.NbFoodEntriesByLogin> GetNbFoodEntries(string login)
+        public List<Dbo.NbFoodEntryByLogin> GetNbFoodEntries(string login)
         {
             var result = _context.NbFoodEntriesByLogin.Where(x => x.Login == login).ToList();
-            return _mapper.Map<List<Dbo.NbFoodEntriesByLogin>>(result);
+            return _mapper.Map<List<Dbo.NbFoodEntryByLogin>>(result);
         }
     }
 }

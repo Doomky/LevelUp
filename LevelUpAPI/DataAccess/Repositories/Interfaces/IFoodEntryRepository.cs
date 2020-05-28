@@ -13,6 +13,6 @@ namespace LevelUpAPI.DataAccess.Repositories.Interfaces
 
         public Task<IEnumerable<FoodEntry>> GetFromUser(string login);
 
-        public List<Dbo.NbFoodEntriesByLogin> GetNbFoodEntries(string login);
+        public List<Dbo.NbFoodEntryByLogin> GetNbFoodEntries(string login);
     }
 }

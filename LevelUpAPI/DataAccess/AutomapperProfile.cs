@@ -15,18 +15,18 @@ namespace LevelUpAPI.DataAccess
             AddTwoWayMapping<Dbo.Category, Model.Categories>();
             AddTwoWayMapping<Dbo.FoodEntry, Model.FoodEntries>();
             AddTwoWayMapping<Dbo.OpenFoodFactsData, Model.OpenFoodFactsDatas>();
-            AddTwoWayMapping<Dbo.PhysicalActivity, Model.PhysicalActivites>();
-            AddTwoWayMapping<Dbo.PhysicalActivityEntry, Model.PhysicalActivitesEntries>();
+            AddTwoWayMapping<Dbo.PhysicalActivity, Model.PhysicalActivities>();
+            AddTwoWayMapping<Dbo.PhysicalActivityEntry, Model.PhysicalActivitiesEntries>();
             AddTwoWayMapping<Dbo.Quest, Model.Quests>();
             AddTwoWayMapping<Dbo.QuestType, Model.QuestsTypes>();
             AddTwoWayMapping<Dbo.SleepEntry, Model.SleepEntries>();
             AddTwoWayMapping<Dbo.User, Model.Users>();
-            AddTwoWayMapping<Dbo.NbFoodEntriesByLogin, Model.NbFoodEntriesByLogin>();
-            AddTwoWayMapping<Dbo.NbPhysicalActivitiesEntriesByLogin, Model.NbPhysicalActivitiesEntriesByLogin>();
+            AddTwoWayMapping<Dbo.NbFoodEntryByLogin, Model.NbFoodEntriesByLogin>();
+            AddTwoWayMapping<Dbo.NbPhysicalActivityEntryByLogin, Model.NbPhysicalActivitiesEntriesByLogin>();
             AddTwoWayMapping<Dbo.PasswordRecoveryData, Model.PasswordRecoveryDatas>();
             AddTwoWayMapping<Dbo.OpenFoodFactsCategory, Model.OpenFoodFactsCategories>();
             AddTwoWayMapping<Dbo.OpenFoodFactsDatasCategory, Model.OpenFoodFactsDatasCategories>();
-            AddTwoWayMapping<Dbo.PhysicalActivitiesEntries, Model.PhysicalActivitiesEntries>();
+            AddTwoWayMapping<Dbo.PhysicalActivityEntry, Model.PhysicalActivitiesEntries>();
         }
 
         public void AddTwoWayMapping<T1, T2>()

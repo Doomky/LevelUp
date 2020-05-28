@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace LevelUpAPI.Dbo
+namespace LevelUpAPI.Model
 {
-    public class PhysicalActivitiesEntries : IObjectWithId
+    public partial class PhysicalActivitiesEntriesByLogin
     {
         public int Id { get; set; }
         public string Login { get; set; }

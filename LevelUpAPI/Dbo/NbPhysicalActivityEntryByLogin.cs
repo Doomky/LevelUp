@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace LevelUpAPI.Dbo
 {
-    public class NbPhysicalActivitiesEntriesByLogin
+    public class NbPhysicalActivityEntryByLogin
     {
         public string Login { get; set; }
         public string Name { get; set; }

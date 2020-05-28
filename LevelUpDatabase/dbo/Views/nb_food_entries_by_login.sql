@@ -1,12 +1,12 @@
-﻿CREATE VIEW dbo.NbPhysicalActivitiesEntriesByLogin
+﻿CREATE VIEW dbo.nb_food_entries_by_login
 AS
-SELECT        dbo.users.login, dbo.physical_activites.name, COUNT(dbo.physical_activites_entries.physical_activites_id) AS total
-FROM            dbo.physical_activites INNER JOIN
-                         dbo.physical_activites_entries ON dbo.physical_activites.id = dbo.physical_activites_entries.physical_activites_id INNER JOIN
-                         dbo.users ON dbo.physical_activites_entries.user_id = dbo.users.id
-GROUP BY dbo.users.login, dbo.physical_activites.name, dbo.physical_activites_entries.physical_activites_id
+SELECT        dbo.users.login, dbo.open_food_facts_datas.name, COUNT(dbo.food_entries.open_food_facts_data_id) AS total
+FROM            dbo.food_entries INNER JOIN
+                         dbo.open_food_facts_datas ON dbo.food_entries.open_food_facts_data_id = dbo.open_food_facts_datas.id INNER JOIN
+                         dbo.users ON dbo.food_entries.user_id = dbo.users.id
+GROUP BY dbo.users.login, dbo.open_food_facts_datas.name, dbo.food_entries.open_food_facts_data_id
 GO
-EXECUTE sp_addextendedproperty @name = N'MS_DiagramPaneCount', @value = 1, @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'NbPhysicalActivitiesEntriesByLogin';
+EXECUTE sp_addextendedproperty @name = N'MS_DiagramPaneCount', @value = 1, @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'nb_food_entries_by_login';
 
 
 GO
@@ -81,32 +81,32 @@ Begin DesignProperties =
          Left = 0
       End
       Begin Tables = 
-         Begin Table = "physical_activites"
+         Begin Table = "food_entries"
             Begin Extent = 
-               Top = 6
-               Left = 38
-               Bottom = 119
-               Right = 246
+               Top = 132
+               Left = 320
+               Bottom = 262
+               Right = 539
             End
             DisplayFlags = 280
             TopColumn = 0
          End
-         Begin Table = "physical_activites_entries"
+         Begin Table = "open_food_facts_datas"
             Begin Extent = 
-               Top = 6
-               Left = 284
-               Bottom = 136
-               Right = 492
+               Top = 115
+               Left = 64
+               Bottom = 245
+               Right = 272
             End
             DisplayFlags = 280
             TopColumn = 0
          End
          Begin Table = "users"
             Begin Extent = 
-               Top = 6
-               Left = 530
-               Bottom = 136
-               Right = 738
+               Top = 107
+               Left = 644
+               Bottom = 237
+               Right = 852
             End
             DisplayFlags = 280
             TopColumn = 0
@@ -121,9 +121,9 @@ Begin DesignProperties =
    End
    Begin CriteriaPane = 
       Begin ColumnWidths = 12
-         Column = 4380
+         Column = 3480
          Alias = 900
-         Table = 2355
+         Table = 2100
          Output = 720
          Append = 1400
          NewValue = 1170
@@ -137,5 +137,7 @@ Begin DesignProperties =
       End
    End
 End
-', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'NbPhysicalActivitiesEntriesByLogin';
+', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'nb_food_entries_by_login';
+
+
 

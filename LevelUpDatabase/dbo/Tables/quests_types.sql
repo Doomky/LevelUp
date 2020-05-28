@@ -3,4 +3,3 @@
     [name] VARCHAR (255) UNIQUE NOT NULL,
     PRIMARY KEY CLUSTERED ([id] ASC)
 );
-

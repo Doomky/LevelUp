@@ -26,7 +26,7 @@ namespace LevelUpAPI.RequestHandlers
             if (!isOk || user == null)
                 return;
 
-            List<NbPhysicalActivitiesEntriesByLogin> totalPAEntries = _physicalActivitiesEntryRepository.GetTotalPhysicalActivitiesEntries(user.Login);
+            IEnumerable<NbPhysicalActivityEntryByLogin> totalPAEntries =  _physicalActivitiesEntryRepository.GetTotalByLogin(user.Login).GetAwaiter().GetResult();
 
             if (totalPAEntries != null)
             {

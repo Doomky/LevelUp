@@ -2,12 +2,13 @@
 using LevelUpAPI.Model;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace LevelUpAPI.DataAccess.Repositories.Interfaces
 {
-    public interface IPhysicalActivitiesEntryRepository : IRepository<PhysicalActivitesEntries, PhysicalActivityEntry>
+    public interface IPhysicalActivitiesEntryRepository : IRepository<PhysicalActivitiesEntries, PhysicalActivityEntry>
     {
-        public List<Dbo.PhysicalActivitiesEntries> GetPhysicalActivityEntries(string login);
-        public List<Dbo.NbPhysicalActivitiesEntriesByLogin> GetTotalPhysicalActivitiesEntries(string login);
+        public Task<IEnumerable<PhysicalActivityEntry>> GetByLogin(string login);
+        public Task<IEnumerable<NbPhysicalActivityEntryByLogin>> GetTotalByLogin(string login);
     }
 }

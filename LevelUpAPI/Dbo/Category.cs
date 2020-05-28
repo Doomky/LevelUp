@@ -8,7 +8,8 @@ namespace LevelUpAPI.Dbo
         public enum CategoryAsEnum
         {
             Undefined,
-            Nutrition
+            Nutrition,
+            PhysicalActivity,
         }
 
         public int Id { get; set; }
