@@ -50,7 +50,7 @@ namespace LevelUpAPI.RequestHandlers
                 foreach (var quest in quests)
                 {
                     var questHandler = QuestHandlers.Create(quest, _questTypeRepository);
-                    questHandler.Update("Calories", offData.EnergyServing.ToString());
+                    questHandler.Update("Calories", (foodEntryData.Servings * offData.EnergyServing).ToString());
                     _questRepository.Update(quest).GetAwaiter().GetResult();
                 }
 
