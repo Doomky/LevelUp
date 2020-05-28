@@ -38,7 +38,7 @@ namespace LevelUpAPI.RequestHandlers
             PhysicalActivityEntry PAEntry = _physicalActivitiesEntryRepository.Insert(new PhysicalActivityEntry()
             {
                 UserId = user.Id,
-                PhysicalActivitesId = PA.Id,
+                PhysicalActivitiesId = PA.Id,
                 DatetimeStart = Request.dateTimeStart,
                 DatetimeEnd = Request.dateTimeEnd
             }).GetAwaiter().GetResult();

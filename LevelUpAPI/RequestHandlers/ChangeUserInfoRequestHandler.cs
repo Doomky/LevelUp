@@ -34,6 +34,10 @@ namespace LevelUpAPI.RequestHandlers
             {
                 user.Lastname = Request.NewLastname;
             }
+            if (Request.NewWeightKg != user.WeightKg && Request.NewWeightKg != null)
+            {
+                user.WeightKg = Request.NewWeightKg.Value;
+            }
 
             _userRepository.Update(user).GetAwaiter().GetResult();
 

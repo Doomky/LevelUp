@@ -44,6 +44,7 @@ namespace LevelUpAPI.Controllers
         ///         "Login"
         ///         "Firstname"
         ///         "Lastname"
+        ///         "Gender"
         ///         "EmailAddress"
         ///         "PasswordHash"
         ///     }
@@ -194,6 +195,7 @@ namespace LevelUpAPI.Controllers
         ///         "NewFirstname"
         ///         "NewLastname"
         ///         "NewEmail"
+        ///         "NewWeightKg"
         ///     }
         /// 
         /// </remarks>

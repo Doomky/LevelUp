@@ -53,7 +53,7 @@ namespace LevelUpAPI.Model
                     .WithMany(p => p.Advices)
                     .HasForeignKey(d => d.CategoryId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__advices__categor__1A69E950");
+                    .HasConstraintName("FK__advices__categor__4AB81AF0");
             });
 
             modelBuilder.Entity<Avatars>(entity =>
@@ -76,7 +76,7 @@ namespace LevelUpAPI.Model
                 entity.ToTable("categories");
 
                 entity.HasIndex(e => e.Name)
-                    .HasName("UQ__categori__72E12F1BD64C7225")
+                    .HasName("UQ__categori__72E12F1B0B21EAEC")
                     .IsUnique();
 
                 entity.Property(e => e.Id).HasColumnName("id");
@@ -281,9 +281,9 @@ namespace LevelUpAPI.Model
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
-                entity.Property(e => e.KcalPerHour)
-                    .HasColumnName("kcal_per_hour")
-                    .HasColumnType("numeric(18, 0)");
+                entity.Property(e => e.CalPerKgPerHour)
+                    .HasColumnName("cal_per_kg_per_hour")
+                    .HasColumnType("numeric(5, 2)");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
@@ -329,6 +329,10 @@ namespace LevelUpAPI.Model
 
                 entity.ToView("physical_activities_entries_by_login");
 
+                entity.Property(e => e.CalPerKgPerHour)
+                    .HasColumnName("cal_per_kg_per_hour")
+                    .HasColumnType("numeric(5, 2)");
+
                 entity.Property(e => e.DatetimeEnd)
                     .HasColumnName("datetime_end")
                     .HasColumnType("datetime");
@@ -342,10 +346,6 @@ namespace LevelUpAPI.Model
                     .HasColumnType("datetime");
 
                 entity.Property(e => e.Id).HasColumnName("id");
-
-                entity.Property(e => e.KcalPerHour)
-                    .HasColumnName("kcal_per_hour")
-                    .HasColumnType("numeric(18, 0)");
 
                 entity.Property(e => e.Login)
                     .IsRequired()
@@ -394,19 +394,19 @@ namespace LevelUpAPI.Model
                     .WithMany(p => p.Quests)
                     .HasForeignKey(d => d.CategoryId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__quests__category__220B0B18");
+                    .HasConstraintName("FK__quests__category__4F7CD00D");
 
                 entity.HasOne(d => d.Type)
                     .WithMany(p => p.Quests)
                     .HasForeignKey(d => d.TypeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__quests__type_id__22FF2F51");
+                    .HasConstraintName("FK__quests__type_id__5070F446");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Quests)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__quests__user_id__23F3538A");
+                    .HasConstraintName("FK__quests__user_id__30C33EC3");
             });
 
             modelBuilder.Entity<QuestsTypes>(entity =>
@@ -414,7 +414,7 @@ namespace LevelUpAPI.Model
                 entity.ToTable("quests_types");
 
                 entity.HasIndex(e => e.Name)
-                    .HasName("UQ__quests_t__72E12F1BDC557DC3")
+                    .HasName("UQ__quests_t__72E12F1B5610411D")
                     .IsUnique();
 
                 entity.Property(e => e.Id).HasColumnName("id");
@@ -474,6 +474,8 @@ namespace LevelUpAPI.Model
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Gender).HasColumnName("gender");
+
                 entity.Property(e => e.GoogleAccessExpiration)
                     .HasColumnName("google_access_expiration")
                     .HasColumnType("datetime");
@@ -508,6 +510,8 @@ namespace LevelUpAPI.Model
                     .HasColumnName("password_hash")
                     .HasMaxLength(255)
                     .IsUnicode(false);
+
+                entity.Property(e => e.WeightKg).HasColumnName("weight_kg");
 
                 entity.HasOne(d => d.Avatar)
                     .WithMany(p => p.Users)

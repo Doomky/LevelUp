@@ -28,6 +28,35 @@ namespace LevelUpClient.RequestBuilders
             return this;
         }
 
+        public ConsoleSignUpRequestBuilder WithGender()
+        {
+            bool isOk = false;
+            while (!isOk)
+            {
+                Console.Write("Gender (0 for male, 1 for female, nothing for other):");
+                string gender = Console.ReadLine();
+                switch (gender)
+                {
+                    case "0":
+                        Request.Gender = false; // male
+                        isOk = true;
+                        break;
+                    case "1":
+                        Request.Gender = true; // female
+                        isOk = true;
+                        break;
+                    case "":
+                    case null:
+                        Request.Gender = null; // other
+                        isOk = true;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return this;
+        }
+
         public ConsoleSignUpRequestBuilder WithEmailAddress()
         {
             Console.Write("Email Adrress:");

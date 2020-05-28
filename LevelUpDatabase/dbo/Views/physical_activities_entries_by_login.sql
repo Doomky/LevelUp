@@ -1,6 +1,6 @@
 ﻿CREATE VIEW dbo.physical_activities_entries_by_login
 AS
-SELECT        dbo.physical_activities_entries.id, dbo.users.login, dbo.physical_activities.name, dbo.physical_activities.kcal_per_hour, dbo.physical_activities_entries.datetime_start, dbo.physical_activities_entries.datetime_end, 
+SELECT        dbo.physical_activities_entries.id, dbo.users.login, dbo.physical_activities.name, dbo.physical_activities.cal_per_kg_per_hour, dbo.physical_activities_entries.datetime_start, dbo.physical_activities_entries.datetime_end, 
                          dbo.physical_activities_entries.datetime_end - dbo.physical_activities_entries.datetime_start AS duration
 FROM            dbo.users INNER JOIN
                          dbo.physical_activities ON dbo.users.id = dbo.physical_activities.id INNER JOIN

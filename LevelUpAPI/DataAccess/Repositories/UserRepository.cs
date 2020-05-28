@@ -91,10 +91,16 @@ namespace LevelUpAPI.DataAccess.Repositories
                 Login = signUpRequest.Login,
                 Firstname = signUpRequest.Firstname,
                 Lastname = signUpRequest.Lastname,
+                Gender = signUpRequest.Gender,
+                WeightKg = 79, // FIXME
                 Email = signUpRequest.EmailAddress,
-                PasswordHash = signUpRequest.PasswordHash,
                 LastLoginDate = null,
-                AvatarId = avatarId
+                PasswordHash = signUpRequest.PasswordHash,
+                AvatarId = avatarId,
+                GoogleAccessToken = null,
+                GoogleRefreshToken = null,
+                GoogleAccessExpiration = null,
+                CreationDate = DateTime.Now
             };
             return await Insert(user);
         }

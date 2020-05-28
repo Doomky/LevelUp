@@ -16,6 +16,7 @@ namespace LevelUpClient.RequestHandler
                     .WithPassword()
                     .WithFirstname()
                     .WithLastname()
+                    .WithGender()
                     .WithEmailAddress()
                     .Build();
         }

@@ -7,7 +7,7 @@ namespace LevelUpAPI.Dbo
     {
         public int Id { get; set; }
         public int UserId { get; set; }
-        public int PhysicalActivitesId { get; set; }
+        public int PhysicalActivitiesId { get; set; }
         public DateTime DatetimeStart { get; set; }
         public DateTime DatetimeEnd { get; set; }
     }

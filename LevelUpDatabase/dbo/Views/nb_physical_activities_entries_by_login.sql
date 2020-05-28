@@ -2,8 +2,8 @@
 AS
 SELECT        dbo.users.login, dbo.physical_activities.name, COUNT(dbo.physical_activities_entries.physical_activities_id) AS total
 FROM            dbo.physical_activities INNER JOIN
-                         dbo.users ON dbo.physical_activities.id = dbo.users.id INNER JOIN
-                         dbo.physical_activities_entries ON dbo.users.id = dbo.physical_activities_entries.user_id AND dbo.physical_activities.id = dbo.physical_activities_entries.physical_activities_id
+                         dbo.physical_activities_entries ON dbo.physical_activities.id = dbo.physical_activities_entries.physical_activities_id INNER JOIN
+                         dbo.users ON dbo.physical_activities_entries.user_id = dbo.users.id
 GROUP BY dbo.users.login, dbo.physical_activities.name, dbo.physical_activities_entries.physical_activities_id
 GO
 EXECUTE sp_addextendedproperty @name = N'MS_DiagramPaneCount', @value = 1, @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'nb_physical_activities_entries_by_login';
@@ -81,32 +81,32 @@ Begin DesignProperties =
          Left = 0
       End
       Begin Tables = 
-         Begin Table = "users"
+         Begin Table = "physical_activities"
             Begin Extent = 
-               Top = 0
-               Left = 371
-               Bottom = 130
-               Right = 579
+               Top = 154
+               Left = 179
+               Bottom = 313
+               Right = 403
             End
             DisplayFlags = 280
             TopColumn = 0
          End
-         Begin Table = "physical_activities"
+         Begin Table = "users"
             Begin Extent = 
-               Top = 97
-               Left = 726
-               Bottom = 256
-               Right = 950
+               Top = 186
+               Left = 743
+               Bottom = 316
+               Right = 951
             End
             DisplayFlags = 280
             TopColumn = 0
          End
          Begin Table = "physical_activities_entries"
             Begin Extent = 
-               Top = 70
-               Left = 38
-               Bottom = 271
-               Right = 269
+               Top = 0
+               Left = 457
+               Bottom = 201
+               Right = 688
             End
             DisplayFlags = 280
             TopColumn = 0
@@ -138,6 +138,8 @@ Begin DesignProperties =
    End
 End
 ', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'nb_physical_activities_entries_by_login';
+
+
 
 
 

@@ -36,15 +36,18 @@ namespace LevelUpAPI.RequestHandlers
                 return;
             }
 
+            Dbo.User user;
             if (!string.IsNullOrEmpty(Request.EmailAddress))
             {
-                Dbo.User user = _userRepository.GetUserByLoginOrEmail(null, Request.EmailAddress).GetAwaiter().GetResult();
+                user = _userRepository.GetUserByLoginOrEmail(null, Request.EmailAddress).GetAwaiter().GetResult();
                 
                 if (user != null)
                 {
                     Request.Login = user.Login;
                 }
             }
+            else
+                user = _userRepository.GetUserByLoginOrEmail(Request.Login, null).GetAwaiter().GetResult();
 
             string fullAddress = $"{HTTP}{address}:{port}";
             var client = new HttpClient();
@@ -61,6 +64,11 @@ namespace LevelUpAPI.RequestHandlers
             string jsonAsString = tokenResponse.Json.ToString();
 
             context.Response.StatusCode = (int)tokenResponse.HttpStatusCode;
+            if (context.Response.StatusCode == StatusCodes.Status200OK)
+            {
+                user.LastLoginDate = DateTime.Now;
+                _userRepository.Update(user);
+            }
             context.Response.WriteAsync(jsonAsString).GetAwaiter().GetResult();
         }
     }

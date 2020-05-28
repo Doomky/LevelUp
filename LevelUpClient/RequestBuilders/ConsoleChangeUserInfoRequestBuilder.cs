@@ -27,5 +27,26 @@ namespace LevelUpClient.RequestBuilders
             Request.NewEmail = Console.ReadLine();
             return this;
         }
+
+        public ConsoleChangeUserInfoRequestBuilder WithNewWeightKg()
+        {
+            bool isOk = false;
+            while (!isOk)
+            {
+                Console.Write("New Weight in kg (empty if no change): ");
+                string newWeightkg_s = Console.ReadLine();
+                if (newWeightkg_s == "" || newWeightkg_s == null)
+                {
+                    Request.NewWeightKg = null;
+                    isOk = true;
+                }
+                else if (byte.TryParse(newWeightkg_s, out byte newWeightKg))
+                {
+                    Request.NewWeightKg = newWeightKg;
+                    isOk = true;
+                }
+            }
+            return this;
+        }
     }
 }
