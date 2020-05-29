@@ -11,10 +11,12 @@ namespace LevelUpAPI.RequestHandlers
     public class UserInfoRequestHandler : RequestHandler<UserInfoRequest>
     {
         private readonly IUserRepository _userRepository;
+        private readonly IAvatarRepository _avatarRepository;
 
-        public UserInfoRequestHandler(IUserRepository userRepository)
+        public UserInfoRequestHandler(IUserRepository userRepository, IAvatarRepository avatarRepository)
         {
             _userRepository = userRepository;
+            _avatarRepository = avatarRepository;
         }
 
         protected override void ExecuteRequest(HttpContext context)
@@ -23,7 +25,9 @@ namespace LevelUpAPI.RequestHandlers
             if (!isOk || user == null)
                 return;
 
-            UserInfo userInfo = new UserInfo(user);
+            Avatar avatar = _avatarRepository.GetByUser(user).GetAwaiter().GetResult();
+
+            UserInfo userInfo = new UserInfo(user, avatar);
 
             string userInfoJson = JsonSerializer.Serialize(userInfo);
 

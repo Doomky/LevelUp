@@ -180,7 +180,7 @@ namespace LevelUpAPI.Controllers
         [Route("user-info")]
         public void GetUserInfo()
         {
-            UserInfoRequestHandler userInfoRequestHandler = new UserInfoRequestHandler(_userRepository);
+            UserInfoRequestHandler userInfoRequestHandler = new UserInfoRequestHandler(_userRepository, _avatarRepository);
             userInfoRequestHandler.Execute(HttpContext);
         }
 
