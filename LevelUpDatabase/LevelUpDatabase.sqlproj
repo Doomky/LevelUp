@@ -59,7 +59,7 @@
     <Folder Include="dbo\" />
     <Folder Include="dbo\Tables\" />
     <Folder Include="dbo\Views\" />
-    <Folder Include="Snapshots" />
+    <Folder Include="Scripts" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\users.sql" />
@@ -84,6 +84,6 @@
     <RefactorLog Include="LevelUpDatabase.refactorlog" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Snapshots\LevelUpDatabase_20200514_15-46-03.dacpac" />
+    <PostDeploy Include="Scripts\Script.PostDeployment_PhysicalActivitiesData.sql" />
   </ItemGroup>
 </Project>
