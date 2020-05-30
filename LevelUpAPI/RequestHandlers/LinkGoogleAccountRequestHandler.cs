@@ -7,6 +7,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Text.Json;
 using static LevelUpAPI.Helpers.ClaimsHelpers;
 
 namespace LevelUpAPI.RequestHandlers
@@ -45,8 +46,12 @@ namespace LevelUpAPI.RequestHandlers
                 user.GoogleAccessToken = tokenAsJson.TryGetString("access_token");
                 user.GoogleRefreshToken = tokenAsJson.TryGetString("refresh_token");
                 int expires_in = (int)tokenAsJson.TryGetInt("expires_in");
-                DateTime expiration = DateTime.Now;
-                user.GoogleAccessExpiration = expiration.AddSeconds(expires_in);
+                user.GoogleAccessExpiration = DateTime.Now.AddSeconds(expires_in);
+
+                AccessTokenInfo accessTokenInfo = new AccessTokenInfo(user);
+                string accessTokenInfoJson = JsonSerializer.Serialize(accessTokenInfo);
+
+                context.Response.WriteAsync(accessTokenInfoJson).GetAwaiter().GetResult();
                 _userRepository.Update(user);
             }
             else

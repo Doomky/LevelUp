@@ -233,6 +233,20 @@ namespace LevelUpAPI.Controllers
         }
 
         /// <summary>
+        /// The user want to get his google access token informations.
+        /// </summary>
+        /// <response code="200">The user is connected and has access to his access token informations.</response>
+        /// <response code="400">The user does not exists.</response>
+        /// <response code="401">The user is not signed in.</response>
+        [HttpGet]
+        [Route("google-access-token")]
+        public void GetAccessTokenInfo()
+        {
+            AccessTokenInfoRequestHandler accessTokenInfoRequestHandler = new AccessTokenInfoRequestHandler(_userRepository);
+            accessTokenInfoRequestHandler.Execute(HttpContext);
+        }
+
+        /// <summary>
         /// The user want to remove the link to his Google account.
         /// </summary>
         /// <response code="200">The user is connected and the link is correctly removed.</response>
