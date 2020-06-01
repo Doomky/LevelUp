@@ -31,7 +31,7 @@ namespace LevelUpAPI.DataAccess.Quests
                 TypeId = addQuestRequest.TypeId,
                 CategoryId = addQuestRequest.CategoryId,
                 UserId = user.Id,
-                XpValue = 100,
+                XpValue = 10,
                 CreationDate = DateTime.Now,
                 ExpirationDate = DateTime.Now.AddDays(1)
             };
