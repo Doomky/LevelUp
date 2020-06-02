@@ -87,7 +87,7 @@ namespace LevelUpAPI.Controllers
         [Route("add/custom")]
         public void AddCustom()
         {
-            AddCustomFoodEntryRequestHandler addCustomFoodEntryRequestHandler = new AddCustomFoodEntryRequestHandler(_foodEntryRepository, _userRepository, _offDataRepository);
+            AddCustomFoodEntryRequestHandler addCustomFoodEntryRequestHandler = new AddCustomFoodEntryRequestHandler(_foodEntryRepository, _userRepository, _offDataRepository, _questRepository, _questTypeRepository);
             addCustomFoodEntryRequestHandler.Execute(HttpContext);
         }
 
