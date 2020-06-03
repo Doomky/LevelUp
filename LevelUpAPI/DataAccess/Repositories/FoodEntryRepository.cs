@@ -24,6 +24,7 @@ namespace LevelUpAPI.DataAccess.Repositories
                 List<FoodEntries> query = null;
                 query = await _set
                         .Where( foodEntry => foodEntry.User.Login == login)
+                        .OrderByDescending( foodEntry => foodEntry.Datetime)
                         .AsNoTracking()
                         .ToListAsync();
                 var arr = _mapper.Map<List<FoodEntry>>(query);

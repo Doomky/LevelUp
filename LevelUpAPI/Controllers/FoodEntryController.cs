@@ -36,7 +36,7 @@ namespace LevelUpAPI.Controllers
         [HttpGet]
         public void Get()
         {
-            GetFoodEntriesRequestHandler getFoodEntriesRequestHandler = new GetFoodEntriesRequestHandler(_userRepository, _foodEntryRepository);
+            GetFoodEntriesRequestHandler getFoodEntriesRequestHandler = new GetFoodEntriesRequestHandler(_userRepository, _foodEntryRepository, _offDataRepository);
             getFoodEntriesRequestHandler.Execute(HttpContext);
         }
 

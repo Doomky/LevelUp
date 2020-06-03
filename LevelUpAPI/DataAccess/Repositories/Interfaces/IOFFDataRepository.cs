@@ -12,5 +12,6 @@ namespace LevelUpAPI.DataAccess.Repositories.Interfaces
     {
         public Task<(OpenFoodFactsData, ProductData)> InsertFromBarcode(string code);
         public Task<OpenFoodFactsData> GetByBarcode(string code);
+        public Task<OpenFoodFactsData> GetById(int id);
     }
 }

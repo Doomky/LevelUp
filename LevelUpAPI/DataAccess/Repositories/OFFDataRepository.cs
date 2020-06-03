@@ -44,5 +44,18 @@ namespace LevelUpAPI.DataAccess.Repositories
             }
             return null;
         }
+
+        public async Task<OpenFoodFactsData> GetById(int id)
+        {
+            IEnumerable<OpenFoodFactsData> openFoodFactsDatas = await base.Get();
+            var query = from openFoodFactsData in openFoodFactsDatas
+                        where openFoodFactsData.Id == id
+                        select openFoodFactsData;
+            if (query.Any())
+            {
+                return query.First();
+            }
+            return null;
+        }
     }
 }

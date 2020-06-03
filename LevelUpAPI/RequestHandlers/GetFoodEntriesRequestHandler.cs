@@ -14,11 +14,13 @@ namespace LevelUpAPI.RequestHandlers
     {
         private readonly IUserRepository _userRepository;
         private readonly IFoodEntryRepository _foodEntryRepository;
+        private readonly IOFFDataRepository _OFFDataRepository;
 
-        public GetFoodEntriesRequestHandler(IUserRepository userRepository, IFoodEntryRepository foodEntryRepository)
+        public GetFoodEntriesRequestHandler(IUserRepository userRepository, IFoodEntryRepository foodEntryRepository, IOFFDataRepository oFFDataRepository)
         {
             _userRepository = userRepository;
             _foodEntryRepository = foodEntryRepository;
+            _OFFDataRepository = oFFDataRepository;
         }
 
         protected override void ExecuteRequest(HttpContext context)
@@ -28,10 +30,14 @@ namespace LevelUpAPI.RequestHandlers
                 return;
 
             IEnumerable<FoodEntry> foodEntries = _foodEntryRepository.GetFromUser(user.Login).GetAwaiter().GetResult();
+
+            List<FoodEntryData> foodEntryDatas = new List<FoodEntryData>();
+            foreach (FoodEntry entry in foodEntries)
+                foodEntryDatas.Add(new FoodEntryData(entry, _OFFDataRepository.GetById(entry.OpenFoodFactsDataId).GetAwaiter().GetResult()));
             
             if (foodEntries != null)
             {
-                string foodEntriesJson = JsonSerializer.Serialize(foodEntries);
+                string foodEntriesJson = JsonSerializer.Serialize(foodEntryDatas);
                 context.Response.StatusCode = StatusCodes.Status200OK;
                 context.Response.WriteAsync(foodEntriesJson).GetAwaiter().GetResult();
             }
