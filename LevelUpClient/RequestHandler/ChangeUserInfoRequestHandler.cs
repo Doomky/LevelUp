@@ -16,6 +16,7 @@ namespace LevelUpClient.RequestHandler
                 .WithNewFirstname()
                 .WithNewLastname()
                 .WithNewEmail()
+                .WithNewWeightKg()
                 .Build();
         }
     }

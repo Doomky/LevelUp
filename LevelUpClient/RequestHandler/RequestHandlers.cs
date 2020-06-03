@@ -39,6 +39,9 @@ namespace LevelUpClient.RequestHandler
                 case "users/link-google-account":
                     requestHandler = new LinkGoogleAccountRequestHandler(fulladdress);
                     break;
+                case "users/google-access-token":
+                    requestHandler = new AccessTokenInfoRequestHandler(fulladdress);
+                    break;
                 case "users/unlink-google-account":
                     requestHandler = new UnlinkGoogleAccountRequestHandler(fulladdress);
                     break;

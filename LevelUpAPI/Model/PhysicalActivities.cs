@@ -12,7 +12,7 @@ namespace LevelUpAPI.Model
 
         public int Id { get; set; }
         public string Name { get; set; }
-        public decimal KcalPerHour { get; set; }
+        public decimal CalPerKgPerHour { get; set; }
 
         public virtual ICollection<PhysicalActivitiesEntries> PhysicalActivitiesEntries { get; set; }
     }

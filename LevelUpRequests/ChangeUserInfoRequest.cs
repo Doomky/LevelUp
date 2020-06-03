@@ -7,6 +7,7 @@ namespace LevelUpRequests
         public string NewFirstname { get; set; }
         public string NewLastname { get; set; }
         public string NewEmail { get; set; }
+        public byte? NewWeightKg { get; set; }
 
         public ChangeUserInfoRequest() : base(Method.POST)
         {
