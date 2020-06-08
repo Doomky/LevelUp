@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace LevelUpAPI.DataAccess.Repositories
@@ -43,6 +44,26 @@ namespace LevelUpAPI.DataAccess.Repositories
                 _logger.LogError("Cannot get this entry", ex);
                 return null;
             }
+        }
+
+        public async Task<Dbo.Avatar> AddXp(User user, Quest quest)
+        {
+            var avatar = GetByUser(user).GetAwaiter().GetResult();
+            if (avatar != null)
+            {
+                if (quest.XpValue.HasValue)
+                {
+                    avatar.Xp += quest.XpValue.Value;
+                    while (avatar.Xp >= avatar.XpMax)
+                    {
+                        avatar.Level++;
+                        avatar.Xp = 0;
+                        avatar.XpMax *= 2;
+                    }
+                    avatar = Update(avatar).GetAwaiter().GetResult();
+                }
+            }
+            return avatar;
         }
     }
 }

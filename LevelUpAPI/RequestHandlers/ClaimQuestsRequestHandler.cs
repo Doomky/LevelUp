@@ -45,37 +45,19 @@ namespace LevelUpAPI.RequestHandlers
                         return;
                     case QuestState.Failed:
                         _questRepository.Delete(quest.Id).GetAwaiter().GetResult();
-
-
                         serializedString = JsonSerializer.Serialize(new { 
                             state = "failed",
                             xp_gain = 0,
                         });
                         break;
                     case QuestState.Finished:
-                        var avatar = _avatarRepository.GetByUser(user).GetAwaiter().GetResult();
-                        if (avatar != null)
+                        _questRepository.Delete(quest.Id).GetAwaiter().GetResult();
+                        Avatar avatar  = _avatarRepository.AddXp(user, quest).GetAwaiter().GetResult();
+                        serializedString = JsonSerializer.Serialize(new
                         {
-                            if (quest.XpValue.HasValue)
-                            {
-                                avatar.Xp += quest.XpValue.Value;
-                                while (avatar.Xp >= avatar.XpMax)
-                                {
-                                    avatar.Level++;
-                                    avatar.XpMax *= 2;
-                                }
-
-                                _avatarRepository.Update(avatar).GetAwaiter().GetResult();
-                            }
-
-                            _questRepository.Delete(quest.Id).GetAwaiter().GetResult();
-
-                            serializedString = JsonSerializer.Serialize(new
-                            {
-                                state = "finished",
-                                xp_gain = quest.XpValue,
-                            });
-                        }
+                            state = "finished",
+                            xp_gain = quest.XpValue,
+                        });
                         break;
                     default:
                         break;

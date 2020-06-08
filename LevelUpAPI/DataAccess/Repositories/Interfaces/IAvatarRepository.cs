@@ -11,5 +11,6 @@ namespace LevelUpAPI.DataAccess.Repositories.Interfaces
     {
         public Task<Dbo.Avatar> Create();
         public Task<Dbo.Avatar> GetByUser(User user);
+        public Task<Dbo.Avatar> AddXp(User user, Quest quest);
     }
 }
