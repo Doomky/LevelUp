@@ -30,7 +30,7 @@ namespace LevelUpAPI.RequestHandlers
             if (!isOk || user == null)
                 return;
 
-            IEnumerable<Quest> quests = _questRepository.Get(user).GetAwaiter().GetResult();
+            IEnumerable<Quest> quests = _questRepository.Get(user, _questTypeRepository).GetAwaiter().GetResult();
             foreach (Quest quest in quests)
             {
                 QuestHandler questHandler = QuestHandlers.Create(quest, _questTypeRepository);

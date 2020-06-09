@@ -46,7 +46,7 @@ namespace LevelUpAPI.RequestHandlers
                 var offData = _offDataRepository.Get(foodEntryData.OpenFoodFactsDataId).GetAwaiter().GetResult().FirstOrDefault();
 
                 // update all quests based on datas
-                var quests = _questRepository.Get(user).GetAwaiter().GetResult();
+                var quests = _questRepository.Get(user, _questTypeRepository).GetAwaiter().GetResult();
                 foreach (var quest in quests)
                 {
                     var questHandler = QuestHandlers.Create(quest, _questTypeRepository);

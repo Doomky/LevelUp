@@ -18,17 +18,28 @@ namespace LevelUpAPI.DataAccess.Repositories
 
         }
 
-        public async Task<IEnumerable<Quest>> Get(User user)
-        {
-            var getAll = await base.Get();
-            return getAll.Where(quest => quest.UserId == user.Id);
-        }
-
-        public async Task<IEnumerable<Quest>> Get(User user, int categoryId)
+        public async Task<IEnumerable<Quest>> Get(User user, IQuestTypeRepository questTypeRepository)
         {
             var getAll = await base.Get();
             return getAll
-                .Where(quest => quest.UserId == user.Id && quest.CategoryId == categoryId);
+                .Where(quest => {
+                    var questHandler =  QuestHandlers.QuestHandlers.Create(quest, questTypeRepository);
+                    return quest.UserId == user.Id && questHandler != null && questHandler.GetState() == QuestHandlers.Interfaces.IQuestHandler.QuestState.InProgress;
+                });
+        }
+
+        public async Task<IEnumerable<Quest>> Get(User user, int categoryId, IQuestTypeRepository questTypeRepository)
+        {
+            var getAll = await base.Get();
+            return getAll
+                .Where(quest => {
+                    var questHandler = QuestHandlers.QuestHandlers.Create(quest, questTypeRepository);
+                    return 
+                    quest.UserId == user.Id &&
+                    quest.TypeId == categoryId &&
+                    questHandler != null && 
+                    questHandler.GetState() == QuestHandlers.Interfaces.IQuestHandler.QuestState.InProgress;
+            });
         }
 
         public async Task<Quest> GetById(User user, int questId)

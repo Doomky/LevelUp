@@ -37,7 +37,7 @@ namespace LevelUpAPI.Controllers
         [HttpGet]
         public void Get()
         {
-            GetQuestRequestHandler getQuestRequestHandler = new GetQuestRequestHandler(_userRepository, _questRepository);
+            GetQuestRequestHandler getQuestRequestHandler = new GetQuestRequestHandler(_userRepository, _questRepository, _questTypeRepository);
             getQuestRequestHandler.Execute(HttpContext);
         }
 
@@ -52,7 +52,7 @@ namespace LevelUpAPI.Controllers
         [Route("category/{categoryName}")]
         public void GetByCategory(string categoryName)
         {
-            GetQuestByCategoryRequestHandler getQuestByCategoryRequestHandler = new GetQuestByCategoryRequestHandler(_userRepository, _questRepository, _categoryRepository, categoryName);
+            GetQuestByCategoryRequestHandler getQuestByCategoryRequestHandler = new GetQuestByCategoryRequestHandler(_userRepository, _questRepository, _categoryRepository, _questTypeRepository, categoryName);
             getQuestByCategoryRequestHandler.Execute(HttpContext);
         }
 

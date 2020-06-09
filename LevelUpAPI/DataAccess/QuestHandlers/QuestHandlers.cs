@@ -18,6 +18,15 @@ namespace LevelUpAPI.DataAccess.QuestHandlers
                 case QuestTypeAsEmum.CaloriesGoal:
                     questHandler = new CaloriesGoalQuestHandler();
                     break;
+                case QuestTypeAsEmum.DailyCaloriesLimit:
+                    questHandler = new DailyCaloriesLimitQuestHandler();
+                    break;
+                case QuestTypeAsEmum.DailyPhysicalActivity:
+                    questHandler = new DailyPhysicalActivityQuestHandler();
+                    break;
+                case QuestTypeAsEmum.WeeklyPhysicalActivity:
+                    questHandler = new WeeklyPhyisicalActivityQuestHandler();
+                    break;
                 case QuestTypeAsEmum.Undefined:
                 default:
                     break;

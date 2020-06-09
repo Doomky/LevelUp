@@ -9,8 +9,8 @@ namespace LevelUpAPI.DataAccess.Repositories.Interfaces
 {
     public interface IQuestRepository : IRepository<Model.Quests, Quest>
     {
-        public Task<IEnumerable<Quest>> Get(User user);
+        public Task<IEnumerable<Quest>> Get(User user, IQuestTypeRepository questTypeRepository);
         public Task<Quest> GetById(User user, int questId);
-        public Task<IEnumerable<Quest>> Get(User user, int categoryId);
+        public Task<IEnumerable<Quest>> Get(User user, int categoryId, IQuestTypeRepository questTypeRepository);
     }
 }

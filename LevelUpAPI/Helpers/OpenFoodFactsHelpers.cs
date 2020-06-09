@@ -7,6 +7,5 @@ namespace LevelUpAPI.Helpers
 {
     public static class OpenFoodFactsHelpers
     {
-        
     }
 }

@@ -15,14 +15,16 @@ namespace LevelUpAPI.RequestHandlers
         private readonly IUserRepository _userRepository;
         private readonly IQuestRepository _questRepository;
         private readonly ICategoryRepository _categoryRepository;
+        private readonly IQuestTypeRepository _questTypeRepository;
         private readonly string _categoryName;
-        
-        public GetQuestByCategoryRequestHandler(IUserRepository userRepository, IQuestRepository questRepository, ICategoryRepository categoryRepository, string categoryName)
+
+        public GetQuestByCategoryRequestHandler(IUserRepository userRepository, IQuestRepository questRepository, ICategoryRepository categoryRepository, IQuestTypeRepository questTypeRepository, string categoryName)
         {
             _userRepository = userRepository;
             _questRepository = questRepository;
             _categoryRepository = categoryRepository;
-            _categoryName = categoryName; 
+            _questTypeRepository = questTypeRepository;
+            _categoryName = categoryName;
         }
 
         protected override void ExecuteRequest(HttpContext context)
@@ -39,7 +41,7 @@ namespace LevelUpAPI.RequestHandlers
                 return;
             }
 
-            IEnumerable<Quest> quests = _questRepository.Get(user, category.Id).GetAwaiter().GetResult();
+            IEnumerable<Quest> quests = _questRepository.Get(user, category.Id, _questTypeRepository).GetAwaiter().GetResult();
             string questsJson = JsonSerializer.Serialize(quests);
             context.Response.StatusCode = StatusCodes.Status200OK;
             context.Response.WriteAsync(questsJson).GetAwaiter().GetResult();

@@ -1,4 +1,5 @@
-﻿using LevelUpAPI.DataAccess.Repositories.Interfaces;
+﻿using LevelUpAPI.DataAccess.QuestHandlers;
+using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Dbo;
 using LevelUpRequests;
 using Microsoft.AspNetCore.Http;
@@ -14,13 +15,8 @@ namespace LevelUpAPI.RequestHandlers
         private readonly IUserRepository _userRepository;
         private readonly IPhysicalActivitiesRepository _physicalActivitiesRepository;
         private readonly IPhysicalActivitiesEntryRepository _physicalActivitiesEntryRepository;
-
-        public AddPAEntryRequestHandler(IUserRepository userRepository, IPhysicalActivitiesRepository physicalActivitiesRepository, IPhysicalActivitiesEntryRepository physicalActivitiesEntryRepository)
-        {
-            _userRepository = userRepository;
-            _physicalActivitiesRepository = physicalActivitiesRepository;
-            _physicalActivitiesEntryRepository = physicalActivitiesEntryRepository;
-        }
+        private readonly IQuestTypeRepository _questTypeRepository;
+        private readonly IQuestRepository _questRepository;
 
         protected override void ExecuteRequest(HttpContext context)
         {
@@ -45,6 +41,15 @@ namespace LevelUpAPI.RequestHandlers
 
             if (PAEntry != null)
             {
+                // update all quests based on datas
+                var quests = _questRepository.Get(user, _questTypeRepository).GetAwaiter().GetResult();
+                foreach (var quest in quests)
+                {
+                    var questHandler = QuestHandlers.Create(quest, _questTypeRepository);
+                    questHandler.Update("PhyisicalActivity", "1");
+                    _questRepository.Update(quest).GetAwaiter().GetResult();
+                }
+
                 string PAEntryJson = JsonSerializer.Serialize(PAEntry);
                 context.Response.StatusCode = StatusCodes.Status200OK;
                 context.Response.WriteAsync(PAEntryJson).GetAwaiter().GetResult();

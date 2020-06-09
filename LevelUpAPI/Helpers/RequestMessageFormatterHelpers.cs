@@ -30,6 +30,5 @@ Body: {5}
                 httpContext.Request.ContentType,
                 bodyAsStr);
         }
-
     }
 }

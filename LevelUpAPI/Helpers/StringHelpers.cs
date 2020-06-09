@@ -13,6 +13,12 @@ namespace LevelUpAPI.Helpers
             {
                 case "CaloriesGoal":
                     return Dbo.QuestType.QuestTypeAsEmum.CaloriesGoal;
+                case "DailyCaloriesLimit":
+                    return Dbo.QuestType.QuestTypeAsEmum.DailyCaloriesLimit;
+                case "DailyPhysicalActivity":
+                    return Dbo.QuestType.QuestTypeAsEmum.DailyPhysicalActivity;
+                case "WeeklyPhysicalActivity":
+                    return Dbo.QuestType.QuestTypeAsEmum.WeeklyPhysicalActivity;
                 default:
                     return Dbo.QuestType.QuestTypeAsEmum.Undefined;
             }
