@@ -18,6 +18,15 @@ namespace LevelUpAPI.RequestHandlers
         private readonly IQuestTypeRepository _questTypeRepository;
         private readonly IQuestRepository _questRepository;
 
+        public AddPAEntryRequestHandler(IUserRepository userRepository, IPhysicalActivitiesRepository physicalActivitiesRepository, IPhysicalActivitiesEntryRepository physicalActivitiesEntryRepository, IQuestTypeRepository questTypeRepository, IQuestRepository questRepository)
+        {
+            _userRepository = userRepository;
+            _physicalActivitiesRepository = physicalActivitiesRepository;
+            _physicalActivitiesEntryRepository = physicalActivitiesEntryRepository;
+            _questTypeRepository = questTypeRepository;
+            _questRepository = questRepository;
+        }
+
         protected override void ExecuteRequest(HttpContext context)
         {
             (bool isOk, User user) = CheckClaimsForUser(Request, context, _userRepository);

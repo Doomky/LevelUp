@@ -15,12 +15,16 @@ namespace LevelUpAPI.Controllers
         private readonly IUserRepository _userRepository;
         private readonly IPhysicalActivitiesRepository _physicalActivitiesRepository;
         private readonly IPhysicalActivitiesEntryRepository _physicalActivitiesEntryRepository;
+        private readonly IQuestTypeRepository _questTypeRepository;
+        private readonly IQuestRepository _questRepository;
 
-        public PhysicalActivitiesController(IUserRepository userRepository, IPhysicalActivitiesRepository physicalActivitiesRepository, IPhysicalActivitiesEntryRepository physicalActivitiesEntryRepository)
+        public PhysicalActivitiesController(IUserRepository userRepository, IPhysicalActivitiesRepository physicalActivitiesRepository, IPhysicalActivitiesEntryRepository physicalActivitiesEntryRepository, IQuestTypeRepository questTypeRepository, IQuestRepository questRepository)
         {
             _userRepository = userRepository;
             _physicalActivitiesRepository = physicalActivitiesRepository;
             _physicalActivitiesEntryRepository = physicalActivitiesEntryRepository;
+            _questTypeRepository = questTypeRepository;
+            _questRepository = questRepository;
         }
 
         /// <summary>
@@ -71,7 +75,7 @@ namespace LevelUpAPI.Controllers
         [Route("add")]
         public void Add()
         {
-            AddPAEntryRequestHandler addPAEntryRequestHandler = new AddPAEntryRequestHandler(_userRepository, _physicalActivitiesRepository, _physicalActivitiesEntryRepository);
+            AddPAEntryRequestHandler addPAEntryRequestHandler = new AddPAEntryRequestHandler(_userRepository, _physicalActivitiesRepository, _physicalActivitiesEntryRepository, _questTypeRepository, _questRepository);
             addPAEntryRequestHandler.Execute(HttpContext);
         }
 
