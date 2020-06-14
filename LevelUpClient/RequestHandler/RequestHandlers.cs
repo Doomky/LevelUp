@@ -96,18 +96,21 @@ namespace LevelUpClient.RequestHandler
 
                 // Physical activities
                 case "physicalactivities":
+                    requestHandler = new GetPARequestHandler(fulladdress);
+                    break;
+                case "physicalactivities/entry":
                     requestHandler = new GetPAEntriesRequestHandler(fulladdress);
                     break;
-                case "physicalactivities/total":
+                case "physicalactivities/entry/total":
                     requestHandler = new GetPAEntriesRequestHandler(fulladdress);
                     break;
-                case "physicalactivities/add":
+                case "physicalactivities/entry/add":
                     requestHandler = new AddPAEntryRequestHandler(fulladdress);
                     break;
-                case "physicalactivities/update":
+                case "physicalactivities/entry/update":
                     requestHandler = new UpdatePAEntryRequestHandler(fulladdress);
                     break;
-                case "physicalactivities/remove":
+                case "physicalactivities/entry/remove":
                     requestHandler = new RemovePAEntryRequestHandler(fulladdress);
                     break;
 

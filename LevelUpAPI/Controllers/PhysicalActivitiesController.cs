@@ -28,13 +28,26 @@ namespace LevelUpAPI.Controllers
         }
 
         /// <summary>
+        /// Get the list of all the possible physical activities. 
+        /// </summary>
+        /// <response code="200">The request succedded.</response>
+        /// <response code="400">The request is malformed.</response>
+        [HttpGet]
+        public void Get()
+        {
+            GetPARequestHandler getPARequestHandler = new GetPARequestHandler(_physicalActivitiesRepository);
+            getPARequestHandler.Execute(HttpContext);
+        }
+
+        /// <summary>
         /// Get all the physical activity entries of the signed-in user. 
         /// </summary>
         /// <response code="200">The physical activity entries were found.</response>
         /// <response code="400">The request is malformed or the user does not exist.</response>
         /// <response code="401">The user is not signed in.</response>
         [HttpGet]
-        public void Get()
+        [Route("entry/")]
+        public void GetEntries()
         {
             GetPAEntriesRequestHandler getPAEntriesRequestHandler = new GetPAEntriesRequestHandler(_userRepository, _physicalActivitiesEntryRepository);
             getPAEntriesRequestHandler.Execute(HttpContext);
@@ -47,8 +60,8 @@ namespace LevelUpAPI.Controllers
         /// <response code="400">The request is malformed or the user does not exist.</response>
         /// <response code="401">The user is not signed in.</response>
         [HttpGet]
-        [Route("total")]
-        public void GetTotal()
+        [Route("entry/total")]
+        public void GetTotalEntries()
         {
             GetTotalPAEntriesRequestHandler getTotalPAEntriesRequestHandler = new GetTotalPAEntriesRequestHandler(_userRepository, _physicalActivitiesEntryRepository);
             getTotalPAEntriesRequestHandler.Execute(HttpContext);
@@ -72,8 +85,8 @@ namespace LevelUpAPI.Controllers
         /// <response code="400">The request is malformed or the user does not exist.</response>
         /// <response code="401">The user is not signed in.</response>
         [HttpPost]
-        [Route("add")]
-        public void Add()
+        [Route("entry/add")]
+        public void AddEntry()
         {
             AddPAEntryRequestHandler addPAEntryRequestHandler = new AddPAEntryRequestHandler(_userRepository, _physicalActivitiesRepository, _physicalActivitiesEntryRepository, _questTypeRepository, _questRepository);
             addPAEntryRequestHandler.Execute(HttpContext);
@@ -97,8 +110,8 @@ namespace LevelUpAPI.Controllers
         /// <response code="400">The request is malformed or the user does not exist.</response>
         /// <response code="401">The user is not signed in.</response>
         [HttpPost]
-        [Route("update")]
-        public void Update()
+        [Route("entry/update")]
+        public void UpdateEntry()
         {
             UpdatePAEntryRequestHandler updatePAEntryRequestHandler = new UpdatePAEntryRequestHandler(_userRepository, _physicalActivitiesRepository, _physicalActivitiesEntryRepository);
             updatePAEntryRequestHandler.Execute(HttpContext);
@@ -120,8 +133,8 @@ namespace LevelUpAPI.Controllers
         /// <response code="400">The request is malformed or the user does not exist.</response>
         /// <response code="401">The user is not signed in.</response>
         [HttpPost]
-        [Route("remove")]
-        public void Remove()
+        [Route("entry/remove")]
+        public void RemoveEntry()
         {
             RemovePAEntryRequestHandler removePAEntryRequestHandler = new RemovePAEntryRequestHandler(_userRepository, _physicalActivitiesEntryRepository);
             removePAEntryRequestHandler.Execute(HttpContext);

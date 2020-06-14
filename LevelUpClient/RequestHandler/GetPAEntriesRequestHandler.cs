@@ -10,7 +10,6 @@ namespace LevelUpClient.RequestHandler
     {
         public GetPAEntriesRequestHandler(string fullAddress) : base(fullAddress)
         {
-
         }
 
         public override GetPAEntriesRequest RequestBuilder()

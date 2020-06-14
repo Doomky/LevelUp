@@ -4,6 +4,7 @@ using LevelUpAPI.Dbo;
 using LevelUpAPI.Model;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,6 +15,12 @@ namespace LevelUpAPI.DataAccess.Repositories
         public PhysicalActivitiesRepository(levelupContext context, ILogger<PhysicalActivitiesRepository> logger, IMapper mapper)
             : base(context, context.PhysicalActivities, logger, mapper)
         {
+        }
+
+        public IEnumerable<PhysicalActivity> GetAllPhysicalActivities()
+        {
+            var result = _context.PhysicalActivities.AsEnumerable();
+            return _mapper.Map<IEnumerable<PhysicalActivity>>(result);
         }
 
         public PhysicalActivity GetPhysicalActivity(string name)
