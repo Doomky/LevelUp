@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using QuestState = LevelUpAPI.DataAccess.QuestHandlers.Interfaces.IQuestHandler.QuestState;
 
 namespace LevelUpAPI.Helpers
 {
@@ -21,6 +22,24 @@ namespace LevelUpAPI.Helpers
                     return Dbo.QuestType.QuestTypeAsEmum.WeeklyPhysicalActivity;
                 default:
                     return Dbo.QuestType.QuestTypeAsEmum.Undefined;
+            }
+        }
+
+        public static QuestState? AsQuestStateEnum(this string questState)
+        {
+            switch (questState)
+            {
+                case "failed":
+                case "Failed":
+                    return QuestState.Failed;
+                case "finished":
+                case "Finished":
+                    return QuestState.Finished;
+                case "InProgress":
+                case "inprogress":
+                    return QuestState.InProgress;
+                default:
+                    return null;
             }
         }
 

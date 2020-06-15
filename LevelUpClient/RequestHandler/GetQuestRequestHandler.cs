@@ -15,12 +15,15 @@ namespace LevelUpClient.RequestHandler
 
         public override void Execute(HttpClient httpClient)
         {
+            if (Request.QuestState != null)
+                FullAddress += "/" + Request.QuestState;
             base.Execute(httpClient);
         }
 
         public override GetQuestRequest RequestBuilder()
         {
             return new ConsoleGetQuestRequestBuilder()
+                    .WithQuestState()
                     .Build();
         }
     }

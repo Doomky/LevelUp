@@ -7,6 +7,7 @@ using System;
 using System.Text.Json;
 using System.Threading.Tasks;
 using static LevelUpAPI.Helpers.ClaimsHelpers;
+using static LevelUpAPI.DataAccess.QuestHandlers.Interfaces.IQuestHandler;
 
 namespace LevelUpAPI.RequestHandlers
 {
@@ -51,11 +52,11 @@ namespace LevelUpAPI.RequestHandlers
             if (PAEntry != null)
             {
                 // update all quests based on datas
-                var quests = _questRepository.Get(user, _questTypeRepository).GetAwaiter().GetResult();
+                var quests = _questRepository.Get(user, _questTypeRepository, QuestState.InProgress ).GetAwaiter().GetResult();
                 foreach (var quest in quests)
                 {
                     var questHandler = QuestHandlers.Create(quest, _questTypeRepository);
-                    questHandler.Update("PhyisicalActivity", "1");
+                    questHandler.Update(PhysicalActivityQuestHandler.PHYSICAL_ACTIVTY_KEY, "1");
                     _questRepository.Update(quest).GetAwaiter().GetResult();
                 }
 

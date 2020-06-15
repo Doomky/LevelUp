@@ -41,7 +41,7 @@ namespace LevelUpAPI.RequestHandlers
                 return;
             }
 
-            IEnumerable<Quest> quests = _questRepository.Get(user, category.Id, _questTypeRepository).GetAwaiter().GetResult();
+            IEnumerable<Quest> quests = _questRepository.Get(user, category.Id, _questTypeRepository, null).GetAwaiter().GetResult();
             string questsJson = JsonSerializer.Serialize(quests);
             context.Response.StatusCode = StatusCodes.Status200OK;
             context.Response.WriteAsync(questsJson).GetAwaiter().GetResult();

@@ -6,6 +6,8 @@ using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.RequestHandlers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using static LevelUpAPI.Helpers.StringHelpers;
+using static LevelUpAPI.DataAccess.QuestHandlers.Interfaces.IQuestHandler;
 
 namespace LevelUpAPI.Controllers
 {
@@ -29,15 +31,17 @@ namespace LevelUpAPI.Controllers
         }
 
         /// <summary>
-        /// Get all the quests of the signed-in user. 
+        /// Get all the quests of the signed-in user. you can specify the state of the quest in the route to get only "inprogress", "finished" or "failed" quests 
         /// </summary>
         /// <response code="200">The quests were found.</response>
         /// <response code="400">The request is malformed or the user does not exist.</response>
         /// <response code="401">The user is not signed in.</response>
         [HttpGet]
-        public void Get()
+        [Route("{questStateName?}")]
+        public void Get(string questStateName)
         {
-            GetQuestRequestHandler getQuestRequestHandler = new GetQuestRequestHandler(_userRepository, _questRepository, _questTypeRepository);
+            QuestState? questState = questStateName.AsQuestStateEnum();
+            GetQuestRequestHandler getQuestRequestHandler = new GetQuestRequestHandler(_userRepository, _questRepository, _questTypeRepository, questState);
             getQuestRequestHandler.Execute(HttpContext);
         }
 

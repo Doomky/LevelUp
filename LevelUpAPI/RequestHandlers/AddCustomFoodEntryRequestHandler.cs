@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.Text.Json;
 using System.Threading.Tasks;
+using static LevelUpAPI.DataAccess.QuestHandlers.Interfaces.IQuestHandler;
 using static LevelUpAPI.Helpers.ClaimsHelpers;
 
 namespace LevelUpAPI.RequestHandlers
@@ -65,7 +66,7 @@ namespace LevelUpAPI.RequestHandlers
             if (foodEntryData != null)
             {
                 // update all quests based on datas
-                var quests = _questRepository.Get(user, _questTypeRepository).GetAwaiter().GetResult();
+                var quests = _questRepository.Get(user, _questTypeRepository, QuestState.InProgress).GetAwaiter().GetResult();
                 foreach (var quest in quests)
                 {
                     var questHandler = QuestHandlers.Create(quest, _questTypeRepository);

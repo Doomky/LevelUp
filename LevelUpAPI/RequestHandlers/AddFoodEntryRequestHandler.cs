@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using static LevelUpAPI.Helpers.ClaimsHelpers;
+using static LevelUpAPI.DataAccess.QuestHandlers.Interfaces.IQuestHandler.QuestState;
 
 namespace LevelUpAPI.RequestHandlers
 {
@@ -46,7 +47,7 @@ namespace LevelUpAPI.RequestHandlers
                 var offData = _offDataRepository.Get(foodEntryData.OpenFoodFactsDataId).GetAwaiter().GetResult().FirstOrDefault();
 
                 // update all quests based on datas
-                var quests = _questRepository.Get(user, _questTypeRepository).GetAwaiter().GetResult();
+                var quests = _questRepository.Get(user, _questTypeRepository, InProgress).GetAwaiter().GetResult();
                 foreach (var quest in quests)
                 {
                     var questHandler = QuestHandlers.Create(quest, _questTypeRepository);

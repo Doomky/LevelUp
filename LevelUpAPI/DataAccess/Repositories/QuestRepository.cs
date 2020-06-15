@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static LevelUpAPI.DataAccess.QuestHandlers.Interfaces.IQuestHandler;
 
 namespace LevelUpAPI.DataAccess.Repositories
 {
@@ -18,17 +19,18 @@ namespace LevelUpAPI.DataAccess.Repositories
 
         }
 
-        public async Task<IEnumerable<Quest>> Get(User user, IQuestTypeRepository questTypeRepository)
+        public async Task<IEnumerable<Quest>> Get(User user, IQuestTypeRepository questTypeRepository, QuestState? questState)
         {
             var getAll = await base.Get();
             return getAll
                 .Where(quest => {
                     var questHandler =  QuestHandlers.QuestHandlers.Create(quest, questTypeRepository);
-                    return quest.UserId == user.Id && questHandler != null && questHandler.GetState() == QuestHandlers.Interfaces.IQuestHandler.QuestState.InProgress;
+                    return quest.UserId == user.Id && 
+                           questHandler != null && (!questState.HasValue || questState.Value == questHandler.GetState());
                 });
         }
 
-        public async Task<IEnumerable<Quest>> Get(User user, int categoryId, IQuestTypeRepository questTypeRepository)
+        public async Task<IEnumerable<Quest>> Get(User user, int categoryId, IQuestTypeRepository questTypeRepository, QuestState? questState)
         {
             var getAll = await base.Get();
             return getAll
@@ -37,10 +39,10 @@ namespace LevelUpAPI.DataAccess.Repositories
                     return 
                     quest.UserId == user.Id &&
                     quest.TypeId == categoryId &&
-                    questHandler != null && 
-                    questHandler.GetState() == QuestHandlers.Interfaces.IQuestHandler.QuestState.InProgress;
+                    questHandler != null && (!questState.HasValue || questState.Value == questHandler.GetState());
             });
         }
+
 
         public async Task<Quest> GetById(User user, int questId)
         {

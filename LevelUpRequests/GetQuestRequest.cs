@@ -6,6 +6,7 @@ namespace LevelUpRequests
 {
     public class GetQuestRequest : Request
     {
+        public string QuestState { get; set; }
         public GetQuestRequest() : base(Method.GET)
         {
         }

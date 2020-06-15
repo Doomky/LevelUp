@@ -14,10 +14,10 @@ namespace LevelUpAPI.DataAccess.QuestHandlers
 
         public override IQuestHandler.QuestState GetState()
         {
-            if (Quest.ExpirationDate > DateTime.Now)
-                return Quest.ProgressValue < Quest.ProgressCount ? QuestState.Finished : QuestState.InProgress;
+            if (Quest.ProgressValue > Quest.ProgressCount)
+                return QuestState.Finished ;
             else
-                return QuestState.Failed;
+                return Quest.ExpirationDate > DateTime.Now ? QuestState.InProgress : QuestState.Failed;
         }
 
         private void UpdatePhyiscalActivity(string physicalActivityCountAsStr)
