@@ -40,6 +40,29 @@ namespace LevelUpAPI.Controllers
         }
 
         /// <summary>
+        /// Add a new physical activity. 
+        /// </summary>
+        /// <remarks>
+        /// The body of the request must contains those fields:
+        /// 
+        ///     {
+        ///         "Name"
+        ///         "CalPerKgPerHour"
+        ///     }
+        /// 
+        /// </remarks>
+        /// <response code="200">The physical activity entry was correctly added.</response>
+        /// <response code="204">The entry is malformed.</response>
+        /// <response code="400">The request is malformed.</response>
+        [HttpPost]
+        [Route("add")]
+        public void Add()
+        {
+            AddPARequestHandler addPARequestHandler = new AddPARequestHandler(_physicalActivitiesRepository);
+            addPARequestHandler.Execute(HttpContext);
+        }
+
+        /// <summary>
         /// Get all the physical activity entries of the signed-in user. 
         /// </summary>
         /// <response code="200">The physical activity entries were found.</response>
