@@ -45,6 +45,12 @@ namespace LevelUpAPI.DataAccess.Quests
             {
                 case QuestTypeAsEmum.CaloriesGoal:
                     return CaloriesGoalQuest.Initialize(quest, user, questTypeAsEmum, addQuestRequest);
+                case QuestTypeAsEmum.DailyCaloriesLimit:
+                    return DailyCaloriesLimitQuest.Initialize(quest, user, questTypeAsEmum, addQuestRequest);
+                case QuestTypeAsEmum.WeeklyPhysicalActivity:
+                    return DailyCaloriesLimitQuest.Initialize(quest, user, questTypeAsEmum, addQuestRequest);
+                case QuestTypeAsEmum.DailyPhysicalActivity:
+                    return DailyCaloriesLimitQuest.Initialize(quest, user, questTypeAsEmum, addQuestRequest);
                 case QuestTypeAsEmum.Undefined:
                 default:
                     return null;
