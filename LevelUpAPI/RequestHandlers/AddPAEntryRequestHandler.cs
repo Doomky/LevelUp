@@ -45,8 +45,8 @@ namespace LevelUpAPI.RequestHandlers
             {
                 UserId = user.Id,
                 PhysicalActivitiesId = PA.Id,
-                DatetimeStart = Request.dateTimeStart,
-                DatetimeEnd = Request.dateTimeEnd
+                DatetimeStart = DateTime.Parse(Request.dateTimeStart),
+                DatetimeEnd = DateTime.Parse(Request.dateTimeEnd)
             }).GetAwaiter().GetResult();
 
             if (PAEntry != null)
