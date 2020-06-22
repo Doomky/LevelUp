@@ -17,6 +17,7 @@ namespace LevelUpAPI.Dbo
             Level = avatar.Level;
             Xp = avatar.Xp;
             XpMax = avatar.XpMax;
+            Size = avatar.Size;
         }
 
         public string Login { get; set; }
@@ -33,5 +34,6 @@ namespace LevelUpAPI.Dbo
 
         public int Xp { get; set; }
         public int XpMax { get; set; }
+        public int Size { get; set; }
     }
 }
