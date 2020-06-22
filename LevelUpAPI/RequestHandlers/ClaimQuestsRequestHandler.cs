@@ -44,14 +44,12 @@ namespace LevelUpAPI.RequestHandlers
                         context.Response.WriteAsync("you can not claim this quest it's in progress").GetAwaiter().GetResult();
                         return;
                     case QuestState.Failed:
-                        _questRepository.Delete(quest.Id).GetAwaiter().GetResult();
                         serializedString = JsonSerializer.Serialize(new { 
                             state = "failed",
                             xp_gain = 0,
                         });
                         break;
                     case QuestState.Finished:
-                        _questRepository.Delete(quest.Id).GetAwaiter().GetResult();
                         Avatar avatar  = _avatarRepository.AddXp(user, quest).GetAwaiter().GetResult();
                         serializedString = JsonSerializer.Serialize(new
                         {
