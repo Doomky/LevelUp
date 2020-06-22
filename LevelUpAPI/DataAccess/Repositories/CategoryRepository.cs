@@ -17,6 +17,12 @@ namespace LevelUpAPI.DataAccess.Repositories
         {
         }
 
+        public IEnumerable<Dbo.Category> GetAllCategories()
+        {
+            var categories = _context.Categories.AsEnumerable();
+            return _mapper.Map<IEnumerable<Dbo.Category>>(categories);
+        }
+
         public async Task<Dbo.Category.CategoryAsEnum> GetAsEnum(int id)
         {
             Dbo.Category category = (await base.Get(id)).FirstOrDefault();

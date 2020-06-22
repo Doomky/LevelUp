@@ -46,6 +46,19 @@ namespace LevelUpAPI.Controllers
         }
 
         /// <summary>
+        /// Get the list of all the available quest categories. 
+        /// </summary>
+        /// <response code="200">The request succedded.</response>
+        /// <response code="400">The request is malformed.</response>
+        [HttpGet]
+        [Route("category/list")]
+        public void GetQuestCategories()
+        {
+            GetQuestCategoriesRequestHandler getQuestCategoriesRequestHandler = new GetQuestCategoriesRequestHandler(_categoryRepository);
+            getQuestCategoriesRequestHandler.Execute(HttpContext);
+        }
+
+        /// <summary>
         /// Get all the quests of the signed-in user in the specified category. 
         /// </summary>
         /// <param name="categoryName">The category name the user want to get his quests for.</param>
