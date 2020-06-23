@@ -42,13 +42,19 @@ namespace LevelUpAPI.DataAccess.Repositories
             });
         }
 
-
         public async Task<Quest> GetById(User user, int questId)
         {
             var getAll = await base.Get();
             return getAll
                 .Where(quest => quest.UserId == user.Id && quest.Id == questId)
                 .FirstOrDefault();
+        }
+
+        public async Task<Quest> SetIsClaimedById(User user, int questId)
+        {
+            var quest = await GetById(user, questId);
+            quest.IsClaimed = true;
+            return await base.Update(quest);
         }
     }
 }

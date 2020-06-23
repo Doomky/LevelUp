@@ -1,6 +1,7 @@
 ﻿using LevelUpAPI.DataAccess.QuestHandlers;
 using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Dbo;
+using LevelUpAPI.Dto;
 using LevelUpRequests;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -34,33 +35,35 @@ namespace LevelUpAPI.RequestHandlers
 
             Quest quest = _questRepository.GetById(user, Request.QuestId).GetAwaiter().GetResult();
             QuestHandler questHandler = QuestHandlers.Create(quest, _questTypeRepository);
+            ClaimQuestDTOResponse claimQuestDTOResponse;
+            string serializedString = "";
+
             if (questHandler != null)
             {
-                string serializedString = "";
                 switch (questHandler.GetState())
                 {
                     case QuestState.InProgress:
                         context.Response.StatusCode = StatusCodes.Status400BadRequest;
-                        context.Response.WriteAsync("you can not claim this quest it's in progress").GetAwaiter().GetResult();
-                        return;
+                        claimQuestDTOResponse = new ClaimQuestDTOResponse(questHandler.GetState(), "0", "you cannot claim this quest, it's in progress");
+                        break;
+                    case QuestState.Claimed:
+                        context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                        claimQuestDTOResponse = new ClaimQuestDTOResponse(questHandler.GetState(), "0", "you cannot claim this quest, it was already claimed");
+                        break;
                     case QuestState.Failed:
-                        serializedString = JsonSerializer.Serialize(new { 
-                            state = "failed",
-                            xp_gain = 0,
-                        });
+                        context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                        claimQuestDTOResponse = new ClaimQuestDTOResponse(questHandler.GetState(), "0", "you cannot claim this quest, it was already failed");
                         break;
                     case QuestState.Finished:
-                        Avatar avatar  = _avatarRepository.AddXp(user, quest).GetAwaiter().GetResult();
-                        serializedString = JsonSerializer.Serialize(new
-                        {
-                            state = "finished",
-                            xp_gain = quest.XpValue,
-                        });
+                        context.Response.StatusCode = StatusCodes.Status200OK;
+                        quest = _questRepository.SetIsClaimedById(user,quest.Id).GetAwaiter().GetResult();
+                        Avatar avatar = _avatarRepository.AddXp(user, quest).GetAwaiter().GetResult();
+                        claimQuestDTOResponse = new ClaimQuestDTOResponse(questHandler.GetState(), quest.XpValue.ToString(), "you have claimed this quest");
                         break;
                     default:
-                        break;
+                        throw new NotSupportedException();
                 }
-                context.Response.StatusCode = StatusCodes.Status200OK;
+                serializedString = JsonSerializer.Serialize(claimQuestDTOResponse);
                 context.Response.WriteAsync(serializedString).GetAwaiter().GetResult();
             }
         }

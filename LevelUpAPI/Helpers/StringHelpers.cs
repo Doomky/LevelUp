@@ -29,6 +29,9 @@ namespace LevelUpAPI.Helpers
         {
             switch (questState)
             {
+                case "claimed":
+                case "Claimed":
+                    return QuestState.Claimed;
                 case "failed":
                 case "Failed":
                     return QuestState.Failed;

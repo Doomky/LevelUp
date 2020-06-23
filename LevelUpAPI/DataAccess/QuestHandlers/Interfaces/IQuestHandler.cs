@@ -11,7 +11,8 @@ namespace LevelUpAPI.DataAccess.QuestHandlers.Interfaces
         {
             InProgress,
             Failed,
-            Finished
+            Finished,
+            Claimed
         }
 
         public Quest Quest { get; set; }

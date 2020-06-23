@@ -13,7 +13,9 @@ namespace LevelUpAPI.DataAccess.QuestHandlers
 
         public override QuestState GetState()
         {
-            if (Quest.ProgressValue >= Quest.ProgressCount)
+            if (Quest.IsClaimed)
+                return QuestState.Claimed;
+            else if (Quest.ProgressValue >= Quest.ProgressCount)
                 return QuestState.Finished ;
             else
                 return Quest.ExpirationDate > DateTime.Now ? QuestState.InProgress : QuestState.Failed;

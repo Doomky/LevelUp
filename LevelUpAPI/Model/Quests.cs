@@ -14,6 +14,7 @@ namespace LevelUpAPI.Model
         public int? XpValue { get; set; }
         public DateTime CreationDate { get; set; }
         public DateTime ExpirationDate { get; set; }
+        public bool IsClaimed { get; set; }
 
         public virtual Categories Category { get; set; }
         public virtual QuestsTypes Type { get; set; }

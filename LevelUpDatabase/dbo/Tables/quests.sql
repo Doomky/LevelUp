@@ -8,6 +8,7 @@
     [xp_value]        INT      DEFAULT ((100)) NULL,
     [creation_date]   DATETIME DEFAULT (getdate()) NOT NULL,
     [expiration_date] DATETIME DEFAULT (getdate()) NOT NULL,
+    [is_claimed] BIT NOT NULL DEFAULT 0, 
     PRIMARY KEY CLUSTERED ([id] ASC),
     FOREIGN KEY ([category_id]) REFERENCES [dbo].[categories] ([id]),
     FOREIGN KEY ([type_id]) REFERENCES [dbo].[quests_types] ([id]),

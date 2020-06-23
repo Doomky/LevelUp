@@ -13,6 +13,9 @@ namespace LevelUpAPI.DataAccess.Repositories.Interfaces
     {
         public Task<IEnumerable<Quest>> Get(User user, IQuestTypeRepository questTypeRepository, QuestState? questState);
         public Task<Quest> GetById(User user, int questId);
+
+        public Task<Quest> SetIsClaimedById(User user, int questId);
+
         public Task<IEnumerable<Quest>> Get(User user, int categoryId, IQuestTypeRepository questTypeRepository, QuestState? questState);
     }
 }
