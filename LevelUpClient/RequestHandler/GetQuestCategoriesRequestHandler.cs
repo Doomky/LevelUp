@@ -11,7 +11,7 @@ namespace LevelUpClient.RequestHandler
 
         public override GetQuestCategoriesRequest RequestBuilder()
         {
-            return new ConsoleGetQuestCategoriesBuilder()
+            return new ConsoleGetQuestCategoriesRequestBuilder()
                 .Build();
         }
     }
