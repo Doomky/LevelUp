@@ -9,8 +9,6 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using static LevelUpAPI.Helpers.ClaimsHelpers;
 using QuestState = LevelUpAPI.DataAccess.QuestHandlers.Interfaces.IQuestHandler.QuestState;
-using static LevelUpAPI.DataAccess.QuestHandlers.Interfaces.IQuestHandler;
-using LevelUpAPI.DataAccess.QuestHandlers;
 
 namespace LevelUpAPI.RequestHandlers
 {
@@ -35,21 +33,7 @@ namespace LevelUpAPI.RequestHandlers
             if (!isOk || user == null)
                 return;
 
-            var quests = _questRepository.Get(user, _questTypeRepository, _questState)
-                .GetAwaiter().GetResult()
-                .Select(quest => new
-                {
-                    quest.Id,
-                    quest.CategoryId,
-                    quest.TypeId,
-                    quest.UserId,
-                    quest.CreationDate,
-                    quest.ExpirationDate,
-                    quest.ProgressValue,
-                    quest.ProgressCount,
-                    quest.XpValue,
-                    State = QuestHandlers.Create(quest, _questTypeRepository).GetState().ToString()
-            });
+            IEnumerable<Quest> quests = _questRepository.Get(user, _questTypeRepository, _questState).GetAwaiter().GetResult();
 
             string questsJson = JsonSerializer.Serialize(quests);
             context.Response.StatusCode = StatusCodes.Status200OK;
