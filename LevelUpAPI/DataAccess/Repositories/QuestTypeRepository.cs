@@ -16,6 +16,12 @@ namespace LevelUpAPI.DataAccess.Repositories
         {
         }
 
+        public IEnumerable<Dbo.QuestType> GetAllQuestTypes()
+        {
+            var questTypes = _context.QuestsTypes.AsEnumerable();
+            return _mapper.Map<IEnumerable<Dbo.QuestType>>(questTypes);
+        }
+
         public async Task<Dbo.QuestType.QuestTypeAsEmum> GetAsEmum(int id)
         {
             Dbo.QuestType questType = (await base.Get(id)).FirstOrDefault();

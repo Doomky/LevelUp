@@ -74,6 +74,19 @@ namespace LevelUpAPI.Controllers
         }
 
         /// <summary>
+        /// Get the list of all the available quest types. 
+        /// </summary>
+        /// <response code="200">The request succedded.</response>
+        /// <response code="400">The request is malformed.</response>
+        [HttpGet]
+        [Route("type/list")]
+        public void GetQuestTypes()
+        {
+            GetQuestTypesRequestHandler getQuestTypesRequestHandler = new GetQuestTypesRequestHandler(_questTypeRepository);
+            getQuestTypesRequestHandler.Execute(HttpContext);
+        }
+
+        /// <summary>
         /// Update all the quests of the signed-in user with the given data. 
         /// </summary>
         /// <remarks>

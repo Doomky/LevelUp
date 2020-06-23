@@ -83,7 +83,10 @@ namespace LevelUpClient.RequestHandler
                     break;
                 case "quests/category":
                     requestHandler = new GetQuestByCategoryRequestHandler(fulladdress);
-                    break; 
+                    break;
+                case "quests/type/list":
+                    requestHandler = new GetQuestTypesRequestHandler(fulladdress);
+                    break;
                 case "quests/update":
                     requestHandler = new UpdateQuestRequestHandler(fulladdress);
                     break;

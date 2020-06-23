@@ -9,6 +9,7 @@ namespace LevelUpAPI.DataAccess.Repositories.Interfaces
 {
     public interface IQuestTypeRepository: IRepository<QuestsTypes, Dbo.QuestType>
     {
+        public IEnumerable<Dbo.QuestType> GetAllQuestTypes();
         public Task<Dbo.QuestType.QuestTypeAsEmum> GetAsEmum(int id);
     }
 }
