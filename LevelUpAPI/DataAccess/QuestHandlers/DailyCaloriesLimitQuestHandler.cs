@@ -1,5 +1,4 @@
-﻿using LevelUpAPI.DataAccess.QuestHandlers.Interfaces;
-using LevelUpRequests;
+﻿using LevelUpRequests;
 using System;
 using System.Collections.Generic;
 using System.Linq;

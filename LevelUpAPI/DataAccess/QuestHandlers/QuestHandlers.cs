@@ -25,7 +25,7 @@ namespace LevelUpAPI.DataAccess.QuestHandlers
                     questHandler = new DailyPhysicalActivityQuestHandler();
                     break;
                 case QuestTypeAsEmum.WeeklyPhysicalActivity:
-                    questHandler = new WeeklyPhyisicalActivityQuestHandler();
+                    questHandler = new WeeklyPhysicalActivityQuestHandler();
                     break;
                 case QuestTypeAsEmum.Undefined:
                 default:

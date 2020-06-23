@@ -3,8 +3,6 @@ using LevelUpAPI.Dbo;
 using LevelUpRequests;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using static LevelUpAPI.DataAccess.QuestHandlers.Interfaces.IQuestHandler;
 
 namespace LevelUpAPI.DataAccess.QuestHandlers

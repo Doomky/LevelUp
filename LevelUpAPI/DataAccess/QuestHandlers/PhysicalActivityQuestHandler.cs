@@ -1,5 +1,4 @@
-﻿using LevelUpAPI.DataAccess.QuestHandlers.Interfaces;
-using LevelUpRequests;
+﻿using LevelUpRequests;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +11,7 @@ namespace LevelUpAPI.DataAccess.QuestHandlers
     {
         public const string PHYSICAL_ACTIVTY_KEY = "PhysicalActivity";
 
-        public override IQuestHandler.QuestState GetState()
+        public override QuestState GetState()
         {
             if (Quest.ProgressValue >= Quest.ProgressCount)
                 return QuestState.Finished ;
@@ -28,7 +27,7 @@ namespace LevelUpAPI.DataAccess.QuestHandlers
             }
         }
 
-        public override IQuestHandler.QuestState Update(UpdateQuestRequest updateQuestRequest)
+        public override QuestState Update(UpdateQuestRequest updateQuestRequest)
         {
             if (updateQuestRequest.Data != null)
             {
@@ -41,7 +40,7 @@ namespace LevelUpAPI.DataAccess.QuestHandlers
             return GetState();
         }
 
-        public override IQuestHandler.QuestState Update(string key, string value)
+        public override QuestState Update(string key, string value)
         {
             if (key.Equals(PHYSICAL_ACTIVTY_KEY))
             {
