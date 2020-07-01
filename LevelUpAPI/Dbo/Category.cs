@@ -10,6 +10,7 @@ namespace LevelUpAPI.Dbo
             Undefined,
             Nutrition,
             PhysicalActivity,
+            Sleep,
         }
 
         public int Id { get; set; }

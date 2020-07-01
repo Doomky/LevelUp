@@ -4,14 +4,16 @@ using LevelUpAPI.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LevelUpAPI.Migrations
 {
     [DbContext(typeof(levelupContext))]
-    partial class levelupContextModelSnapshot : ModelSnapshot
+    [Migration("20200623144716_Default_Data")]
+    partial class Default_Data
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

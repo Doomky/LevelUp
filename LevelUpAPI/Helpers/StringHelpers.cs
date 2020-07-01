@@ -50,10 +50,15 @@ namespace LevelUpAPI.Helpers
         {
             switch (type)
             {
+                case "physicalactivities":
                 case "PhysicalActivities":
                     return Dbo.Category.CategoryAsEnum.PhysicalActivity;
+                case "nutrition":
                 case "Nutrition":
                     return Dbo.Category.CategoryAsEnum.Nutrition;
+                case "sleep":
+                case "Sleep":
+                    return Dbo.Category.CategoryAsEnum.Sleep;
                 default:
                     return Dbo.Category.CategoryAsEnum.Undefined;
             }

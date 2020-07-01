@@ -1,4 +1,6 @@
 ﻿using System;
+using LevelUpAPI.Model;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LevelUpAPI.Migrations

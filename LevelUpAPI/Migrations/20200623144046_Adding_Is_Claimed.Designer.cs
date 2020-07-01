@@ -4,14 +4,16 @@ using LevelUpAPI.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LevelUpAPI.Migrations
 {
     [DbContext(typeof(levelupContext))]
-    partial class levelupContextModelSnapshot : ModelSnapshot
+    [Migration("20200623144046_Adding_Is_Claimed")]
+    partial class Adding_Is_Claimed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
