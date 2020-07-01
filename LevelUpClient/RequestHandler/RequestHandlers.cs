@@ -123,6 +123,11 @@ namespace LevelUpClient.RequestHandler
                     requestHandler = new RemovePAEntryRequestHandler(fulladdress);
                     break;
 
+                // Avatar
+                case "avatar":
+                    requestHandler = new GetAvatarInfoRequestHandler(fulladdress);
+                    break;
+
                 default:
                     Console.WriteLine("Unknown endpoint");
                     return;
