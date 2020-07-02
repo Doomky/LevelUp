@@ -55,7 +55,7 @@ namespace LevelUpAPI.RequestHandlers
                 var quests = _questRepository.Get(user, _questTypeRepository, QuestState.InProgress ).GetAwaiter().GetResult();
                 foreach (var quest in quests)
                 {
-                    var questHandler = QuestHandlers.Create(quest, _questTypeRepository);
+                    var questHandler = QuestHandlers.Create(quest, user, _questTypeRepository);
                     questHandler.Update(PhysicalActivityQuestHandler.PHYSICAL_ACTIVTY_KEY, "1");
                     _questRepository.Update(quest).GetAwaiter().GetResult();
                 }

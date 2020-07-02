@@ -37,19 +37,6 @@ namespace LevelUpIdentityServer.Controllers
                 bodyStr = await reader.ReadToEndAsync();
             }
             ClientCredentialsDTORequest clientCredentialsRequest = JsonSerializer.Deserialize<ClientCredentialsDTORequest>(bodyStr);
-            //Config._clients.Add(clientCredentialsRequest.Id, new Client()
-            //{
-            //    ClientId = clientCredentialsRequest.Login,
-            //    ClientSecrets = 
-            //    {
-            //        new Secret(clientCredentialsRequest.PasswordHash)
-            //    },
-            //    AllowedGrantTypes = GrantTypes.ClientCredentials,
-            //    AllowedScopes = 
-            //    { 
-            //        "api1" 
-            //    }
-            //});
             return Ok();
         }
     }

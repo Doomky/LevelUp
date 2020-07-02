@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using IdentityModel.Client;
 using LevelUpDTO;
 using LevelUpAPI.DataAccess.Repositories.Interfaces;
+using LevelUpAPI.DataAccess.GoogleFit;
 
 namespace LevelUpAPI.RequestHandlers
 {
@@ -69,6 +70,7 @@ namespace LevelUpAPI.RequestHandlers
                 user.LastLoginDate = DateTime.Now;
                 _userRepository.Update(user);
             }
+
             context.Response.WriteAsync(jsonAsString).GetAwaiter().GetResult();
         }
     }

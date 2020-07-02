@@ -10,11 +10,14 @@ namespace LevelUpAPI.DataAccess.QuestHandlers
 {
     public static class QuestHandlers
     {
-        public static QuestHandler Create(Quest quest, IQuestTypeRepository questTypeRepository)
+        public static QuestHandler Create(Quest quest, User user, IQuestTypeRepository questTypeRepository)
         {
             QuestHandler questHandler = null;
             switch (questTypeRepository.GetAsEmum(quest.TypeId).GetAwaiter().GetResult())
             {
+                case QuestTypeAsEmum.DailySleepGoal:
+                    questHandler = new DailySleepQuestHandler(user);
+                    break;
                 case QuestTypeAsEmum.CaloriesGoal:
                     questHandler = new CaloriesGoalQuestHandler();
                     break;

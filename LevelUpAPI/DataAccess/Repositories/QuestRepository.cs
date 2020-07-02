@@ -23,7 +23,7 @@ namespace LevelUpAPI.DataAccess.Repositories
             var getAll = await base.Get();
             return getAll
                 .Where(quest => {
-                    var questHandler =  QuestHandlers.QuestHandlers.Create(quest, questTypeRepository);
+                    var questHandler =  QuestHandlers.QuestHandlers.Create(quest, user, questTypeRepository);
                     return quest.UserId == user.Id && 
                            questHandler != null && (!questState.HasValue || questState.Value == questHandler.GetState());
                 });
@@ -34,7 +34,7 @@ namespace LevelUpAPI.DataAccess.Repositories
             var getAll = await base.Get();
             return getAll
                 .Where(quest => {
-                    var questHandler = QuestHandlers.QuestHandlers.Create(quest, questTypeRepository);
+                    var questHandler = QuestHandlers.QuestHandlers.Create(quest, user, questTypeRepository);
                     return 
                     quest.UserId == user.Id &&
                     quest.TypeId == categoryId &&

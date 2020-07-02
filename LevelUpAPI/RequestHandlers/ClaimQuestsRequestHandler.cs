@@ -33,7 +33,7 @@ namespace LevelUpAPI.RequestHandlers
                 return;
 
             Quest quest = _questRepository.GetById(user, Request.questId).GetAwaiter().GetResult();
-            QuestHandler questHandler = QuestHandlers.Create(quest, _questTypeRepository);
+            QuestHandler questHandler = QuestHandlers.Create(quest, user, _questTypeRepository) ;
             ClaimQuestDTOResponse claimQuestDTOResponse;
             string serializedString;
 

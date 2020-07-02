@@ -23,6 +23,38 @@ namespace LevelUpClient.RequestBuilders
             return this;
         }
 
+        public ConsoleSignInRequestBuilder WithPasswordOrPasswordHash()
+        {
+            int selection = -1;
+            while (selection == -1)
+            {
+                Console.WriteLine("Please select:");
+                Console.WriteLine("1 - Password");
+                Console.WriteLine("2 - PasswordHash");
+                string result = Console.ReadLine();
+                try
+                {
+                    if (int.TryParse(result, out selection))
+                        if (selection != 1 && selection != 2)
+                            selection = -1;
+                }
+                catch (Exception e)
+                {
+
+                    throw;
+                }
+            }
+            switch (selection)
+            {
+                case 1:
+                    return WithPassword();
+                case 2:
+                    return WithPasswordHash();
+                default:
+                    throw new Exception();
+            }
+        }
+
         public ConsoleSignInRequestBuilder WithPassword()
         {
             Console.Write("Password (will be hashed):");

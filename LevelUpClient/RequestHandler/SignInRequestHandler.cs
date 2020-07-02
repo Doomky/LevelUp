@@ -34,7 +34,7 @@ body: {tokenAsStr}");
         {
             return new ConsoleSignInRequestBuilder()
                     .WithLoginOrEmailAddress()
-                    .WithPassword()
+                    .WithPasswordOrPasswordHash()
                     .Build();
         }
     }

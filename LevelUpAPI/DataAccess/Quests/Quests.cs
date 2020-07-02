@@ -43,6 +43,8 @@ namespace LevelUpAPI.DataAccess.Quests
         {
             switch (questTypeAsEmum)
             {
+                case QuestTypeAsEmum.DailySleepGoal:
+                    return DailySleepQuest.Initialize(quest, user, questTypeAsEmum, addQuestRequest);
                 case QuestTypeAsEmum.CaloriesGoal:
                     return CaloriesGoalQuest.Initialize(quest, user, questTypeAsEmum, addQuestRequest);
                 case QuestTypeAsEmum.DailyCaloriesLimit:

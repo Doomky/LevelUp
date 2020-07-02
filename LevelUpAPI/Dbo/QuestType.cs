@@ -13,6 +13,7 @@ namespace LevelUpAPI.Dbo
             DailyCaloriesLimit,
             DailyPhysicalActivity,
             WeeklyPhysicalActivity,
+            DailySleepGoal,
         }
 
         public int Id { get; set; }
