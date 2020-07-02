@@ -8,6 +8,7 @@ namespace LevelUpAPI.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+
             migrationBuilder.Sql(
 @"INSERT INTO [dbo].[categories]
             ([name])
@@ -23,7 +24,8 @@ namespace LevelUpAPI.Migrations
             ('CaloriesGoal'),
             ('DailyCaloriesLimit'),
             ('DailyPhysicalActivity'),
-            ('WeeklyPhysicalActivity')");
+            ('WeeklyPhysicalActivity'),
+            ('DailySleepGoal')");
 
             migrationBuilder.Sql(
 @"INSERT INTO [dbo].[physical_activities]
@@ -120,7 +122,8 @@ namespace LevelUpAPI.Migrations
             quest_types.name = 'CaloriesGoal' OR
             quest_types.name = 'DailyCaloriesLimit' OR
             quest_types.name = 'DailyPhysicalActivity' OR
-            quest_types.name = 'WeeklyPhysicalActivity'");
+            quest_types.name = 'WeeklyPhysicalActivity' OR
+            quest_types.name = 'DailySleepGoal'");
 
             migrationBuilder.Sql(
 @"DELETE FROM [dbo].[physical_activities]
