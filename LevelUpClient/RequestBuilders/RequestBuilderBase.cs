@@ -1,11 +1,11 @@
-﻿using LevelUpRequests;
+﻿using LevelUpDTO;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace LevelUpClient
 {
-    public class RequestBuilderBase<TRequest> where TRequest : Request, new()
+    public class RequestBuilderBase<TRequest> where TRequest : DTORequest, new()
     {
         public TRequest Request { get; set; }
 

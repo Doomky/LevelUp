@@ -1,16 +1,16 @@
 ﻿using LevelUpClient.RequestBuilders;
-using LevelUpRequests;
+using LevelUpDTO;
 using System;
 
 namespace LevelUpClient.RequestHandler
 {
-    internal class ChangeUserInfoRequestHandler : RequestHandler<ChangeUserInfoRequest>
+    internal class ChangeUserInfoRequestHandler : RequestHandler<ChangeUserInfoDTORequest>
     {
         public ChangeUserInfoRequestHandler(string fullAddress) : base(fullAddress)
         {
         }
 
-        public override ChangeUserInfoRequest RequestBuilder()
+        public override ChangeUserInfoDTORequest RequestBuilder()
         {
             return new ConsoleChangeUserInfoRequestBuilder()
                 .WithNewFirstname()

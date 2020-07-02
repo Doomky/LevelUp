@@ -1,11 +1,11 @@
-﻿using LevelUpRequests;
+﻿using LevelUpDTO;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace LevelUpClient.RequestBuilders
 {
-    public class ConsoleAddPARequestBuilder : RequestBuilder<AddPARequest>
+    public class ConsoleAddPARequestBuilder : RequestBuilder<AddPADTORequest>
     {
         public ConsoleAddPARequestBuilder WithName()
         {

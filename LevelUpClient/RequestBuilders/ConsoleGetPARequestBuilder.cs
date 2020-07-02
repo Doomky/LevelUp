@@ -1,8 +1,8 @@
-﻿using LevelUpRequests;
+﻿using LevelUpDTO;
 
 namespace LevelUpClient.RequestBuilders
 {
-    public class ConsoleGetPARequestBuilder : RequestBuilder<GetPARequest>
+    public class ConsoleGetPARequestBuilder : RequestBuilder<GetPADTORequest>
     {
     }
 }

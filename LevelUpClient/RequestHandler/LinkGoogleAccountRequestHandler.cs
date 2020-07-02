@@ -1,18 +1,18 @@
 ﻿using LevelUpClient.RequestBuilders;
-using LevelUpRequests;
+using LevelUpDTO;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace LevelUpClient.RequestHandler
 {
-    public class LinkGoogleAccountRequestHandler : RequestHandler<LinkGoogleAccountRequest>
+    public class LinkGoogleAccountRequestHandler : RequestHandler<LinkGoogleAccountDTORequest>
     {
         public LinkGoogleAccountRequestHandler(string fullAddress) : base(fullAddress)
         {
         }
 
-        public override LinkGoogleAccountRequest RequestBuilder()
+        public override LinkGoogleAccountDTORequest RequestBuilder()
         {
             return new ConsoleLinkGoogleAccountRequestBuilder()
                 .WithGoogleAuthCode()

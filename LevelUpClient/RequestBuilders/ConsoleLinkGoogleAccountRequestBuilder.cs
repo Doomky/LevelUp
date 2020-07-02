@@ -1,11 +1,11 @@
-﻿using LevelUpRequests;
+﻿using LevelUpDTO;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace LevelUpClient.RequestBuilders
 {
-    public class ConsoleLinkGoogleAccountRequestBuilder : RequestBuilder<LinkGoogleAccountRequest>
+    public class ConsoleLinkGoogleAccountRequestBuilder : RequestBuilder<LinkGoogleAccountDTORequest>
     {
         public ConsoleLinkGoogleAccountRequestBuilder WithGoogleAuthCode()
         {

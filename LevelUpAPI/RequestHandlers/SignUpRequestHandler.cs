@@ -1,11 +1,11 @@
 ﻿using System;
 using Microsoft.AspNetCore.Http;
 using LevelUpAPI.DataAccess.Repositories.Interfaces;
-using LevelUpRequests;
+using LevelUpDTO;
 
 namespace LevelUpAPI
 {
-    public class SignUpRequestHandler : RequestHandler<SignUpRequest>
+    public class SignUpRequestHandler : RequestHandler<SignUpDTORequest>
     {
         public const string HTTP = "http://";
         public const string address = "localhost";

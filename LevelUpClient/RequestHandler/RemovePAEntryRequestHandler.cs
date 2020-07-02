@@ -1,15 +1,15 @@
 ﻿using LevelUpClient.RequestBuilders;
-using LevelUpRequests;
+using LevelUpDTO;
 
 namespace LevelUpClient.RequestHandler
 {
-    public class RemovePAEntryRequestHandler : RequestHandler<RemovePAEntryRequest>
+    public class RemovePAEntryRequestHandler : RequestHandler<RemovePAEntryDTORequest>
     {
         public RemovePAEntryRequestHandler(string fullAddress) : base(fullAddress)
         {
         }
 
-        public override RemovePAEntryRequest RequestBuilder()
+        public override RemovePAEntryDTORequest RequestBuilder()
         {
             return new ConsoleRemovePAEntryRequestBuilder()
                         .WithId()

@@ -1,6 +1,6 @@
 ﻿using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Dbo;
-using LevelUpRequests;
+using LevelUpDTO;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Text.Json;
 
 namespace LevelUpAPI.RequestHandlers
 {
-    public class GetQuestCategoriesRequestHandler : RequestHandler<GetQuestCategoriesRequest>
+    public class GetQuestCategoriesRequestHandler : RequestHandler<GetQuestCategoriesDTORequest>
     {
         private readonly ICategoryRepository _categoryRepository;
 

@@ -1,8 +1,8 @@
-﻿using LevelUpRequests;
+﻿using LevelUpDTO;
 
 namespace LevelUpClient.RequestBuilders
 {
-    public class ConsoleGetQuestTypesRequestBuilder : RequestBuilder<GetQuestTypesRequest>
+    public class ConsoleGetQuestTypesRequestBuilder : RequestBuilder<GetQuestTypesDTORequest>
     {
     }
 }

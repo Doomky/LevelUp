@@ -8,7 +8,7 @@ using IdentityServer;
 using IdentityServer4.Models;
 using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Model;
-using LevelUpRequests;
+using LevelUpDTO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -36,7 +36,7 @@ namespace LevelUpIdentityServer.Controllers
             {
                 bodyStr = await reader.ReadToEndAsync();
             }
-            ClientCredentialsRequest clientCredentialsRequest = JsonSerializer.Deserialize<ClientCredentialsRequest>(bodyStr);
+            ClientCredentialsDTORequest clientCredentialsRequest = JsonSerializer.Deserialize<ClientCredentialsDTORequest>(bodyStr);
             //Config._clients.Add(clientCredentialsRequest.Id, new Client()
             //{
             //    ClientId = clientCredentialsRequest.Login,

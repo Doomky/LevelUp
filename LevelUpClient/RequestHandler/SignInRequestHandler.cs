@@ -1,13 +1,13 @@
 ﻿using IdentityModel.Client;
 using LevelUpClient.RequestBuilders;
-using LevelUpRequests;
+using LevelUpDTO;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Net.Http;
 
 namespace LevelUpClient.RequestHandler
 {
-    public class SignInRequestHandler : RequestHandler<SignInRequest>
+    public class SignInRequestHandler : RequestHandler<SignInDTORequest>
     {
         public SignInRequestHandler(string fullAddress) : base(fullAddress)
         {
@@ -30,7 +30,7 @@ body: {tokenAsStr}");
             httpClient.SetBearerToken(accessToken);
         }
 
-        public override SignInRequest RequestBuilder()
+        public override SignInDTORequest RequestBuilder()
         {
             return new ConsoleSignInRequestBuilder()
                     .WithLoginOrEmailAddress()

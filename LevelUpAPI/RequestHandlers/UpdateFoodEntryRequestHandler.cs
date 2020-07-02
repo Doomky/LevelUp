@@ -1,6 +1,6 @@
 ﻿using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Dbo;
-using LevelUpRequests;
+using LevelUpDTO;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Threading.Tasks;
@@ -8,7 +8,7 @@ using static LevelUpAPI.Helpers.ClaimsHelpers;
 
 namespace LevelUpAPI.RequestHandlers
 {
-    public class UpdateFoodEntryRequestHandler : RequestHandler<UpdateFoodEntryRequest>
+    public class UpdateFoodEntryRequestHandler : RequestHandler<UpdateFoodEntryDTORequest>
     {
         private readonly IUserRepository _userRepository;
         private readonly IFoodEntryRepository _foodEntryRepository;

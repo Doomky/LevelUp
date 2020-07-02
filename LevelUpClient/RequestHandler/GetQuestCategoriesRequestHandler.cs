@@ -1,15 +1,15 @@
 ﻿using LevelUpClient.RequestBuilders;
-using LevelUpRequests;
+using LevelUpDTO;
 
 namespace LevelUpClient.RequestHandler
 {
-    internal class GetQuestCategoriesRequestHandler : RequestHandler<GetQuestCategoriesRequest>
+    internal class GetQuestCategoriesRequestHandler : RequestHandler<GetQuestCategoriesDTORequest>
     {
         public GetQuestCategoriesRequestHandler(string fulladdress) : base(fulladdress)
         {
         }
 
-        public override GetQuestCategoriesRequest RequestBuilder()
+        public override GetQuestCategoriesDTORequest RequestBuilder()
         {
             return new ConsoleGetQuestCategoriesRequestBuilder()
                 .Build();

@@ -1,11 +1,11 @@
-﻿using LevelUpRequests;
+﻿using LevelUpDTO;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace LevelUpClient.RequestBuilders
 {
-    public class ConsoleClaimQuestsRequestBuilder : RequestBuilder<ClaimQuestsRequest>
+    public class ConsoleClaimQuestsRequestBuilder : RequestBuilder<ClaimQuestsDTORequest>
     {
         public ConsoleClaimQuestsRequestBuilder WithQuestId()
         {
@@ -13,9 +13,9 @@ namespace LevelUpClient.RequestBuilders
             while (!done)
             {
                 Console.WriteLine("QuestId: ");
-                if (int.TryParse(Console.ReadLine(), out int userId))
+                if (int.TryParse(Console.ReadLine(), out int questId))
                 {
-                    Request.QuestId = userId;
+                    Request.questId = questId;
                     done = true;
                 }
             }

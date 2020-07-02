@@ -1,6 +1,6 @@
 ﻿using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Dbo;
-using LevelUpRequests;
+using LevelUpDTO;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Text.Json;
@@ -8,7 +8,7 @@ using static LevelUpAPI.Helpers.ClaimsHelpers;
 
 namespace LevelUpAPI.RequestHandlers
 {
-    public class AccessTokenInfoRequestHandler : RequestHandler<AccessTokenInfoRequest>
+    public class AccessTokenInfoRequestHandler : RequestHandler<AccessTokenInfoDTORequest>
     {
         private IUserRepository _userRepository;
 

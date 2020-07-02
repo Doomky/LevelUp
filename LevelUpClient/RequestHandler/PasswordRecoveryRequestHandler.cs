@@ -1,5 +1,5 @@
 ﻿using LevelUpClient.RequestBuilders;
-using LevelUpRequests;
+using LevelUpDTO;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -7,7 +7,7 @@ using System.Text;
 
 namespace LevelUpClient.RequestHandler
 {
-    public class PasswordRecoveryRequestHandler : RequestHandler<PasswordRecoveryRequest>
+    public class PasswordRecoveryRequestHandler : RequestHandler<PasswordRecoveryDTORequest>
     {
         public PasswordRecoveryRequestHandler(string fullAddress) : base(fullAddress)
         {
@@ -18,7 +18,7 @@ namespace LevelUpClient.RequestHandler
             base.Execute(httpClient);
         }
 
-        public override PasswordRecoveryRequest RequestBuilder()
+        public override PasswordRecoveryDTORequest RequestBuilder()
         {
             return new ConsolePasswordRecoveryRequestBuilder()
                         .WithHash()

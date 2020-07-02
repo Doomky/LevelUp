@@ -1,6 +1,6 @@
 ﻿using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Dbo;
-using LevelUpRequests;
+using LevelUpDTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +13,7 @@ namespace LevelUpAPI.DataAccess.Quests
     public class Quests
     {
         public static async Task<Quest> Create(
-            AddQuestRequest addQuestRequest,
+            AddQuestDTORequest addQuestRequest,
             User user,
             IQuestTypeRepository questTypeRepository, 
             ICategoryRepository categoryRepository)
@@ -39,7 +39,7 @@ namespace LevelUpAPI.DataAccess.Quests
             return Initialize(quest, user, questTypeAsEnum, addQuestRequest);
         }
 
-        private static Quest Initialize(Quest quest, User user, QuestTypeAsEmum questTypeAsEmum, AddQuestRequest addQuestRequest)
+        private static Quest Initialize(Quest quest, User user, QuestTypeAsEmum questTypeAsEmum, AddQuestDTORequest addQuestRequest)
         {
             switch (questTypeAsEmum)
             {

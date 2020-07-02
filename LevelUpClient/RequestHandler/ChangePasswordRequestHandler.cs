@@ -1,5 +1,5 @@
 ﻿using LevelUpClient.RequestBuilders;
-using LevelUpRequests;
+using LevelUpDTO;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -8,13 +8,13 @@ using System.Text.Json;
 
 namespace LevelUpClient.RequestHandler
 {
-    public class ChangePasswordRequestHandler : RequestHandler<ChangePasswordRequest>
+    public class ChangePasswordRequestHandler : RequestHandler<ChangePasswordDTORequest>
     {
         public ChangePasswordRequestHandler(string fullAddress) : base(fullAddress)
         {
         }
 
-        public override ChangePasswordRequest RequestBuilder()
+        public override ChangePasswordDTORequest RequestBuilder()
         {
             return new ConsoleChangePasswordRequestBuilder()
                 .WithPassword()

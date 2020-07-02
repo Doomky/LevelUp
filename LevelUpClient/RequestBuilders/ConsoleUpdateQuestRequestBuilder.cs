@@ -1,11 +1,11 @@
-﻿using LevelUpRequests;
+﻿using LevelUpDTO;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace LevelUpClient.RequestBuilders
 {
-    public class ConsoleUpdateQuestRequestBuilder : RequestBuilder<UpdateQuestRequest>
+    public class ConsoleUpdateQuestRequestBuilder : RequestBuilder<UpdateQuestDTORequest>
     {
 
         public ConsoleUpdateQuestRequestBuilder WithDatas()

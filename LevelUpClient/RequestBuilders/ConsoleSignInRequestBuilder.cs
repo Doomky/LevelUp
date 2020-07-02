@@ -1,11 +1,11 @@
 ﻿using IdentityModel;
-using LevelUpRequests;
+using LevelUpDTO;
 using System;
 using System.Net.Mail;
 
 namespace LevelUpClient.RequestBuilders
 {
-    public class ConsoleSignInRequestBuilder : RequestBuilder<SignInRequest>
+    public class ConsoleSignInRequestBuilder : RequestBuilder<SignInDTORequest>
     {
         public ConsoleSignInRequestBuilder WithLoginOrEmailAddress()
         {

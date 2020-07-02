@@ -1,15 +1,15 @@
 ﻿using LevelUpClient.RequestBuilders;
-using LevelUpRequests;
+using LevelUpDTO;
 
 namespace LevelUpClient.RequestHandler
 {
-    internal class AccessTokenInfoRequestHandler : RequestHandler<AccessTokenInfoRequest>
+    internal class AccessTokenInfoRequestHandler : RequestHandler<AccessTokenInfoDTORequest>
     {
         public AccessTokenInfoRequestHandler(string fullAddress) : base(fullAddress)
         {
         }
 
-        public override AccessTokenInfoRequest RequestBuilder()
+        public override AccessTokenInfoDTORequest RequestBuilder()
         {
             return new ConsoleAccessTokenInfoRequestBuilder()
                 .Build();

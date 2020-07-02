@@ -1,11 +1,8 @@
 ﻿using LevelUpAPI.Dbo;
 using LevelUpAPI.Model;
-using LevelUpRequests;
+using LevelUpDTO;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Security.Principal;
 using System.Threading.Tasks;
 
 namespace LevelUpAPI.DataAccess.Repositories.Interfaces
@@ -13,14 +10,14 @@ namespace LevelUpAPI.DataAccess.Repositories.Interfaces
     public interface IUserRepository : IRepository<Users, User>
     {
 
-        public Task<Dbo.User> GetUserByClaims(ClaimsPrincipal claimsPrincipal);
+        public Task<User> GetUserByClaims(ClaimsPrincipal claimsPrincipal);
 
-        public Task<Dbo.User> GetUserById(int id);
+        public Task<User> GetUserById(int id);
 
-        public Task<Dbo.User> GetUserByLoginOrEmail(string login = null, string email = null);
+        public Task<User> GetUserByLoginOrEmail(string login = null, string email = null);
 
-        public Task<bool> CanSignUp(SignUpRequest signUpRequest);
-        public Task<Dbo.User> SignUp(SignUpRequest signUpRequest, int avatarId);
-        public Task<bool> CanSignIn(SignInRequest signInRequest);
+        public Task<bool> CanSignUp(SignUpDTORequest signUpRequest);
+        public Task<User> SignUp(SignUpDTORequest signUpRequest, int avatarId);
+        public Task<bool> CanSignIn(SignInDTORequest signInRequest);
     }
 }

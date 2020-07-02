@@ -1,12 +1,12 @@
 ﻿using IdentityModel;
-using LevelUpRequests;
+using LevelUpDTO;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace LevelUpClient.RequestBuilders
 {
-    public class ConsolePasswordRecoveryRequestBuilder : RequestBuilder<PasswordRecoveryRequest>
+    public class ConsolePasswordRecoveryRequestBuilder : RequestBuilder<PasswordRecoveryDTORequest>
     {
         public ConsolePasswordRecoveryRequestBuilder WithPassword()
         {

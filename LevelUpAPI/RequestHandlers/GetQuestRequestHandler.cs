@@ -1,6 +1,6 @@
 ﻿using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Dbo;
-using LevelUpRequests;
+using LevelUpDTO;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -12,7 +12,7 @@ using QuestState = LevelUpAPI.DataAccess.QuestHandlers.Interfaces.IQuestHandler.
 
 namespace LevelUpAPI.RequestHandlers
 {
-    public class GetQuestRequestHandler : RequestHandler<GetQuestRequest>
+    public class GetQuestRequestHandler : RequestHandler<GetQuestDTORequest>
     {
         private readonly IUserRepository _userRepository;
         private readonly IQuestRepository _questRepository;

@@ -1,11 +1,11 @@
-﻿using LevelUpRequests;
+﻿using LevelUpDTO;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace LevelUpClient.RequestBuilders
 {
-    public class ConsoleForgotPasswordRequestBuilder : RequestBuilder<ForgotPasswordRequest>
+    public class ConsoleForgotPasswordRequestBuilder : RequestBuilder<ForgotPasswordDTORequest>
     {
         public ConsoleForgotPasswordRequestBuilder WithLogin()
         {

@@ -1,5 +1,5 @@
 ﻿using LevelUpClient.RequestHandler.Interfaces;
-using LevelUpRequests;
+using LevelUpDTO;
 using System;
 using System.Net.Http;
 using System.Text.Json;
@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace LevelUpClient.RequestHandler
 {
     public abstract class RequestHandler<TRequest> : IRequestHandler
-        where TRequest : Request
+        where TRequest : DTORequest
     {
         protected RequestHandler(string fullAddress)
         {
@@ -41,16 +41,16 @@ body: {bodyAsStr}");
 
         public async Task<HttpResponseMessage> ExecuteMethod(HttpClient httpClient)
         {
-            switch (Request.MethodType)
+            switch (Request.GetMethodType())
             {
-                case LevelUpRequests.Request.Method.GET:
+                case DTORequest.Method.GET:
                     return await httpClient.GetAsync(FullAddress);
-                case LevelUpRequests.Request.Method.POST:
+                case DTORequest.Method.POST:
                     string jsonString = JsonSerializer.Serialize(Request);
                     HttpContent httpContent = new StringContent(jsonString);
                     return await httpClient.PostAsync(FullAddress, httpContent);
                 default:
-                    throw new NotSupportedException(Request.MethodType + " is not supported yet");
+                    throw new NotSupportedException(Request.GetMethodType() + " is not supported yet");
             }
         }
     }

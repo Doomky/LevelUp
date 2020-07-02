@@ -2,14 +2,14 @@
 using System.Net.Http;
 using Microsoft.AspNetCore.Http;
 using IdentityModel.Client;
-using LevelUpRequests;
+using LevelUpDTO;
 using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Dbo;
 using static LevelUpAPI.Helpers.ClaimsHelpers;
 
 namespace LevelUpAPI.RequestHandlers
 {
-    public class SignOutRequestHandler : RequestHandler<SignOutRequest>
+    public class SignOutRequestHandler : RequestHandler<SignOutDTORequest>
     {
         public const string HTTP = "http://";
         public const string address = "localhost";

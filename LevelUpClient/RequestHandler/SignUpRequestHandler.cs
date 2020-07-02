@@ -1,15 +1,15 @@
 ﻿using LevelUpClient.RequestBuilders;
-using LevelUpRequests;
+using LevelUpDTO;
 
 namespace LevelUpClient.RequestHandler
 {
-    public class SignUpRequestHandler : RequestHandler<SignUpRequest>
+    public class SignUpRequestHandler : RequestHandler<SignUpDTORequest>
     {
         public SignUpRequestHandler(string fullAddress) : base(fullAddress)
         {
         }
 
-        public override SignUpRequest RequestBuilder()
+        public override SignUpDTORequest RequestBuilder()
         {
             return new ConsoleSignUpRequestBuilder()
                     .WithLogin()

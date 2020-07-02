@@ -1,11 +1,11 @@
-﻿using LevelUpRequests;
+﻿using LevelUpDTO;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace LevelUpClient.RequestBuilders
 {
-    public class ConsoleAddFoodEntryRequestBuilder : RequestBuilder<AddFoodEntryRequest>
+    public class ConsoleAddFoodEntryRequestBuilder : RequestBuilder<AddFoodEntryDTORequest>
     {
         public ConsoleAddFoodEntryRequestBuilder WithOFFId()
         {

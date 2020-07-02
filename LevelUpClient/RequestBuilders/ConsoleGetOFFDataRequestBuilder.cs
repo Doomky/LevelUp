@@ -1,11 +1,11 @@
-﻿using LevelUpRequests;
+﻿using LevelUpDTO;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace LevelUpClient.RequestBuilders
 {
-    public class ConsoleGetOFFDataRequestBuilder : RequestBuilder<GetOFFDataRequest>
+    public class ConsoleGetOFFDataRequestBuilder : RequestBuilder<GetOFFDataDTORequest>
     {
         public ConsoleGetOFFDataRequestBuilder WithBarcode()
         {

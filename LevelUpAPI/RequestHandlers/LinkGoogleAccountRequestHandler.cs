@@ -1,7 +1,7 @@
 ﻿using IdentityModel.Client;
 using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Dbo;
-using LevelUpRequests;
+using LevelUpDTO;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json.Linq;
 using System;
@@ -12,7 +12,7 @@ using static LevelUpAPI.Helpers.ClaimsHelpers;
 
 namespace LevelUpAPI.RequestHandlers
 {
-    public class LinkGoogleAccountRequestHandler : RequestHandler<LinkGoogleAccountRequest>
+    public class LinkGoogleAccountRequestHandler : RequestHandler<LinkGoogleAccountDTORequest>
     {
         private IUserRepository _userRepository;
 

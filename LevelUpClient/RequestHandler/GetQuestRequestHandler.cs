@@ -1,5 +1,5 @@
 ﻿using LevelUpClient.RequestBuilders;
-using LevelUpRequests;
+using LevelUpDTO;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -7,7 +7,7 @@ using System.Text;
 
 namespace LevelUpClient.RequestHandler
 {
-    public class GetQuestRequestHandler : RequestHandler<GetQuestRequest>
+    public class GetQuestRequestHandler : RequestHandler<GetQuestDTORequest>
     {
         public GetQuestRequestHandler(string fullAddress) : base(fullAddress)
         {
@@ -20,7 +20,7 @@ namespace LevelUpClient.RequestHandler
             base.Execute(httpClient);
         }
 
-        public override GetQuestRequest RequestBuilder()
+        public override GetQuestDTORequest RequestBuilder()
         {
             return new ConsoleGetQuestRequestBuilder()
                     .WithQuestState()

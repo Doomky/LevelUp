@@ -1,13 +1,13 @@
 ﻿using System;
 using Microsoft.AspNetCore.Http;
-using LevelUpRequests;
+using LevelUpDTO;
 using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Dbo;
 using static LevelUpAPI.Helpers.ClaimsHelpers;
 
 namespace LevelUpAPI.RequestHandlers
 {
-    public class ChangeUserInfoRequestHandler : RequestHandler<ChangeUserInfoRequest>
+    public class ChangeUserInfoRequestHandler : RequestHandler<ChangeUserInfoDTORequest>
     {
         private readonly IUserRepository _userRepository;
 

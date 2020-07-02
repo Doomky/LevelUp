@@ -1,5 +1,5 @@
 ﻿using LevelUpClient.RequestBuilders;
-using LevelUpRequests;
+using LevelUpDTO;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -7,14 +7,14 @@ using System.Text;
 
 namespace LevelUpClient.RequestHandler
 {
-    public class AddFoodEntryRequestHandler : RequestHandler<AddFoodEntryRequest>
+    public class AddFoodEntryRequestHandler : RequestHandler<AddFoodEntryDTORequest>
     {
         public AddFoodEntryRequestHandler(string fullAddress) : base(fullAddress)
         {
 
         }
 
-        public override AddFoodEntryRequest RequestBuilder()
+        public override AddFoodEntryDTORequest RequestBuilder()
         {
             return new ConsoleAddFoodEntryRequestBuilder()
                 .WithOFFId()

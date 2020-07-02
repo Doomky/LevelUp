@@ -1,6 +1,6 @@
 ﻿using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Dbo;
-using LevelUpRequests;
+using LevelUpDTO;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace LevelUpAPI.RequestHandlers
 {
-    public class AddPARequestHandler : RequestHandler<AddPARequest>
+    public class AddPARequestHandler : RequestHandler<AddPADTORequest>
     {
         private readonly IPhysicalActivitiesRepository _physicalActivitiesRepository;
 

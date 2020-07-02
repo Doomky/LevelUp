@@ -6,11 +6,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Dbo;
-using LevelUpRequests;
+using LevelUpDTO;
 
 namespace LevelUpAPI.RequestHandlers
 {
-    public class ForgotPasswordRequestHandler : RequestHandler<ForgotPasswordRequest>
+    public class ForgotPasswordRequestHandler : RequestHandler<ForgotPasswordDTORequest>
     {
         public const string EMAIL_SECTION = "Email";
         public const string CLIENT_HOST_KEY = "Host";

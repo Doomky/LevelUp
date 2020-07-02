@@ -1,5 +1,5 @@
 ﻿using LevelUpAPI.Dbo;
-using LevelUpRequests;
+using LevelUpDTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +11,7 @@ namespace LevelUpAPI.DataAccess.Quests
     public static class DailyPhysicalActivityQuest
     {
 
-        public static Quest Initialize(Quest quest, User user, QuestTypeAsEmum questTypeAsEmum, AddQuestRequest addQuestRequest)
+        public static Quest Initialize(Quest quest, User user, QuestTypeAsEmum questTypeAsEmum, AddQuestDTORequest addQuestRequest)
         {
             quest.ProgressValue = 0;
             quest.ProgressCount = 1;

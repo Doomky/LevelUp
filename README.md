@@ -20,7 +20,7 @@ models of the database (**Entity Framework**) and repositories to manage all the
 - ***LevelUpClient*** : a console application to test the different endpoints of the API.
 - ***LevelUpDatabase*** : the SQL project containing all the tables and views of the database needed for the API to work.
 - ***LevelUpIdentityServer*** : the authentication server based on the **Identity Server** package
-- ***LevelUpRequests*** : contains the classes representing all the possible requests that can do the user on the API.
+- ***LevelUpDTO*** : contains the classes representing all the possible DTO (requests and responses).
 
 ## Requirements
 

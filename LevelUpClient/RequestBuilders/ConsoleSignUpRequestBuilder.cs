@@ -1,10 +1,10 @@
 ﻿using IdentityModel;
-using LevelUpRequests;
+using LevelUpDTO;
 using System;
 
 namespace LevelUpClient.RequestBuilders
 {
-    public class ConsoleSignUpRequestBuilder : RequestBuilder<SignUpRequest>
+    public class ConsoleSignUpRequestBuilder : RequestBuilder<SignUpDTORequest>
     {
         public ConsoleSignUpRequestBuilder WithLogin()
         {

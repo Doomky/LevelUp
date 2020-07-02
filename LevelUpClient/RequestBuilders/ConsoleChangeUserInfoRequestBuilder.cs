@@ -1,11 +1,11 @@
-﻿using LevelUpRequests;
+﻿using LevelUpDTO;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace LevelUpClient.RequestBuilders
 {
-    public class ConsoleChangeUserInfoRequestBuilder : RequestBuilder<ChangeUserInfoRequest>
+    public class ConsoleChangeUserInfoRequestBuilder : RequestBuilder<ChangeUserInfoDTORequest>
     {
         public ConsoleChangeUserInfoRequestBuilder WithNewFirstname()
         {

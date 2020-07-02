@@ -1,19 +1,19 @@
 ﻿using LevelUpClient.RequestBuilders;
-using LevelUpRequests;
+using LevelUpDTO;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace LevelUpClient.RequestHandler
 {
-    public class ClaimQuestsRequestHandler : RequestHandler<ClaimQuestsRequest>
+    public class ClaimQuestsRequestHandler : RequestHandler<ClaimQuestsDTORequest>
     {
         public ClaimQuestsRequestHandler(string fullAddress) : base(fullAddress)
         {
 
         }
 
-        public override ClaimQuestsRequest RequestBuilder()
+        public override ClaimQuestsDTORequest RequestBuilder()
         {
             return new ConsoleClaimQuestsRequestBuilder()
                 .WithQuestId()

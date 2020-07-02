@@ -2,12 +2,12 @@
 using System.Net.Http;
 using Microsoft.AspNetCore.Http;
 using IdentityModel.Client;
-using LevelUpRequests;
+using LevelUpDTO;
 using LevelUpAPI.DataAccess.Repositories.Interfaces;
 
 namespace LevelUpAPI.RequestHandlers
 {
-    public class SignInRequestHandler : RequestHandler<SignInRequest>
+    public class SignInRequestHandler : RequestHandler<SignInDTORequest>
     {
         public const string HTTP = "http://";
         public const string address = "localhost";

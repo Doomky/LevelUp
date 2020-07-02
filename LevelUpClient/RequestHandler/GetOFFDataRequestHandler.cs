@@ -1,5 +1,5 @@
 ﻿using LevelUpClient.RequestBuilders;
-using LevelUpRequests;
+using LevelUpDTO;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -7,7 +7,7 @@ using System.Text;
 
 namespace LevelUpClient.RequestHandler
 {
-    public class GetOFFDataRequestHandler : RequestHandler<GetOFFDataRequest>
+    public class GetOFFDataRequestHandler : RequestHandler<GetOFFDataDTORequest>
     {
         public GetOFFDataRequestHandler(string fullAddress) : base(fullAddress)
         {
@@ -19,7 +19,7 @@ namespace LevelUpClient.RequestHandler
             base.Execute(httpClient);
         }
 
-        public override GetOFFDataRequest RequestBuilder()
+        public override GetOFFDataDTORequest RequestBuilder()
         {
             return new ConsoleGetOFFDataRequestBuilder()
                 .WithBarcode()

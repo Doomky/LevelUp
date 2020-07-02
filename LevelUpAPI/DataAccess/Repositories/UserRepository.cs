@@ -7,7 +7,7 @@ using AutoMapper;
 using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Dbo;
 using LevelUpAPI.Model;
-using LevelUpRequests;
+using LevelUpDTO;
 using System.Net.Http;
 using Newtonsoft.Json.Linq;
 using IdentityModel.Client;
@@ -74,7 +74,7 @@ namespace LevelUpAPI.DataAccess.Repositories
             }
         }
 
-        public async Task<bool> CanSignUp(SignUpRequest signUpRequest)
+        public async Task<bool> CanSignUp(SignUpDTORequest signUpRequest)
         {
             var arr = await base.Get();
             var query = from user in arr
@@ -84,7 +84,7 @@ namespace LevelUpAPI.DataAccess.Repositories
             return !query.Any();
         }
 
-        public async Task<User> SignUp(SignUpRequest signUpRequest, int avatarId)
+        public async Task<User> SignUp(SignUpDTORequest signUpRequest, int avatarId)
         {
             User user = new User()
             {
@@ -105,7 +105,7 @@ namespace LevelUpAPI.DataAccess.Repositories
             return await Insert(user);
         }
 
-        public async Task<bool> CanSignIn(SignInRequest signInRequest)
+        public async Task<bool> CanSignIn(SignInDTORequest signInRequest)
         {
             var arr = await base.Get();
             var query = from users in arr

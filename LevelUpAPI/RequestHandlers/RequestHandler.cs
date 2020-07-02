@@ -1,17 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using LevelUpRequests;
+using LevelUpDTO;
 
 namespace LevelUpAPI
 {
-    public abstract class RequestHandler<TRequest> where TRequest : Request, new()
+    public abstract class RequestHandler<TRequest> where TRequest : DTORequest, new()
     {
         protected TRequest Request { get; set; }
+        protected DTOResponse dtoResponse { get; set; }
 
         protected virtual async Task<HttpContext> CheckHeader(HttpContext context)
         {
@@ -20,7 +19,7 @@ namespace LevelUpAPI
         protected virtual async Task<HttpContext> CheckBody(HttpContext context)
         {
             Request = new TRequest();
-            if (Request.MethodType == LevelUpRequests.Request.Method.POST)
+            if (Request.GetMethodType() == DTORequest.Method.POST)
             {
                 string bodyStr = "";
                 Stream body = context.Request.Body;
@@ -54,6 +53,11 @@ namespace LevelUpAPI
             {
                 context.Response.StatusCode = StatusCodes.Status500InternalServerError;
             }
+        }
+
+        public DTOResponse GetDTOResponse()
+        {
+            return dtoResponse;
         }
     }
 }

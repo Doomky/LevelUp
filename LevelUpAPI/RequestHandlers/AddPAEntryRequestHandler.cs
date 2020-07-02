@@ -1,7 +1,7 @@
 ﻿using LevelUpAPI.DataAccess.QuestHandlers;
 using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Dbo;
-using LevelUpRequests;
+using LevelUpDTO;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Text.Json;
@@ -11,7 +11,7 @@ using static LevelUpAPI.DataAccess.QuestHandlers.Interfaces.IQuestHandler;
 
 namespace LevelUpAPI.RequestHandlers
 {
-    public class AddPAEntryRequestHandler : RequestHandler<AddPAEntryRequest>
+    public class AddPAEntryRequestHandler : RequestHandler<AddPAEntryDTORequest>
     {
         private readonly IUserRepository _userRepository;
         private readonly IPhysicalActivitiesRepository _physicalActivitiesRepository;

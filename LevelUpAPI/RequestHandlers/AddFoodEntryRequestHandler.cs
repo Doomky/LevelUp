@@ -1,7 +1,7 @@
 ﻿using LevelUpAPI.DataAccess.QuestHandlers;
 using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Dbo;
-using LevelUpRequests;
+using LevelUpDTO;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Linq;
@@ -12,7 +12,7 @@ using static LevelUpAPI.DataAccess.QuestHandlers.Interfaces.IQuestHandler.QuestS
 
 namespace LevelUpAPI.RequestHandlers
 {
-    public class AddFoodEntryRequestHandler : RequestHandler<AddFoodEntryRequest>
+    public class AddFoodEntryRequestHandler : RequestHandler<AddFoodEntryDTORequest>
     {
         private readonly IFoodEntryRepository _foodEntryRepository;
         private readonly IOFFDataRepository _offDataRepository;

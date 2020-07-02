@@ -1,11 +1,11 @@
-﻿using LevelUpRequests;
+﻿using LevelUpDTO;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace LevelUpClient.RequestBuilders
 {
-    public class ConsoleRemovePAEntryRequestBuilder : RequestBuilder<RemovePAEntryRequest>
+    public class ConsoleRemovePAEntryRequestBuilder : RequestBuilder<RemovePAEntryDTORequest>
     {
         public ConsoleRemovePAEntryRequestBuilder WithId()
         {

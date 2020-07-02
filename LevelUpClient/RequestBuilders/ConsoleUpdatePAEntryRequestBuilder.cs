@@ -1,11 +1,11 @@
-﻿using LevelUpRequests;
+﻿using LevelUpDTO;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace LevelUpClient.RequestBuilders
 {
-    public class ConsoleUpdatePAEntryRequestBuilder : RequestBuilder<UpdatePAEntryRequest>
+    public class ConsoleUpdatePAEntryRequestBuilder : RequestBuilder<UpdatePAEntryDTORequest>
     {
         public ConsoleUpdatePAEntryRequestBuilder WithId()
         {

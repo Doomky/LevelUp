@@ -1,6 +1,6 @@
 ﻿using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Dbo;
-using LevelUpRequests;
+using LevelUpDTO;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 
@@ -8,7 +8,7 @@ namespace LevelUpAPI.Helpers
 {
     public static class ClaimsHelpers
     {
-        public static (bool, User) CheckClaimsForUser(Request request, HttpContext context, IUserRepository userRepository)
+        public static (bool, User) CheckClaimsForUser(DTORequest request, HttpContext context, IUserRepository userRepository)
         {
             if (request == null)
             {

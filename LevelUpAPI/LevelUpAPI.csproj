@@ -21,6 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LevelUpRequests\LevelUpRequests.csproj" />
+    <ProjectReference Include="..\LevelUpDTO\LevelUpDTO.csproj" />
   </ItemGroup>
 </Project>

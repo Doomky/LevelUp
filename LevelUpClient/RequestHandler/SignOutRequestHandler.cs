@@ -1,12 +1,12 @@
 ﻿using IdentityModel.Client;
 using LevelUpClient.RequestBuilders;
-using LevelUpRequests;
+using LevelUpDTO;
 using System;
 using System.Net.Http;
 
 namespace LevelUpClient.RequestHandler
 {
-    public class SignOutRequestHandler : RequestHandler<SignOutRequest>
+    public class SignOutRequestHandler : RequestHandler<SignOutDTORequest>
     {
         public SignOutRequestHandler(string fullAddress) : base(fullAddress)
         {
@@ -22,7 +22,7 @@ body: ");
             httpClient.SetBearerToken(null);
         }
 
-        public override SignOutRequest RequestBuilder()
+        public override SignOutDTORequest RequestBuilder()
         {
             return new ConsoleSignOutRequestBuilder()
                 .WithAccessToken()

@@ -1,15 +1,15 @@
 ﻿using LevelUpClient.RequestBuilders;
-using LevelUpRequests;
+using LevelUpDTO;
 
 namespace LevelUpClient.RequestHandler
 {
-    public class UpdatePAEntryRequestHandler : RequestHandler<UpdatePAEntryRequest>
+    public class UpdatePAEntryRequestHandler : RequestHandler<UpdatePAEntryDTORequest>
     {
         public UpdatePAEntryRequestHandler(string fullAddress) : base(fullAddress)
         {
         }
 
-        public override UpdatePAEntryRequest RequestBuilder()
+        public override UpdatePAEntryDTORequest RequestBuilder()
         {
             return new ConsoleUpdatePAEntryRequestBuilder()
                         .WithId()

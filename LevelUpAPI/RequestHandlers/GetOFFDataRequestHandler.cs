@@ -1,7 +1,7 @@
 ﻿using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Dbo;
 using LevelUpAPI.Dbo.OpenFoodFacts;
-using LevelUpRequests;
+using LevelUpDTO;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace LevelUpAPI.RequestHandlers
 {
-    public class GetOFFDataRequestHandler : RequestHandler<GetOFFDataRequest>
+    public class GetOFFDataRequestHandler : RequestHandler<GetOFFDataDTORequest>
     {
         private readonly string _barcode;
         private readonly IOFFDataRepository _OFFDataRepository;

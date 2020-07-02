@@ -1,12 +1,12 @@
 ﻿using System;
 using Microsoft.AspNetCore.Http;
-using LevelUpRequests;
+using LevelUpDTO;
 using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Dbo;
 
 namespace LevelUpAPI.RequestHandlers
 {
-    public class PasswordRecoveryRequestHandler : RequestHandler<PasswordRecoveryRequest>
+    public class PasswordRecoveryRequestHandler : RequestHandler<PasswordRecoveryDTORequest>
     {
         private readonly IPasswordRecoveryDataRepository _passwordRecoveryDataRepository;
         private readonly IUserRepository _userRepository;

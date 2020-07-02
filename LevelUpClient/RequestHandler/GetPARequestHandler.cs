@@ -1,18 +1,18 @@
 ﻿using LevelUpClient.RequestBuilders;
-using LevelUpRequests;
+using LevelUpDTO;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace LevelUpClient.RequestHandler
 {
-    public class GetPARequestHandler : RequestHandler<GetPARequest>
+    public class GetPARequestHandler : RequestHandler<GetPADTORequest>
     {
         public GetPARequestHandler(string fullAddress) : base(fullAddress)
         {
         }
 
-        public override GetPARequest RequestBuilder()
+        public override GetPADTORequest RequestBuilder()
         {
             return new ConsoleGetPARequestBuilder()
                 .Build();

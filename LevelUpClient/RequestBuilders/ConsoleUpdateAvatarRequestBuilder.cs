@@ -1,11 +1,11 @@
-﻿using LevelUpRequests;
+﻿using LevelUpDTO;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace LevelUpClient.RequestBuilders
 {
-    public class ConsoleUpdateAvatarRequestBuilder : RequestBuilder<UpdateAvatarRequest>
+    public class ConsoleUpdateAvatarRequestBuilder : RequestBuilder<UpdateAvatarDTORequest>
     {
         public ConsoleUpdateAvatarRequestBuilder WithNewSize()
         {

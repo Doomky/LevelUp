@@ -1,16 +1,16 @@
 ﻿using LevelUpClient.RequestBuilders;
 using LevelUpClient.RequestHandler.Interfaces;
-using LevelUpRequests;
+using LevelUpDTO;
 
 namespace LevelUpClient.RequestHandler
 {
-    internal class GetQuestTypesRequestHandler : RequestHandler<GetQuestTypesRequest>
+    internal class GetQuestTypesRequestHandler : RequestHandler<GetQuestTypesDTORequest>
     {
         public GetQuestTypesRequestHandler(string fullAddress) : base(fullAddress)
         {
         }
 
-        public override GetQuestTypesRequest RequestBuilder()
+        public override GetQuestTypesDTORequest RequestBuilder()
         {
             return new ConsoleGetQuestTypesRequestBuilder()
                 .Build();

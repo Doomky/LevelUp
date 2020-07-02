@@ -1,13 +1,13 @@
 ﻿using System;
 using Microsoft.AspNetCore.Http;
-using LevelUpRequests;
+using LevelUpDTO;
 using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Dbo;
 using static LevelUpAPI.Helpers.ClaimsHelpers;
 
 namespace LevelUpAPI.RequestHandlers
 {
-    public class UnlinkGoogleAccountRequestHandler : RequestHandler<UnlinkGoogleAccountRequest>
+    public class UnlinkGoogleAccountRequestHandler : RequestHandler<UnlinkGoogleAccountDTORequest>
     {
         private IUserRepository _userRepository;
 

@@ -1,18 +1,18 @@
 ﻿using LevelUpClient.RequestBuilders;
-using LevelUpRequests;
+using LevelUpDTO;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace LevelUpClient.RequestHandler
 {
-    public class GetFoodEntriesCountRequestHandler : RequestHandler<GetFoodEntriesCountRequest>
+    public class GetFoodEntriesCountRequestHandler : RequestHandler<GetFoodEntriesCountDTORequest>
     {
         public GetFoodEntriesCountRequestHandler(string fullAddress) : base(fullAddress)
         {
         }
 
-        public override GetFoodEntriesCountRequest RequestBuilder()
+        public override GetFoodEntriesCountDTORequest RequestBuilder()
         {
             return new ConsoleGetFoodEntriesCountRequestBuilder()
                 .Build();

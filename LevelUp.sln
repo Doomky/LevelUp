@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LevelUpAPI", "LevelUpAPI\Le
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LevelUpIdentityServer", "LevelUpIdentityServer\LevelUpIdentityServer.csproj", "{BC2C8890-4D02-4A2E-BC00-79BEB3908828}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LevelUpRequests", "LevelUpRequests\LevelUpRequests.csproj", "{62FBE49B-B543-4ACC-A451-E89FA777B331}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LevelUpDTO", "LevelUpDTO\LevelUpDTO.csproj", "{62FBE49B-B543-4ACC-A451-E89FA777B331}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LevelUpClient", "LevelUpClient\LevelUpClient.csproj", "{0B13B57C-C7D5-44AA-A348-54989A372E58}"
 EndProject

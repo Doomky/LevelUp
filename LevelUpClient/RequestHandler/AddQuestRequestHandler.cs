@@ -1,18 +1,18 @@
 ﻿using LevelUpClient.RequestBuilders;
-using LevelUpRequests;
+using LevelUpDTO;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace LevelUpClient.RequestHandler
 {
-    public class AddQuestRequestHandler : RequestHandler<AddQuestRequest>
+    public class AddQuestRequestHandler : RequestHandler<AddQuestDTORequest>
     {
         public AddQuestRequestHandler(string fullAddress) : base(fullAddress)
         {
         }
 
-        public override AddQuestRequest RequestBuilder()
+        public override AddQuestDTORequest RequestBuilder()
         {
             return new ConsoleAddQuestRequestBuilder()
                     .WithCategoryId()

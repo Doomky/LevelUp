@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using LevelUpAPI.DataAccess.Repositories.Interfaces;
+﻿using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.RequestHandlers;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using static LevelUpAPI.Helpers.StringHelpers;
 using static LevelUpAPI.DataAccess.QuestHandlers.Interfaces.IQuestHandler;
+using LevelUpDTO;
 
 namespace LevelUpAPI.Controllers
 {
@@ -159,22 +155,26 @@ namespace LevelUpAPI.Controllers
         /// Claim the reward for a specified quest of the signed-in user.
         /// </summary>
         /// <remarks>
-        /// The body of the request must contains those fields:
-        /// 
+        /// Sample request:
+        ///
+        ///     POST /quests/claim
         ///     {
-        ///         "QuestId"
+        ///        "QuestId": 1
         ///     }
-        /// 
+        ///
         /// </remarks>
+        /// <param name="request"></param>
+        /// <returns>The state, the xp gain of the quest and a message.</returns>
         /// <response code="200">The quest has been claimed. The response contains informations on the state of the quest during the claim.</response>
         /// <response code="400">The quest has not been claimed because the quest does not exist or is still in progress.</response>
         /// <response code="401">The user is not signed in.</response>
         [HttpPost]
         [Route("claim")]
-        public void Claim()
+        public ClaimQuestDTOResponse Claim(ClaimQuestsDTORequest request)
         {
             ClaimQuestsRequestHandler claimQuestsRequestHandler = new ClaimQuestsRequestHandler(_userRepository, _questRepository, _questTypeRepository, _avatarRepository);
             claimQuestsRequestHandler.Execute(HttpContext);
+            return (ClaimQuestDTOResponse)claimQuestsRequestHandler.GetDTOResponse();
         }
     }
 }

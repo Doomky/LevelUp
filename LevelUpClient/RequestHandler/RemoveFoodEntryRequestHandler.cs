@@ -1,18 +1,18 @@
 ﻿using LevelUpClient.RequestBuilders;
-using LevelUpRequests;
+using LevelUpDTO;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace LevelUpClient.RequestHandler
 {
-    public class RemoveFoodEntryRequestHandler : RequestHandler<RemoveFoodEntryRequest>
+    public class RemoveFoodEntryRequestHandler : RequestHandler<RemoveFoodEntryDTORequest>
     {
         public RemoveFoodEntryRequestHandler(string fullAddress) : base(fullAddress)
         {
         }
 
-        public override RemoveFoodEntryRequest RequestBuilder()
+        public override RemoveFoodEntryDTORequest RequestBuilder()
         {
             return new ConsoleRemoveFoodEntryRequestBuilder()
                 .WithId()

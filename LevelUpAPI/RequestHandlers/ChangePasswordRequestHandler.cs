@@ -1,13 +1,13 @@
 ﻿using System;
 using Microsoft.AspNetCore.Http;
-using LevelUpRequests;
+using LevelUpDTO;
 using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Dbo;
 using static LevelUpAPI.Helpers.ClaimsHelpers;
 
 namespace LevelUpAPI.RequestHandlers
 {
-    public class ChangePasswordRequestHandler : RequestHandler<ChangePasswordRequest>
+    public class ChangePasswordRequestHandler : RequestHandler<ChangePasswordDTORequest>
     {
         public const string HTTP = "http://";
         public const string address = "localhost";

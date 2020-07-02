@@ -1,9 +1,9 @@
-﻿using LevelUpRequests;
+﻿using LevelUpDTO;
 using System;
 
 namespace LevelUpClient.RequestBuilders
 {
-    public class ConsoleSignOutRequestBuilder : RequestBuilder<SignOutRequest>
+    public class ConsoleSignOutRequestBuilder : RequestBuilder<SignOutDTORequest>
     {
         public ConsoleSignOutRequestBuilder WithAccessToken()
         {

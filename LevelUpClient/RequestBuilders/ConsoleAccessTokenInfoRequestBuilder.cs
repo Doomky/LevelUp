@@ -1,8 +1,8 @@
-﻿using LevelUpRequests;
+﻿using LevelUpDTO;
 
 namespace LevelUpClient.RequestBuilders
 {
-    public class ConsoleAccessTokenInfoRequestBuilder : RequestBuilder<AccessTokenInfoRequest>
+    public class ConsoleAccessTokenInfoRequestBuilder : RequestBuilder<AccessTokenInfoDTORequest>
     {
     }
 }

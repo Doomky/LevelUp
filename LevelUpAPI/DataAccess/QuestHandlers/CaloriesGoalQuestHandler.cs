@@ -1,4 +1,4 @@
-﻿using LevelUpRequests;
+﻿using LevelUpDTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,7 +29,7 @@ namespace LevelUpAPI.DataAccess.QuestHandlers
             }
         }
 
-        public override QuestState Update(UpdateQuestRequest updateQuestRequest)
+        public override QuestState Update(UpdateQuestDTORequest updateQuestRequest)
         {
             if (updateQuestRequest.Data != null)
             {

@@ -35,7 +35,7 @@ namespace LevelUpAPI.Controllers
         }
 
         /// <summary>
-        /// Sign up a new user. 
+        /// Sign up a new user.
         /// </summary>
         /// <remarks>
         /// The body of the request must contains those fields:

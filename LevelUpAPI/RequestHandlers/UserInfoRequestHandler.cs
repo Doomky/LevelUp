@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Text.Json;
 using Microsoft.AspNetCore.Http;
-using LevelUpRequests;
+using LevelUpDTO;
 using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Dbo;
 using static LevelUpAPI.Helpers.ClaimsHelpers;
 
 namespace LevelUpAPI.RequestHandlers
 {
-    public class UserInfoRequestHandler : RequestHandler<UserInfoRequest>
+    public class UserInfoRequestHandler : RequestHandler<UserInfoDTORequest>
     {
         private readonly IUserRepository _userRepository;
         private readonly IAvatarRepository _avatarRepository;

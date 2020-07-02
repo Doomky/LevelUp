@@ -1,6 +1,5 @@
-﻿using IdentityModel.Client;
-using LevelUpClient.RequestBuilders;
-using LevelUpRequests;
+﻿using LevelUpClient.RequestBuilders;
+using LevelUpDTO;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -9,13 +8,13 @@ using System.Text.Json;
 
 namespace LevelUpClient.RequestHandler
 {
-    public class UserInfoRequestHandler : RequestHandler<LevelUpRequests.UserInfoRequest>
+    public class UserInfoRequestHandler : RequestHandler<UserInfoDTORequest>
     {
         public UserInfoRequestHandler(string fullAddress) : base(fullAddress)
         {
         }
 
-        public override LevelUpRequests.UserInfoRequest RequestBuilder()
+        public override UserInfoDTORequest RequestBuilder()
         {
             return new ConsoleUserInfoRequestBuilder()
                 .Build();

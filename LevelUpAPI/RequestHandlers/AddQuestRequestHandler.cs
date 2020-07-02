@@ -1,7 +1,7 @@
 ﻿using LevelUpAPI.DataAccess.Quests;
 using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Dbo;
-using LevelUpRequests;
+using LevelUpDTO;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Text.Json;
@@ -10,7 +10,7 @@ using static LevelUpAPI.Helpers.ClaimsHelpers;
 
 namespace LevelUpAPI.RequestHandlers
 {
-    public class AddQuestRequestHandler : RequestHandler<AddQuestRequest>
+    public class AddQuestRequestHandler : RequestHandler<AddQuestDTORequest>
     {
         private readonly IUserRepository _userRepository;
         private readonly IQuestRepository _questRepository;

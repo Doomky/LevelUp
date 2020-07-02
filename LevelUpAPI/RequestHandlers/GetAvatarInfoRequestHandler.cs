@@ -1,6 +1,6 @@
 ﻿using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Dbo;
-using LevelUpRequests;
+using LevelUpDTO;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ using static LevelUpAPI.Helpers.ClaimsHelpers;
 
 namespace LevelUpAPI.RequestHandlers
 {
-    public class GetAvatarInfoRequestHandler : RequestHandler<GetAvatarInfoRequest>
+    public class GetAvatarInfoRequestHandler : RequestHandler<GetAvatarInfoDTORequest>
     {
         private readonly IUserRepository _userRepository;
         private readonly IAvatarRepository _avatarRepository;

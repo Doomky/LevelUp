@@ -1,6 +1,6 @@
 ﻿using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Dbo;
-using LevelUpRequests;
+using LevelUpDTO;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using static LevelUpAPI.Helpers.ClaimsHelpers;
 
 namespace LevelUpAPI.RequestHandlers
 {
-    public class GetTotalPAEntriesRequestHandler : RequestHandler<GetPAEntriesRequest>
+    public class GetTotalPAEntriesRequestHandler : RequestHandler<GetPAEntriesDTORequest>
     {
         private readonly IUserRepository _userRepository;
         private readonly IPhysicalActivitiesEntryRepository _physicalActivitiesEntryRepository;

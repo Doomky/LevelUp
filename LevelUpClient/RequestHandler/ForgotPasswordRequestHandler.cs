@@ -1,5 +1,5 @@
 ﻿using LevelUpClient.RequestBuilders;
-using LevelUpRequests;
+using LevelUpDTO;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -7,13 +7,13 @@ using System.Text;
 
 namespace LevelUpClient.RequestHandler
 {
-    public class ForgotPasswordRequestHandler : RequestHandler<ForgotPasswordRequest>
+    public class ForgotPasswordRequestHandler : RequestHandler<ForgotPasswordDTORequest>
     {
         public ForgotPasswordRequestHandler(string fullAddress) : base(fullAddress)
         {
         }
 
-        public override ForgotPasswordRequest RequestBuilder()
+        public override ForgotPasswordDTORequest RequestBuilder()
         {
             return new ConsoleForgotPasswordRequestBuilder()
                 .WithLogin()

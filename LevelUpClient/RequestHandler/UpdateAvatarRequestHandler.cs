@@ -1,15 +1,15 @@
 ﻿using LevelUpClient.RequestBuilders;
-using LevelUpRequests;
+using LevelUpDTO;
 
 namespace LevelUpClient.RequestHandler
 {
-    public class UpdateAvatarRequestHandler : RequestHandler<UpdateAvatarRequest>
+    public class UpdateAvatarRequestHandler : RequestHandler<UpdateAvatarDTORequest>
     {
         public UpdateAvatarRequestHandler(string fullAddress) : base(fullAddress)
         {
         }
 
-        public override UpdateAvatarRequest RequestBuilder()
+        public override UpdateAvatarDTORequest RequestBuilder()
         {
             return new ConsoleUpdateAvatarRequestBuilder()
                 .WithNewSize()
