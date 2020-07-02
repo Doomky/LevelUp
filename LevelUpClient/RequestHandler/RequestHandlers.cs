@@ -127,6 +127,9 @@ namespace LevelUpClient.RequestHandler
                 case "avatar":
                     requestHandler = new GetAvatarInfoRequestHandler(fulladdress);
                     break;
+                case "avatar/update":
+                    requestHandler = new UpdateAvatarRequestHandler(fulladdress);
+                    break;
 
                 default:
                     Console.WriteLine("Unknown endpoint");
