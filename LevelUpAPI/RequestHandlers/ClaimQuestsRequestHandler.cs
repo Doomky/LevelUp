@@ -43,21 +43,21 @@ namespace LevelUpAPI.RequestHandlers
                 {
                     case QuestState.InProgress:
                         context.Response.StatusCode = StatusCodes.Status400BadRequest;
-                        claimQuestDTOResponse = new ClaimQuestDTOResponse(questHandler.GetState().ToString(), "0", "you cannot claim this quest, it's in progress");
+                        claimQuestDTOResponse = new ClaimQuestDTOResponse(QuestState.InProgress.ToString(), "0", "you cannot claim this quest, it's in progress");
                         break;
                     case QuestState.Claimed:
                         context.Response.StatusCode = StatusCodes.Status400BadRequest;
-                        claimQuestDTOResponse = new ClaimQuestDTOResponse(questHandler.GetState().ToString(), "0", "you cannot claim this quest, it was already claimed");
+                        claimQuestDTOResponse = new ClaimQuestDTOResponse(QuestState.Claimed.ToString(), "0", "you cannot claim this quest, it was already claimed");
                         break;
                     case QuestState.Failed:
                         context.Response.StatusCode = StatusCodes.Status400BadRequest;
-                        claimQuestDTOResponse = new ClaimQuestDTOResponse(questHandler.GetState().ToString(), "0", "you cannot claim this quest, it was already failed");
+                        claimQuestDTOResponse = new ClaimQuestDTOResponse(QuestState.Failed.ToString(), "0", "you cannot claim this quest, it was already failed");
                         break;
                     case QuestState.Finished:
                         context.Response.StatusCode = StatusCodes.Status200OK;
                         quest = _questRepository.SetIsClaimedById(user,quest.Id).GetAwaiter().GetResult();
-                        Avatar avatar = _avatarRepository.AddXp(user, quest).GetAwaiter().GetResult();
-                        claimQuestDTOResponse = new ClaimQuestDTOResponse(questHandler.GetState().ToString(), quest.XpValue.ToString(), "you have claimed this quest");
+                        _avatarRepository.AddXp(user, quest).GetAwaiter().GetResult();
+                        claimQuestDTOResponse = new ClaimQuestDTOResponse(QuestState.Finished.ToString(), quest.XpValue.ToString(), "you have claimed this quest");
                         break;
                     default:
                         throw new NotSupportedException();
