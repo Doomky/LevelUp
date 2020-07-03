@@ -11,7 +11,7 @@ using static LevelUpAPI.DataAccess.QuestHandlers.Interfaces.IQuestHandler;
 
 namespace LevelUpAPI.RequestHandlers
 {
-    public class AddPAEntryRequestHandler : RequestHandler<AddPAEntryDTORequest>
+    public class AddPAEntryRequestHandler : RequestHandler<AddPAEntryDTORequest, AddPAEntryDTOResponse>
     {
         private readonly IUserRepository _userRepository;
         private readonly IPhysicalActivitiesRepository _physicalActivitiesRepository;
@@ -28,25 +28,25 @@ namespace LevelUpAPI.RequestHandlers
             _questRepository = questRepository;
         }
 
-        protected override void ExecuteRequest(HttpContext context)
+        protected override async Task<AddPAEntryDTOResponse> ExecuteRequest(HttpContext context)
         {
-            (bool isOk, User user) = CheckClaimsForUser(Request, context, _userRepository);
+            (bool isOk, User user) = CheckClaimsForUser(DTORequest, context, _userRepository);
             if (!isOk || user == null)
-                return;
+                return null;
 
-            PhysicalActivity PA = _physicalActivitiesRepository.GetPhysicalActivity(Request.Name);
+            PhysicalActivity PA = _physicalActivitiesRepository.GetPhysicalActivity(DTORequest.Name);
             if (PA == null)
             {
                 context.Response.StatusCode = StatusCodes.Status204NoContent;
-                return;
+                return null;
             }
 
             PhysicalActivityEntry PAEntry = _physicalActivitiesEntryRepository.Insert(new PhysicalActivityEntry()
             {
                 UserId = user.Id,
                 PhysicalActivitiesId = PA.Id,
-                DatetimeStart = DateTime.Parse(Request.dateTimeStart),
-                DatetimeEnd = DateTime.Parse(Request.dateTimeEnd)
+                DatetimeStart = DateTime.Parse(DTORequest.dateTimeStart),
+                DatetimeEnd = DateTime.Parse(DTORequest.dateTimeEnd)
             }).GetAwaiter().GetResult();
 
             if (PAEntry != null)
@@ -63,9 +63,11 @@ namespace LevelUpAPI.RequestHandlers
                 string PAEntryJson = JsonSerializer.Serialize(PAEntry);
                 context.Response.StatusCode = StatusCodes.Status200OK;
                 context.Response.WriteAsync(PAEntryJson).GetAwaiter().GetResult();
+                return JsonSerializer.Deserialize<AddPAEntryDTOResponse>(PAEntryJson);
             }
             else
                 context.Response.StatusCode = StatusCodes.Status204NoContent;
+            return null;
         }
     }
 }

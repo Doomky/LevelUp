@@ -11,7 +11,7 @@ using static LevelUpAPI.Helpers.ClaimsHelpers;
 
 namespace LevelUpAPI.RequestHandlers
 {
-    public class ClaimQuestsRequestHandler : RequestHandler<ClaimQuestsDTORequest>
+    public class ClaimQuestsRequestHandler : RequestHandler<ClaimQuestsDTORequest, ClaimQuestsDTOResponse>
     {
         private readonly IUserRepository _userRepository;
         private readonly IQuestRepository _questRepository;
@@ -26,15 +26,15 @@ namespace LevelUpAPI.RequestHandlers
             _avatarRepository = avatarRepository;
         }
 
-        protected override void ExecuteRequest(HttpContext context)
+        protected override async Task<ClaimQuestsDTOResponse> ExecuteRequest(HttpContext context)
         {
-            (bool isOk, User user) = CheckClaimsForUser(Request, context, _userRepository);
+            (bool isOk, User user) = CheckClaimsForUser(DTORequest, context, _userRepository);
             if (!isOk || user == null)
-                return;
+                return null;
 
-            Quest quest = _questRepository.GetById(user, Request.questId).GetAwaiter().GetResult();
+            Quest quest = _questRepository.GetById(user, DTORequest.questId).GetAwaiter().GetResult();
             QuestHandler questHandler = QuestHandlers.Create(quest, user, _questTypeRepository) ;
-            ClaimQuestDTOResponse claimQuestDTOResponse;
+            ClaimQuestsDTOResponse claimQuestDTOResponse;
             string serializedString;
 
             if (questHandler != null)
@@ -43,29 +43,30 @@ namespace LevelUpAPI.RequestHandlers
                 {
                     case QuestState.InProgress:
                         context.Response.StatusCode = StatusCodes.Status400BadRequest;
-                        claimQuestDTOResponse = new ClaimQuestDTOResponse(QuestState.InProgress.ToString(), "0", "you cannot claim this quest, it's in progress");
+                        claimQuestDTOResponse = new ClaimQuestsDTOResponse(QuestState.InProgress.ToString(), "0", "you cannot claim this quest, it's in progress");
                         break;
                     case QuestState.Claimed:
                         context.Response.StatusCode = StatusCodes.Status400BadRequest;
-                        claimQuestDTOResponse = new ClaimQuestDTOResponse(QuestState.Claimed.ToString(), "0", "you cannot claim this quest, it was already claimed");
+                        claimQuestDTOResponse = new ClaimQuestsDTOResponse(QuestState.Claimed.ToString(), "0", "you cannot claim this quest, it was already claimed");
                         break;
                     case QuestState.Failed:
                         context.Response.StatusCode = StatusCodes.Status400BadRequest;
-                        claimQuestDTOResponse = new ClaimQuestDTOResponse(QuestState.Failed.ToString(), "0", "you cannot claim this quest, it was already failed");
+                        claimQuestDTOResponse = new ClaimQuestsDTOResponse(QuestState.Failed.ToString(), "0", "you cannot claim this quest, it was already failed");
                         break;
                     case QuestState.Finished:
                         context.Response.StatusCode = StatusCodes.Status200OK;
                         quest = _questRepository.SetIsClaimedById(user,quest.Id).GetAwaiter().GetResult();
                         _avatarRepository.AddXp(user, quest).GetAwaiter().GetResult();
-                        claimQuestDTOResponse = new ClaimQuestDTOResponse(QuestState.Finished.ToString(), quest.XpValue.ToString(), "you have claimed this quest");
+                        claimQuestDTOResponse = new ClaimQuestsDTOResponse(QuestState.Finished.ToString(), quest.XpValue.ToString(), "you have claimed this quest");
                         break;
                     default:
                         throw new NotSupportedException();
                 }
                 serializedString = JsonSerializer.Serialize(claimQuestDTOResponse);
-                dtoResponse = claimQuestDTOResponse;
                 context.Response.WriteAsync(serializedString).GetAwaiter().GetResult();
+                return claimQuestDTOResponse;
             }
+            return null;
         }
     }
 }

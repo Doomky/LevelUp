@@ -7,15 +7,15 @@ using System.Text;
 
 namespace LevelUpClient.RequestHandler
 {
-    public class PasswordRecoveryRequestHandler : RequestHandler<PasswordRecoveryDTORequest>
+    public class PasswordRecoveryRequestHandler : RequestHandler<PasswordRecoveryDTORequest, PasswordRecoveryDTOResponse>
     {
         public PasswordRecoveryRequestHandler(string fullAddress) : base(fullAddress)
         {
         }
 
-        public override void Execute(HttpClient httpClient)
+        public override PasswordRecoveryDTOResponse Execute(HttpClient httpClient)
         {
-            base.Execute(httpClient);
+            return base.Execute(httpClient);
         }
 
         public override PasswordRecoveryDTORequest RequestBuilder()

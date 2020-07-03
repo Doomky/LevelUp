@@ -12,7 +12,7 @@ using static LevelUpAPI.DataAccess.QuestHandlers.Interfaces.IQuestHandler.QuestS
 
 namespace LevelUpAPI.RequestHandlers
 {
-    public class AddFoodEntryRequestHandler : RequestHandler<AddFoodEntryDTORequest>
+    public class AddFoodEntryRequestHandler : RequestHandler<AddFoodEntryDTORequest, AddFoodEntryDTOResponse>
     {
         private readonly IFoodEntryRepository _foodEntryRepository;
         private readonly IOFFDataRepository _offDataRepository;
@@ -29,16 +29,16 @@ namespace LevelUpAPI.RequestHandlers
             _userRepository = userRepository;
         }
 
-        protected override void ExecuteRequest(HttpContext context)
+        protected override async Task<AddFoodEntryDTOResponse> ExecuteRequest(HttpContext context)
         {
-            (bool isOk, User user) = CheckClaimsForUser(Request, context, _userRepository);
+            (bool isOk, User user) = CheckClaimsForUser(DTORequest, context, _userRepository);
             if (!isOk || user == null)
-                return;
+                return null;
 
             FoodEntry foodEntryData = _foodEntryRepository.Insert(new FoodEntry()
             {
                 UserId = user.Id,
-                OpenFoodFactsDataId = Request.OFFDataId,
+                OpenFoodFactsDataId = DTORequest.OFFDataId,
                 Datetime = DateTime.Now
             }).GetAwaiter().GetResult();
 
@@ -58,10 +58,12 @@ namespace LevelUpAPI.RequestHandlers
                 string foodEntryJson = JsonSerializer.Serialize(foodEntryData);
                 context.Response.StatusCode = StatusCodes.Status200OK;
                 context.Response.WriteAsync(foodEntryJson).GetAwaiter().GetResult();
+                return JsonSerializer.Deserialize<AddFoodEntryDTOResponse>(foodEntryJson);
             }
             else
             {
                 context.Response.StatusCode = StatusCodes.Status204NoContent;
+                return null;
             }
         }
     }

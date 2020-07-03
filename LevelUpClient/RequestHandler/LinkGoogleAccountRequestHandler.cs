@@ -6,7 +6,7 @@ using System.Text;
 
 namespace LevelUpClient.RequestHandler
 {
-    public class LinkGoogleAccountRequestHandler : RequestHandler<LinkGoogleAccountDTORequest>
+    public class LinkGoogleAccountRequestHandler : RequestHandler<LinkGoogleAccountDTORequest, LinkGoogleAccountDTOResponse>
     {
         public LinkGoogleAccountRequestHandler(string fullAddress) : base(fullAddress)
         {

@@ -8,7 +8,7 @@ using System.Text.Json;
 
 namespace LevelUpClient.RequestHandler
 {
-    public class UserInfoRequestHandler : RequestHandler<UserInfoDTORequest>
+    public class UserInfoRequestHandler : RequestHandler<UserInfoDTORequest, UserInfoDTOResponse>
     {
         public UserInfoRequestHandler(string fullAddress) : base(fullAddress)
         {

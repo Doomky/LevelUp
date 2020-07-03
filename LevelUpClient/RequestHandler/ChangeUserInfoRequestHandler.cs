@@ -4,7 +4,7 @@ using System;
 
 namespace LevelUpClient.RequestHandler
 {
-    internal class ChangeUserInfoRequestHandler : RequestHandler<ChangeUserInfoDTORequest>
+    internal class ChangeUserInfoRequestHandler : RequestHandler<ChangeUserInfoDTORequest, ChangeUserInfoDTOResponse>
     {
         public ChangeUserInfoRequestHandler(string fullAddress) : base(fullAddress)
         {

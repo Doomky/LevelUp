@@ -6,10 +6,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace LevelUpAPI.RequestHandlers
 {
-    public class GetQuestCategoriesRequestHandler : RequestHandler<GetQuestCategoriesDTORequest>
+    public class GetQuestCategoriesRequestHandler : RequestHandler<GetQuestCategoriesDTORequest, GetQuestCategoriesDTOResponse>
     {
         private readonly ICategoryRepository _categoryRepository;
 
@@ -18,7 +19,7 @@ namespace LevelUpAPI.RequestHandlers
             _categoryRepository = categoryRepository;
         }
 
-        protected override void ExecuteRequest(HttpContext context)
+        protected override async Task<GetQuestCategoriesDTOResponse> ExecuteRequest(HttpContext context)
         {
             IEnumerable<Category> categories = _categoryRepository.GetAllCategories();
 
@@ -27,9 +28,11 @@ namespace LevelUpAPI.RequestHandlers
                 string categoriesJson = JsonSerializer.Serialize(categories);
                 context.Response.StatusCode = StatusCodes.Status200OK;
                 context.Response.WriteAsync(categoriesJson).GetAwaiter().GetResult();
+                return JsonSerializer.Deserialize<GetQuestCategoriesDTOResponse>(categoriesJson);
             }
             else
                 context.Response.StatusCode = StatusCodes.Status400BadRequest;
+            return null;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using LevelUpClient.RequestHandler.Interfaces;
+using LevelUpDTO;
 using System;
 using System.Net.Http;
 
@@ -8,134 +9,134 @@ namespace LevelUpClient.RequestHandler
     {
         public static void HandleEndpoint(HttpClient httpClient, string endpoint, string fulladdress)
         {
-            IRequestHandler requestHandler;
+            IRequestHandler<DTORequest, DTOResponse> requestHandler;
             switch (endpoint)
             {
                 // User
                 case "users/signin":
-                    requestHandler = new SignInRequestHandler(fulladdress);
+                    requestHandler = (IRequestHandler<DTORequest, DTOResponse>)new SignInRequestHandler(fulladdress);
                     break;
                 case "users/signup":
-                    requestHandler = new SignUpRequestHandler(fulladdress);
+                    requestHandler = (IRequestHandler<DTORequest, DTOResponse>)new SignUpRequestHandler(fulladdress);
                     break;
                 case "users/signout":
-                    requestHandler = new SignOutRequestHandler(fulladdress);
+                    requestHandler = (IRequestHandler<DTORequest, DTOResponse>)new SignOutRequestHandler(fulladdress);
                     break;
                 case "users/forgot-password":
-                    requestHandler = new ForgotPasswordRequestHandler(fulladdress);
+                    requestHandler = (IRequestHandler<DTORequest, DTOResponse>)new ForgotPasswordRequestHandler(fulladdress);
                     break;
                 case "users/change-password":
-                    requestHandler = new ChangePasswordRequestHandler(fulladdress);
+                    requestHandler = (IRequestHandler<DTORequest, DTOResponse>)new ChangePasswordRequestHandler(fulladdress);
                     break;
                 case "users/user-info":
-                    requestHandler = new UserInfoRequestHandler(fulladdress);
+                    requestHandler = (IRequestHandler<DTORequest, DTOResponse>)new UserInfoRequestHandler(fulladdress);
                     break;
                 case "users/change-user-info":
-                    requestHandler = new ChangeUserInfoRequestHandler(fulladdress);
+                    requestHandler = (IRequestHandler<DTORequest, DTOResponse>)new ChangeUserInfoRequestHandler(fulladdress);
                     break;
                 case "users/password-recovery":
-                    requestHandler = new PasswordRecoveryRequestHandler(fulladdress);
+                    requestHandler = (IRequestHandler<DTORequest, DTOResponse>)new PasswordRecoveryRequestHandler(fulladdress);
                     break;
                 case "users/link-google-account":
-                    requestHandler = new LinkGoogleAccountRequestHandler(fulladdress);
+                    requestHandler = (IRequestHandler<DTORequest, DTOResponse>)new LinkGoogleAccountRequestHandler(fulladdress);
                     break;
                 case "users/google-access-token":
-                    requestHandler = new AccessTokenInfoRequestHandler(fulladdress);
+                    requestHandler = (IRequestHandler<DTORequest, DTOResponse>)new AccessTokenInfoRequestHandler(fulladdress);
                     break;
                 case "users/unlink-google-account":
-                    requestHandler = new UnlinkGoogleAccountRequestHandler(fulladdress);
+                    requestHandler = (IRequestHandler<DTORequest, DTOResponse>)new UnlinkGoogleAccountRequestHandler(fulladdress);
                     break;
 
                 // OpenFoodFacts
                 case "openfoodfactsdatas":
-                    requestHandler = new GetOFFDataRequestHandler(fulladdress);
+                    requestHandler = (IRequestHandler<DTORequest, DTOResponse>)new GetOFFDataRequestHandler(fulladdress);
                     break;
                 case "openfoodfactsdatas/category":
-                    requestHandler = new GetOFFDataFromCategoryRequestHandler(fulladdress);
+                    requestHandler = (IRequestHandler<DTORequest, DTOResponse>)new GetOFFDataFromCategoryRequestHandler(fulladdress);
                     break;
 
                 // FoodEntry
                 case "foodentry":
-                    requestHandler = new GetFoodEntriesRequestHandler(fulladdress);
+                    requestHandler = (IRequestHandler<DTORequest, DTOResponse>)new GetFoodEntriesRequestHandler(fulladdress);
                     break;
                 case "foodentry/count":
-                    requestHandler = new GetFoodEntriesCountRequestHandler(fulladdress);
+                    requestHandler = (IRequestHandler<DTORequest, DTOResponse>)new GetFoodEntriesCountRequestHandler(fulladdress);
                     break;
                 case "foodentry/add/custom":
-                    requestHandler = new AddCustomFoodEntryRequestHandler(fulladdress);
+                    requestHandler = (IRequestHandler<DTORequest, DTOResponse>)new AddCustomFoodEntryRequestHandler(fulladdress);
                     break;
                 case "foodentry/add":
-                    requestHandler = new AddFoodEntryRequestHandler(fulladdress);
+                    requestHandler = (IRequestHandler<DTORequest, DTOResponse>)new AddFoodEntryRequestHandler(fulladdress);
                     break;
                 case "foodentry/update":
-                    requestHandler = new UpdateFoodEntryRequestHandler(fulladdress);
+                    requestHandler = (IRequestHandler<DTORequest, DTOResponse>)new UpdateFoodEntryRequestHandler(fulladdress);
                     break;
                 case "foodentry/remove":
-                    requestHandler = new RemoveFoodEntryRequestHandler(fulladdress);
+                    requestHandler = (IRequestHandler<DTORequest, DTOResponse>)new RemoveFoodEntryRequestHandler(fulladdress);
                     break;
 
                 // Quest
                 case "quests":
-                    requestHandler = new GetQuestRequestHandler(fulladdress);
+                    requestHandler = (IRequestHandler<DTORequest, DTOResponse>)new GetQuestRequestHandler(fulladdress);
                     break;
                 case "quests/category/list":
-                    requestHandler = new GetQuestCategoriesRequestHandler(fulladdress);
+                    requestHandler = (IRequestHandler<DTORequest, DTOResponse>)new GetQuestCategoriesRequestHandler(fulladdress);
                     break;
                 case "quests/category":
-                    requestHandler = new GetQuestByCategoryRequestHandler(fulladdress);
+                    requestHandler = (IRequestHandler<DTORequest, DTOResponse>)new GetQuestByCategoryRequestHandler(fulladdress);
                     break;
                 case "quests/type/list":
-                    requestHandler = new GetQuestTypesRequestHandler(fulladdress);
+                    requestHandler = (IRequestHandler<DTORequest, DTOResponse>)new GetQuestTypesRequestHandler(fulladdress);
                     break;
                 case "quests/update":
-                    requestHandler = new UpdateQuestRequestHandler(fulladdress);
+                    requestHandler = (IRequestHandler<DTORequest, DTOResponse>)new UpdateQuestRequestHandler(fulladdress);
                     break;
                 case "quests/add":
-                    requestHandler = new AddQuestRequestHandler(fulladdress);
+                    requestHandler = (IRequestHandler<DTORequest, DTOResponse>)new AddQuestRequestHandler(fulladdress);
                     break;
                 case "quests/remove":
-                    requestHandler = new RemoveQuestRequestHandler(fulladdress);
+                    requestHandler = (IRequestHandler<DTORequest, DTOResponse>)new RemoveQuestRequestHandler(fulladdress);
                     break;
                 case "quests/claim":
-                    requestHandler = new ClaimQuestsRequestHandler(fulladdress);
+                    requestHandler = (IRequestHandler<DTORequest, DTOResponse>)new ClaimQuestsRequestHandler(fulladdress);
                     break;
 
                 // Physical activities
                 case "physicalactivities":
-                    requestHandler = new GetPARequestHandler(fulladdress);
+                    requestHandler = (IRequestHandler<DTORequest, DTOResponse>)new GetPARequestHandler(fulladdress);
                     break;
                 case "physicalactivities/add":
-                    requestHandler = new AddPARequestHandler(fulladdress);
+                    requestHandler = (IRequestHandler<DTORequest, DTOResponse>)new AddPARequestHandler(fulladdress);
                     break;
                 case "physicalactivities/entry":
-                    requestHandler = new GetPAEntriesRequestHandler(fulladdress);
+                    requestHandler = (IRequestHandler<DTORequest, DTOResponse>)new GetPAEntriesRequestHandler(fulladdress);
                     break;
                 case "physicalactivities/entry/total":
-                    requestHandler = new GetPAEntriesRequestHandler(fulladdress);
+                    requestHandler = (IRequestHandler<DTORequest, DTOResponse>)new GetPAEntriesRequestHandler(fulladdress);
                     break;
                 case "physicalactivities/entry/add":
-                    requestHandler = new AddPAEntryRequestHandler(fulladdress);
+                    requestHandler = (IRequestHandler<DTORequest, DTOResponse>)new AddPAEntryRequestHandler(fulladdress);
                     break;
                 case "physicalactivities/entry/update":
-                    requestHandler = new UpdatePAEntryRequestHandler(fulladdress);
+                    requestHandler = (IRequestHandler<DTORequest, DTOResponse>)new UpdatePAEntryRequestHandler(fulladdress);
                     break;
                 case "physicalactivities/entry/remove":
-                    requestHandler = new RemovePAEntryRequestHandler(fulladdress);
+                    requestHandler = (IRequestHandler<DTORequest, DTOResponse>)new RemovePAEntryRequestHandler(fulladdress);
                     break;
 
                 // Avatar
                 case "avatar":
-                    requestHandler = new GetAvatarInfoRequestHandler(fulladdress);
+                    requestHandler = (IRequestHandler<DTORequest, DTOResponse>)new GetAvatarInfoRequestHandler(fulladdress);
                     break;
                 case "avatar/update":
-                    requestHandler = new UpdateAvatarRequestHandler(fulladdress);
+                    requestHandler = (IRequestHandler<DTORequest, DTOResponse>)new UpdateAvatarRequestHandler(fulladdress);
                     break;
 
                 default:
                     Console.WriteLine("Unknown endpoint");
                     return;
             }
-            requestHandler.Handle(httpClient);
+            DTOResponse DTOresponse = requestHandler.Handle(httpClient);
         }
     }
 }

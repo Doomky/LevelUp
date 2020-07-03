@@ -8,7 +8,7 @@ using System.Text.Json;
 
 namespace LevelUpClient.RequestHandler
 {
-    public class ChangePasswordRequestHandler : RequestHandler<ChangePasswordDTORequest>
+    public class ChangePasswordRequestHandler : RequestHandler<ChangePasswordDTORequest, ChangePasswordDTOResponse>
     {
         public ChangePasswordRequestHandler(string fullAddress) : base(fullAddress)
         {

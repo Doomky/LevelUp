@@ -7,16 +7,16 @@ using System.Text;
 
 namespace LevelUpClient.RequestHandler
 {
-    public class GetOFFDataFromCategoryRequestHandler : RequestHandler<GetOFFDataFromCategoryDTORequest>
+    public class GetOFFDataFromCategoryRequestHandler : RequestHandler<GetOFFDataFromCategoryDTORequest, GetOFFDataFromCategoryDTOResponse>
     {
         public GetOFFDataFromCategoryRequestHandler(string fullAddress) : base(fullAddress)
         {
         }
 
-        public override void Execute(HttpClient httpClient)
+        public override GetOFFDataFromCategoryDTOResponse Execute(HttpClient httpClient)
         {
-            FullAddress += "/" + Request.Category;
-            base.Execute(httpClient);
+            FullAddress += "/" + DTORequest.Category;
+            return base.Execute(httpClient);
         }
 
         public override GetOFFDataFromCategoryDTORequest RequestBuilder()

@@ -3,7 +3,7 @@ using LevelUpDTO;
 
 namespace LevelUpClient.RequestHandler
 {
-    public class UpdateAvatarRequestHandler : RequestHandler<UpdateAvatarDTORequest>
+    public class UpdateAvatarRequestHandler : RequestHandler<UpdateAvatarDTORequest, UpdateAvatarDTOResponse>
     {
         public UpdateAvatarRequestHandler(string fullAddress) : base(fullAddress)
         {

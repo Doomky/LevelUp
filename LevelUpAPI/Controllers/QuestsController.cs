@@ -170,11 +170,11 @@ namespace LevelUpAPI.Controllers
         /// <response code="401">The user is not signed in.</response>
         [HttpPost]
         [Route("claim")]
-        public ClaimQuestDTOResponse Claim()
+        public ClaimQuestsDTOResponse Claim()
         {
             ClaimQuestsRequestHandler claimQuestsRequestHandler = new ClaimQuestsRequestHandler(_userRepository, _questRepository, _questTypeRepository, _avatarRepository);
             claimQuestsRequestHandler.Execute(HttpContext);
-            return (ClaimQuestDTOResponse)claimQuestsRequestHandler.GetDTOResponse();
+            return (ClaimQuestsDTOResponse)claimQuestsRequestHandler.GetDTOResponse();
         }
     }
 }

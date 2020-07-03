@@ -4,11 +4,12 @@ using LevelUpDTO;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Text.Json;
+using System.Threading.Tasks;
 using static LevelUpAPI.Helpers.ClaimsHelpers;
 
 namespace LevelUpAPI.RequestHandlers
 {
-    public class AccessTokenInfoRequestHandler : RequestHandler<AccessTokenInfoDTORequest>
+    public class AccessTokenInfoRequestHandler : RequestHandler<AccessTokenInfoDTORequest, AccessTokenInfoDTOResponse>
     {
         private IUserRepository _userRepository;
 
@@ -17,11 +18,11 @@ namespace LevelUpAPI.RequestHandlers
             _userRepository = userRepository;
         }
 
-        protected override void ExecuteRequest(HttpContext context)
+        protected override async Task<AccessTokenInfoDTOResponse> ExecuteRequest(HttpContext context)
         {
-            (bool isOk, User user) = CheckClaimsForUser(Request, context, _userRepository);
+            (bool isOk, User user) = CheckClaimsForUser(DTORequest, context, _userRepository);
             if (!isOk || user == null)
-                return;
+                return null;
 
             AccessTokenInfo accessTokenInfo = new AccessTokenInfo(user);
 
@@ -29,6 +30,7 @@ namespace LevelUpAPI.RequestHandlers
 
             context.Response.StatusCode = StatusCodes.Status200OK;
             context.Response.WriteAsync(accessTokenInfoJson).GetAwaiter().GetResult();
+            return JsonSerializer.Deserialize<AccessTokenInfoDTOResponse>(accessTokenInfoJson);
         }
     }
 }

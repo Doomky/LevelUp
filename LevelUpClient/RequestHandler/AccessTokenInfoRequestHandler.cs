@@ -3,7 +3,7 @@ using LevelUpDTO;
 
 namespace LevelUpClient.RequestHandler
 {
-    internal class AccessTokenInfoRequestHandler : RequestHandler<AccessTokenInfoDTORequest>
+    internal class AccessTokenInfoRequestHandler : RequestHandler<AccessTokenInfoDTORequest, AccessTokenInfoDTOResponse>
     {
         public AccessTokenInfoRequestHandler(string fullAddress) : base(fullAddress)
         {

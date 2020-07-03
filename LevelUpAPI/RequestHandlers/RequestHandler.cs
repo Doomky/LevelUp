@@ -7,10 +7,10 @@ using LevelUpDTO;
 
 namespace LevelUpAPI
 {
-    public abstract class RequestHandler<TRequest> where TRequest : DTORequest, new()
+    public abstract class RequestHandler<TDTORequest, TDTOResponse> where TDTORequest : DTORequest, new() where TDTOResponse : DTOResponse
     {
-        protected TRequest Request { get; set; }
-        protected DTOResponse dtoResponse { get; set; }
+        protected TDTORequest DTORequest { get; set; }
+        protected TDTOResponse DTOResponse { get; set; }
 
         protected virtual async Task<HttpContext> CheckHeader(HttpContext context)
         {
@@ -18,8 +18,8 @@ namespace LevelUpAPI
         }
         protected virtual async Task<HttpContext> CheckBody(HttpContext context)
         {
-            Request = new TRequest();
-            if (Request.GetMethodType() == DTORequest.Method.POST)
+            DTORequest = new TDTORequest();
+            if (DTORequest.GetMethodType() == LevelUpDTO.DTORequest.Method.POST)
             {
                 string bodyStr = "";
                 Stream body = context.Request.Body;
@@ -27,37 +27,38 @@ namespace LevelUpAPI
                 {
                     bodyStr = await reader.ReadToEndAsync();
                 }
-                Request = JsonSerializer.Deserialize<TRequest>(bodyStr);
+                DTORequest = JsonSerializer.Deserialize<TDTORequest>(bodyStr);
             }
             return context;
         }
 
-        protected virtual async void ExecuteRequest(HttpContext context)
+        protected virtual async Task<TDTOResponse> ExecuteRequest(HttpContext context)
         {
             throw new NotImplementedException();
         }
 
-        public async void Execute(HttpContext context)
+        public async Task<TDTOResponse> Execute(HttpContext context)
         {
             try
             {
                 context = await CheckHeader(context);
                 if (context == null)
-                    return;
+                    return null;
                 context = await CheckBody(context);
                 if (context == null)
-                    return;
-                ExecuteRequest(context);
+                    return null;
+                return await ExecuteRequest(context);
             }
             catch (Exception e)
             {
                 context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                return null;
             }
         }
 
-        public DTOResponse GetDTOResponse()
+        public TDTOResponse GetDTOResponse()
         {
-            return dtoResponse;
+            return DTOResponse;
         }
     }
 }

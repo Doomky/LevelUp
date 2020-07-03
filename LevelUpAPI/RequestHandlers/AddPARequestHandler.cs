@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace LevelUpAPI.RequestHandlers
 {
-    public class AddPARequestHandler : RequestHandler<AddPADTORequest>
+    public class AddPARequestHandler : RequestHandler<AddPADTORequest, AddPADTOResponse>
     {
         private readonly IPhysicalActivitiesRepository _physicalActivitiesRepository;
 
@@ -19,15 +19,18 @@ namespace LevelUpAPI.RequestHandlers
             _physicalActivitiesRepository = physicalActivitiesRepository;
         }
 
-        protected override void ExecuteRequest(HttpContext context)
+        protected override async Task<AddPADTOResponse> ExecuteRequest(HttpContext context)
         {
-            if (string.IsNullOrWhiteSpace(Request.Name) || Request.CalPerKgPerHour == null)
+            if (string.IsNullOrWhiteSpace(DTORequest.Name) || DTORequest.CalPerKgPerHour == null)
+            {
                 context.Response.StatusCode = StatusCodes.Status204NoContent;
+                return null;
+            }
 
             PhysicalActivity physicalActivity = _physicalActivitiesRepository.Insert(new PhysicalActivity()
             {
-                Name = Request.Name,
-                CalPerKgPerHour = (decimal)Request.CalPerKgPerHour
+                Name = DTORequest.Name,
+                CalPerKgPerHour = (decimal)DTORequest.CalPerKgPerHour
             }).GetAwaiter().GetResult();
 
             if (physicalActivity != null)
@@ -35,9 +38,11 @@ namespace LevelUpAPI.RequestHandlers
                 string physicalActivityJson = JsonSerializer.Serialize(physicalActivity);
                 context.Response.StatusCode = StatusCodes.Status200OK;
                 context.Response.WriteAsync(physicalActivityJson).GetAwaiter().GetResult();
+                return JsonSerializer.Deserialize<AddPADTOResponse>(physicalActivityJson);
             }
             else
                 context.Response.StatusCode = StatusCodes.Status400BadRequest;
+            return null;
         }
     }
 }

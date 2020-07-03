@@ -6,7 +6,7 @@ using System.Text;
 
 namespace LevelUpClient.RequestHandler
 {
-    public class RemoveQuestRequestHandler : RequestHandler<RemoveQuestDTORequest>
+    public class RemoveQuestRequestHandler : RequestHandler<RemoveQuestDTORequest, RemoveQuestDTOResponse>
     {
         public RemoveQuestRequestHandler(string fullAddress) : base(fullAddress)
         {

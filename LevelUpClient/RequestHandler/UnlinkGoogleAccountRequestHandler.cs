@@ -6,7 +6,7 @@ using System.Text;
 
 namespace LevelUpClient.RequestHandler
 {
-    public class UnlinkGoogleAccountRequestHandler : RequestHandler<UnlinkGoogleAccountDTORequest>
+    public class UnlinkGoogleAccountRequestHandler : RequestHandler<UnlinkGoogleAccountDTORequest, UnlinkGoogleAccountDTOResponse>
     {
         public UnlinkGoogleAccountRequestHandler(string fullAddress) : base(fullAddress)
         {

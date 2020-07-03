@@ -7,17 +7,17 @@ using System.Text;
 
 namespace LevelUpClient.RequestHandler
 {
-    public class GetQuestRequestHandler : RequestHandler<GetQuestDTORequest>
+    public class GetQuestRequestHandler : RequestHandler<GetQuestDTORequest, GetQuestDTOResponse>
     {
         public GetQuestRequestHandler(string fullAddress) : base(fullAddress)
         {
         }
 
-        public override void Execute(HttpClient httpClient)
+        public override GetQuestDTOResponse Execute(HttpClient httpClient)
         {
-            if (Request.QuestState != null)
-                FullAddress += "/" + Request.QuestState;
-            base.Execute(httpClient);
+            if (DTORequest.QuestState != null)
+                FullAddress += "/" + DTORequest.QuestState;
+            return base.Execute(httpClient);
         }
 
         public override GetQuestDTORequest RequestBuilder()

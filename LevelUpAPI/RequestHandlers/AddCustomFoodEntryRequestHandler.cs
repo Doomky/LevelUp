@@ -11,7 +11,7 @@ using static LevelUpAPI.Helpers.ClaimsHelpers;
 
 namespace LevelUpAPI.RequestHandlers
 {
-    public class AddCustomFoodEntryRequestHandler : RequestHandler<AddCustomFoodEntryDTORequest>
+    public class AddCustomFoodEntryRequestHandler : RequestHandler<AddCustomFoodEntryDTORequest, AddCustomFoodEntryDTOResponse>
     {
         private readonly IFoodEntryRepository _foodEntryRepository;
         private readonly IUserRepository _userRepository;
@@ -28,32 +28,32 @@ namespace LevelUpAPI.RequestHandlers
             _questTypeRepository = questTypeRepository;
         }
 
-        protected override void ExecuteRequest(HttpContext context)
+        protected override async Task<AddCustomFoodEntryDTOResponse> ExecuteRequest(HttpContext context)
         {
-            (bool isOk, User user) = CheckClaimsForUser(Request, context, _userRepository);
+            (bool isOk, User user) = CheckClaimsForUser(DTORequest, context, _userRepository);
             if (!isOk || user == null)
-                return;
+                return null;
 
             OpenFoodFactsData offData = _oFFDataRepository.Insert(new OpenFoodFactsData() { 
 
-                Name = Request.Name,
+                Name = DTORequest.Name,
                 IsCustom = true,
                 // 100g
-                Energy100g = Request.Energy100g,
-                Proteins100g = Request.Proteins100g,
-                Sodium100g = Request.Sodium100g,
-                Fat100g = Request.Fat100g,
-                Salt100g = Request.Salt100g,
-                SaturatedFat100g = Request.SaturatedFat100g,
-                Sugars100g = Request.Sugars100g,
+                Energy100g = DTORequest.Energy100g,
+                Proteins100g = DTORequest.Proteins100g,
+                Sodium100g = DTORequest.Sodium100g,
+                Fat100g = DTORequest.Fat100g,
+                Salt100g = DTORequest.Salt100g,
+                SaturatedFat100g = DTORequest.SaturatedFat100g,
+                Sugars100g = DTORequest.Sugars100g,
                 // Serving
-                EnergyServing = Request.EnergyServing,
-                ProteinsServing = Request.ProteinsServing,
-                SodiumServing = Request.SodiumServing,
-                FatServing = Request.FatServing,
-                SaltServing = Request.SaltServing,
-                SaturatedFatServing = Request.SaturatedFatServing,
-                SugarsServing = Request.SugarsServing,
+                EnergyServing = DTORequest.EnergyServing,
+                ProteinsServing = DTORequest.ProteinsServing,
+                SodiumServing = DTORequest.SodiumServing,
+                FatServing = DTORequest.FatServing,
+                SaltServing = DTORequest.SaltServing,
+                SaturatedFatServing = DTORequest.SaturatedFatServing,
+                SugarsServing = DTORequest.SugarsServing,
             }).GetAwaiter().GetResult();
 
             FoodEntry foodEntryData = _foodEntryRepository.Insert(new FoodEntry()
@@ -77,10 +77,12 @@ namespace LevelUpAPI.RequestHandlers
                 string foodEntryJson = JsonSerializer.Serialize(foodEntryData);
                 context.Response.StatusCode = StatusCodes.Status200OK;
                 context.Response.WriteAsync(foodEntryJson).GetAwaiter().GetResult();
+                return JsonSerializer.Deserialize<AddCustomFoodEntryDTOResponse>(foodEntryJson);
             }
             else
             {
                 context.Response.StatusCode = StatusCodes.Status204NoContent;
+                return null;
             }
         }
     }

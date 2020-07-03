@@ -10,7 +10,7 @@ using static LevelUpAPI.Helpers.ClaimsHelpers;
 
 namespace LevelUpAPI.RequestHandlers
 {
-    public class GetAvatarInfoRequestHandler : RequestHandler<GetAvatarInfoDTORequest>
+    public class GetAvatarInfoRequestHandler : RequestHandler<GetAvatarInfoDTORequest, GetAvatarInfoDTOResponse>
     {
         private readonly IUserRepository _userRepository;
         private readonly IAvatarRepository _avatarRepository;
@@ -21,11 +21,11 @@ namespace LevelUpAPI.RequestHandlers
             _avatarRepository = avatarRepository;
         }
 
-        protected override void ExecuteRequest(HttpContext context)
+        protected override async Task<GetAvatarInfoDTOResponse> ExecuteRequest(HttpContext context)
         {
-            (bool isOk, User user) = CheckClaimsForUser(Request, context, _userRepository);
+            (bool isOk, User user) = CheckClaimsForUser(DTORequest, context, _userRepository);
             if (!isOk || user == null)
-                return;
+                return null;
 
             Avatar avatar = _avatarRepository.GetByUser(user).GetAwaiter().GetResult();
 
@@ -34,9 +34,11 @@ namespace LevelUpAPI.RequestHandlers
                 string avatarJson = JsonSerializer.Serialize(avatar);
                 context.Response.StatusCode = StatusCodes.Status200OK;
                 context.Response.WriteAsync(avatarJson).GetAwaiter().GetResult();
+                return JsonSerializer.Deserialize<GetAvatarInfoDTOResponse>(avatarJson);
             }
             else
                 context.Response.StatusCode = StatusCodes.Status400BadRequest;
+            return null;
         }
     }
 }

@@ -3,7 +3,7 @@ using LevelUpDTO;
 
 namespace LevelUpClient.RequestHandler
 {
-    public class SignUpRequestHandler : RequestHandler<SignUpDTORequest>
+    public class SignUpRequestHandler : RequestHandler<SignUpDTORequest, SignUpDTOResponse>
     {
         public SignUpRequestHandler(string fullAddress) : base(fullAddress)
         {

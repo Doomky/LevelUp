@@ -10,7 +10,7 @@ using static LevelUpAPI.Helpers.ClaimsHelpers;
 
 namespace LevelUpAPI.RequestHandlers
 {
-    public class AddQuestRequestHandler : RequestHandler<AddQuestDTORequest>
+    public class AddQuestRequestHandler : RequestHandler<AddQuestDTORequest, AddQuestDTOResponse>
     {
         private readonly IUserRepository _userRepository;
         private readonly IQuestRepository _questRepository;
@@ -25,13 +25,13 @@ namespace LevelUpAPI.RequestHandlers
             _categoryRepository = categoryRepository;
         }
 
-        protected override void ExecuteRequest(HttpContext context)
+        protected override async Task<AddQuestDTOResponse> ExecuteRequest(HttpContext context)
         {
-            (bool isOk, User user) = CheckClaimsForUser(Request, context, _userRepository);
+            (bool isOk, User user) = CheckClaimsForUser(DTORequest, context, _userRepository);
             if (!isOk || user == null)
-                return;
+                return null;
 
-            Quest quest = Quests.Create(Request, user, _questTypeRepository, _categoryRepository).GetAwaiter().GetResult();
+            Quest quest = Quests.Create(DTORequest, user, _questTypeRepository, _categoryRepository).GetAwaiter().GetResult();
 
             quest = _questRepository.Insert(quest).GetAwaiter().GetResult();
             if (quest != null)
@@ -39,10 +39,12 @@ namespace LevelUpAPI.RequestHandlers
                 string questJson = JsonSerializer.Serialize(quest);
                 context.Response.StatusCode = StatusCodes.Status200OK;
                 context.Response.WriteAsync(questJson).GetAwaiter().GetResult();
+                return JsonSerializer.Deserialize<AddQuestDTOResponse>(questJson);
             }
             else
             {
                 context.Response.StatusCode = StatusCodes.Status204NoContent;
+                return null;
             }
         }
     }

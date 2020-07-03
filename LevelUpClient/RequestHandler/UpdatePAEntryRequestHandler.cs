@@ -3,7 +3,7 @@ using LevelUpDTO;
 
 namespace LevelUpClient.RequestHandler
 {
-    public class UpdatePAEntryRequestHandler : RequestHandler<UpdatePAEntryDTORequest>
+    public class UpdatePAEntryRequestHandler : RequestHandler<UpdatePAEntryDTORequest, UpdatePAEntryDTOResponse>
     {
         public UpdatePAEntryRequestHandler(string fullAddress) : base(fullAddress)
         {

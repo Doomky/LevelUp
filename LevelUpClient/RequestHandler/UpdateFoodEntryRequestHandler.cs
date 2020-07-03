@@ -7,7 +7,7 @@ using System.Text;
 
 namespace LevelUpClient.RequestHandler
 {
-    public class UpdateFoodEntryRequestHandler : RequestHandler<UpdateFoodEntryDTORequest>
+    public class UpdateFoodEntryRequestHandler : RequestHandler<UpdateFoodEntryDTORequest, UpdateAvatarDTOResponse>
     {
         public UpdateFoodEntryRequestHandler(string fullAddress) : base(fullAddress)
         {

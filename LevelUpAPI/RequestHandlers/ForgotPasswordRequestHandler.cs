@@ -7,10 +7,11 @@ using Microsoft.Extensions.Configuration;
 using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Dbo;
 using LevelUpDTO;
+using System.Threading.Tasks;
 
 namespace LevelUpAPI.RequestHandlers
 {
-    public class ForgotPasswordRequestHandler : RequestHandler<ForgotPasswordDTORequest>
+    public class ForgotPasswordRequestHandler : RequestHandler<ForgotPasswordDTORequest, ForgotPasswordDTOResponse>
     {
         public const string EMAIL_SECTION = "Email";
         public const string CLIENT_HOST_KEY = "Host";
@@ -35,16 +36,16 @@ namespace LevelUpAPI.RequestHandlers
             Configuration = configuration;
         }
 
-        protected override void ExecuteRequest(HttpContext context)
+        protected override async Task<ForgotPasswordDTOResponse> ExecuteRequest(HttpContext context)
         {
-            if (Request == null || (string.IsNullOrWhiteSpace(Request.Login)
-                && string.IsNullOrWhiteSpace(Request.EmailAddress)))
+            if (DTORequest == null || (string.IsNullOrWhiteSpace(DTORequest.Login)
+                && string.IsNullOrWhiteSpace(DTORequest.EmailAddress)))
             {
                 context.Response.StatusCode = StatusCodes.Status400BadRequest;
-                return;
+                return null;
             }
 
-            User user = _userRepository.GetUserByLoginOrEmail(Request.Login, Request.EmailAddress).GetAwaiter().GetResult();
+            User user = _userRepository.GetUserByLoginOrEmail(DTORequest.Login, DTORequest.EmailAddress).GetAwaiter().GetResult();
             if (user != null)
             {
                 PasswordRecoveryData passwordRecoveryData = new PasswordRecoveryData()
@@ -95,10 +96,12 @@ LevelUp";
                     client.SendCompleted += new SendCompletedEventHandler(SendCompletedCallback);
                     string userState = "LevelUp - Password Recovery";
                     client.SendAsync(message, userState);
+                    return new ForgotPasswordDTOResponse();
                 }
             }
             else
                 context.Response.StatusCode = StatusCodes.Status400BadRequest;
+            return null;
         }
 
 

@@ -7,19 +7,21 @@ using System.Threading.Tasks;
 
 namespace LevelUpClient.RequestHandler
 {
-    public abstract class RequestHandler<TRequest> : IRequestHandler
-        where TRequest : DTORequest
+    public abstract class RequestHandler<TDTORequest, TDTOResponse> : IRequestHandler<TDTORequest, TDTOResponse>
+        where TDTORequest : DTORequest where TDTOResponse : DTOResponse
     {
         protected RequestHandler(string fullAddress)
         {
             FullAddress = fullAddress;
         }
 
-        public TRequest Request { get; set; }
+        public TDTORequest DTORequest { get; set; }
+
+        public TDTOResponse DTOResponse { get; set; }
         public string FullAddress { get; set; }
 
-        public abstract TRequest RequestBuilder();
-        public virtual void Execute(HttpClient httpClient)
+        public abstract TDTORequest RequestBuilder();
+        public virtual TDTOResponse Execute(HttpClient httpClient)
         {
             HttpResponseMessage httpResponse = ExecuteMethod(httpClient).GetAwaiter().GetResult();
             string bodyAsStr = "";
@@ -31,26 +33,27 @@ namespace LevelUpClient.RequestHandler
 $@"response:
 status code: {(int)httpResponse.StatusCode} {httpResponse.StatusCode}
 body: {bodyAsStr}");
+            return JsonSerializer.Deserialize<TDTOResponse>(bodyAsStr);
         }
 
-        public void Handle(HttpClient httpClient)
+        public TDTOResponse Handle(HttpClient httpClient)
         {
-            Request = RequestBuilder();
-            Execute(httpClient);
+            DTORequest = RequestBuilder();
+            return Execute(httpClient);
         }
 
         public async Task<HttpResponseMessage> ExecuteMethod(HttpClient httpClient)
         {
-            switch (Request.GetMethodType())
+            switch (DTORequest.GetMethodType())
             {
-                case DTORequest.Method.GET:
+                case LevelUpDTO.DTORequest.Method.GET:
                     return await httpClient.GetAsync(FullAddress);
-                case DTORequest.Method.POST:
-                    string jsonString = JsonSerializer.Serialize(Request);
+                case LevelUpDTO.DTORequest.Method.POST:
+                    string jsonString = JsonSerializer.Serialize(DTORequest);
                     HttpContent httpContent = new StringContent(jsonString);
                     return await httpClient.PostAsync(FullAddress, httpContent);
                 default:
-                    throw new NotSupportedException(Request.GetMethodType() + " is not supported yet");
+                    throw new NotSupportedException(DTORequest.GetMethodType() + " is not supported yet");
             }
         }
     }

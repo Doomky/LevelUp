@@ -6,7 +6,7 @@ using System.Text;
 
 namespace LevelUpClient.RequestHandler
 {
-    public class AddPARequestHandler : RequestHandler<AddPADTORequest>
+    public class AddPARequestHandler : RequestHandler<AddPADTORequest, AddPADTOResponse>
     {
         public AddPARequestHandler(string fullAddress) : base(fullAddress)
         {

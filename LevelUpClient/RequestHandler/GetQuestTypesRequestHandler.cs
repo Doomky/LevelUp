@@ -4,7 +4,7 @@ using LevelUpDTO;
 
 namespace LevelUpClient.RequestHandler
 {
-    internal class GetQuestTypesRequestHandler : RequestHandler<GetQuestTypesDTORequest>
+    internal class GetQuestTypesRequestHandler : RequestHandler<GetQuestTypesDTORequest, GetQuestTypesDTOResponse>
     {
         public GetQuestTypesRequestHandler(string fullAddress) : base(fullAddress)
         {

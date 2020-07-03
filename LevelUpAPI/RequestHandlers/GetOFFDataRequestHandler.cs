@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace LevelUpAPI.RequestHandlers
 {
-    public class GetOFFDataRequestHandler : RequestHandler<GetOFFDataDTORequest>
+    public class GetOFFDataRequestHandler : RequestHandler<GetOFFDataDTORequest, GetOFFDataDTOResponse>
     {
         private readonly string _barcode;
         private readonly IOFFDataRepository _OFFDataRepository;
@@ -26,12 +26,12 @@ namespace LevelUpAPI.RequestHandlers
             _OFFDatasCategoryRepository = oFFDatasCategoryRepository;
         }
 
-        protected override void ExecuteRequest(HttpContext context)
+        protected override async Task<GetOFFDataDTOResponse> ExecuteRequest(HttpContext context)
         {
-            if (Request == null)
+            if (DTORequest == null)
             {
                 context.Response.StatusCode = StatusCodes.Status400BadRequest;
-                return;
+                return null;
             }
 
             OpenFoodFactsData openFoodFactsData = _OFFDataRepository.GetByBarcode(_barcode).GetAwaiter().GetResult();
@@ -41,6 +41,7 @@ namespace LevelUpAPI.RequestHandlers
                 string openFoodFactsDataJson = JsonSerializer.Serialize(openFoodFactsData);
                 context.Response.StatusCode = StatusCodes.Status200OK;
                 context.Response.WriteAsync(openFoodFactsDataJson).GetAwaiter().GetResult();
+                return JsonSerializer.Deserialize<GetOFFDataDTOResponse>(openFoodFactsDataJson);
             }
             else
             {
@@ -62,7 +63,7 @@ namespace LevelUpAPI.RequestHandlers
                             if (openFoodFactsCategory == null)
                             {
                                 context.Response.StatusCode = StatusCodes.Status204NoContent;
-                                return;
+                                return null;
                             }
 
                             OpenFoodFactsDatasCategory openFoodFactsDatasCategory = new OpenFoodFactsDatasCategory
@@ -74,7 +75,7 @@ namespace LevelUpAPI.RequestHandlers
                             if (openFoodFactsDatasCategory == null)
                             {
                                 context.Response.StatusCode = StatusCodes.Status204NoContent;
-                                return;
+                                return null;
                             }
                         }
                     }
@@ -82,11 +83,11 @@ namespace LevelUpAPI.RequestHandlers
                     string openFoodFactsDataJson = JsonSerializer.Serialize(openFoodFactsData);
                     context.Response.StatusCode = StatusCodes.Status200OK;
                     context.Response.WriteAsync(openFoodFactsDataJson).GetAwaiter().GetResult();
+                    return JsonSerializer.Deserialize<GetOFFDataDTOResponse>(openFoodFactsDataJson);
                 }
                 else
-                {
                     context.Response.StatusCode = StatusCodes.Status204NoContent;
-                }
+                return null;
             }
         }
     }

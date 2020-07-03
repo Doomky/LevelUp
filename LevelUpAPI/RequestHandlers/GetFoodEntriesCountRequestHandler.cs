@@ -11,7 +11,7 @@ using static LevelUpAPI.Helpers.ClaimsHelpers;
 
 namespace LevelUpAPI.RequestHandlers
 {
-    public class GetFoodEntriesCountRequestHandler : RequestHandler<GetFoodEntriesCountDTORequest>
+    public class GetFoodEntriesCountRequestHandler : RequestHandler<GetFoodEntriesCountDTORequest, GetFoodEntriesDTOResponse>
     {
         private readonly IUserRepository _userRepository;
         private readonly IFoodEntryRepository _foodEntryRepository;
@@ -22,11 +22,11 @@ namespace LevelUpAPI.RequestHandlers
             _foodEntryRepository = foodEntryRepository;
         }
 
-        protected override void ExecuteRequest(HttpContext context)
+        protected override async Task<GetFoodEntriesDTOResponse> ExecuteRequest(HttpContext context)
         {
-            (bool isOk, User user) = CheckClaimsForUser(Request, context, _userRepository);
+            (bool isOk, User user) = CheckClaimsForUser(DTORequest, context, _userRepository);
             if (!isOk || user == null)
-                return;
+                return null;
 
             List<NbFoodEntryByLogin> foodEntries = _foodEntryRepository.GetNbFoodEntries(user.Login);
 
@@ -35,9 +35,11 @@ namespace LevelUpAPI.RequestHandlers
                 string foodEntriesJson = JsonSerializer.Serialize(foodEntries);
                 context.Response.StatusCode = StatusCodes.Status200OK;
                 context.Response.WriteAsync(foodEntriesJson).GetAwaiter().GetResult();
+                return JsonSerializer.Deserialize<GetFoodEntriesDTOResponse>(foodEntriesJson);
             }
             else
                 context.Response.StatusCode = StatusCodes.Status400BadRequest;
+            return null;
         }
     }
 }

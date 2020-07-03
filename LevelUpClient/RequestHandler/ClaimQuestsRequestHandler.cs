@@ -6,7 +6,7 @@ using System.Text;
 
 namespace LevelUpClient.RequestHandler
 {
-    public class ClaimQuestsRequestHandler : RequestHandler<ClaimQuestsDTORequest>
+    public class ClaimQuestsRequestHandler : RequestHandler<ClaimQuestsDTORequest, ClaimQuestsDTOResponse>
     {
         public ClaimQuestsRequestHandler(string fullAddress) : base(fullAddress)
         {

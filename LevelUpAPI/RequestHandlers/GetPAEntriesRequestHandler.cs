@@ -6,11 +6,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
+using System.Threading.Tasks;
 using static LevelUpAPI.Helpers.ClaimsHelpers;
 
 namespace LevelUpAPI.RequestHandlers
 {
-    public class GetPAEntriesRequestHandler : RequestHandler<GetPAEntriesDTORequest>
+    public class GetPAEntriesRequestHandler : RequestHandler<GetPAEntriesDTORequest, GetPAEntriesDTOResponse>
     {
         private readonly IUserRepository _userRepository;
         private readonly IPhysicalActivitiesEntryRepository _physicalActivitiesEntryRepository;
@@ -21,11 +22,11 @@ namespace LevelUpAPI.RequestHandlers
             _physicalActivitiesEntryRepository = physicalActivitiesEntryRepository;
         }
 
-        protected override void ExecuteRequest(HttpContext context)
+        protected override async Task<GetPAEntriesDTOResponse> ExecuteRequest(HttpContext context)
         {
-            (bool isOk, User user) = CheckClaimsForUser(Request, context, _userRepository);
+            (bool isOk, User user) = CheckClaimsForUser(DTORequest, context, _userRepository);
             if (!isOk || user == null)
-                return;
+                return null;
 
             IEnumerable<PhysicalActivityEntry> PAEntries = _physicalActivitiesEntryRepository.GetByLogin(user.Login).GetAwaiter().GetResult();
 
@@ -34,9 +35,11 @@ namespace LevelUpAPI.RequestHandlers
                 string PAEntriesJson = JsonSerializer.Serialize(PAEntries);
                 context.Response.StatusCode = StatusCodes.Status200OK;
                 context.Response.WriteAsync(PAEntriesJson).GetAwaiter().GetResult();
+                return JsonSerializer.Deserialize<GetPAEntriesDTOResponse>(PAEntriesJson);
             }
             else
                 context.Response.StatusCode = StatusCodes.Status400BadRequest;
+            return null;
         }
     }
 }

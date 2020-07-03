@@ -7,7 +7,7 @@ using System.Text;
 
 namespace LevelUpClient.RequestHandler
 {
-    public class ForgotPasswordRequestHandler : RequestHandler<ForgotPasswordDTORequest>
+    public class ForgotPasswordRequestHandler : RequestHandler<ForgotPasswordDTORequest, ForgotPasswordDTOResponse>
     {
         public ForgotPasswordRequestHandler(string fullAddress) : base(fullAddress)
         {
@@ -21,9 +21,9 @@ namespace LevelUpClient.RequestHandler
                 .Build();
         }
 
-        public override void Execute(HttpClient httpClient)
+        public override ForgotPasswordDTOResponse Execute(HttpClient httpClient)
         {
-            base.Execute(httpClient);
+            return base.Execute(httpClient);
         }
     }
 }

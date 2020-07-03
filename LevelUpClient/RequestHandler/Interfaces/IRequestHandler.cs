@@ -1,18 +1,17 @@
 ﻿using LevelUpDTO;
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
 
 namespace LevelUpClient.RequestHandler.Interfaces
 {
-    public interface IRequestHandler 
+    public interface IRequestHandler<TDTORequest, TDTOResponse>
+        where TDTORequest : DTORequest where TDTOResponse : DTOResponse
     {
         public string FullAddress { get; set; }
 
-        public void Execute(HttpClient httpClient);
+        public TDTOResponse Execute(HttpClient httpClient);
 
-        public void Handle(HttpClient httpClient);
+        public TDTOResponse Handle(HttpClient httpClient);
 
     }
 }
