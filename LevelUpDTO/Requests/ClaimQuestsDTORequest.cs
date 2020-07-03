@@ -1,10 +1,13 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 
 namespace LevelUpDTO
 {
+    [JsonObject()]
     public class ClaimQuestsDTORequest : DTORequest
     {
-        public int questId { get; set; }
+        [JsonProperty("questID")]
+        public int QuestId { get; set; }
         public ClaimQuestsDTORequest() : base(Method.POST)
         {
         }

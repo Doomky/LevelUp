@@ -15,7 +15,7 @@ namespace LevelUpClient.RequestBuilders
                 Console.WriteLine("QuestId: ");
                 if (int.TryParse(Console.ReadLine(), out int questId))
                 {
-                    Request.questId = questId;
+                    Request.QuestId = questId;
                     done = true;
                 }
             }

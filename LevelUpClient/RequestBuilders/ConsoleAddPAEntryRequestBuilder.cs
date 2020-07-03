@@ -22,7 +22,7 @@ namespace LevelUpClient.RequestBuilders
                 Console.Write("Datetime start: ");
                 if (DateTime.TryParse(Console.ReadLine(), out DateTime datetime))
                 {
-                    Request.dateTimeStart = datetime.ToString();
+                    Request.DateTimeStart = datetime.ToString();
                     done = true;
                 }
             }
@@ -37,7 +37,7 @@ namespace LevelUpClient.RequestBuilders
                 Console.Write("Datetime end: ");
                 if (DateTime.TryParse(Console.ReadLine(), out DateTime datetime))
                 {
-                    Request.dateTimeEnd = datetime.ToString();
+                    Request.DateTimeEnd = datetime.ToString();
                     done = true;
                 }
             }

@@ -32,7 +32,7 @@ namespace LevelUpAPI.RequestHandlers
             if (!isOk || user == null)
                 return;
 
-            Quest quest = _questRepository.GetById(user, Request.questId).GetAwaiter().GetResult();
+            Quest quest = _questRepository.GetById(user, Request.QuestId).GetAwaiter().GetResult();
             QuestHandler questHandler = QuestHandlers.Create(quest, user, _questTypeRepository) ;
             ClaimQuestDTOResponse claimQuestDTOResponse;
             string serializedString;
