@@ -123,7 +123,7 @@ namespace LevelUpAPI.Controllers
         public void ForgotPassword()
         {
             ForgotPasswordRequestHandler forgotPasswordRequestHandler = new ForgotPasswordRequestHandler(_userRepository, _passwordRecoveryDataRepository, Configuration);
-            forgotPasswordRequestHandler.Execute(HttpContext);
+            forgotPasswordRequestHandler.Handle(HttpContext);
         }
 
         /// <summary>
@@ -168,7 +168,7 @@ namespace LevelUpAPI.Controllers
         public void ChangePassword()
         {
             ChangePasswordRequestHandler changePasswordRequestHandler = new ChangePasswordRequestHandler(_userRepository);
-            changePasswordRequestHandler.Execute(HttpContext);
+            changePasswordRequestHandler.Handle(HttpContext);
         }
 
         /// <summary>
@@ -207,7 +207,7 @@ namespace LevelUpAPI.Controllers
         public void ChangeUserInfo()
         {
             ChangeUserInfoRequestHandler ChangeUserInfoRequestHandler = new ChangeUserInfoRequestHandler(_userRepository);
-            ChangeUserInfoRequestHandler.Execute(HttpContext);
+            ChangeUserInfoRequestHandler.Handle(HttpContext);
         }
 
         /// <summary>
@@ -243,7 +243,7 @@ namespace LevelUpAPI.Controllers
         public void GetAccessTokenInfo()
         {
             AccessTokenInfoRequestHandler accessTokenInfoRequestHandler = new AccessTokenInfoRequestHandler(_userRepository);
-            accessTokenInfoRequestHandler.Execute(HttpContext);
+            accessTokenInfoRequestHandler.Handle(HttpContext);
         }
 
         /// <summary>

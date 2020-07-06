@@ -36,7 +36,7 @@ namespace LevelUpAPI.Controllers
         public void Get()
         {
             GetPARequestHandler getPARequestHandler = new GetPARequestHandler(_physicalActivitiesRepository);
-            getPARequestHandler.Execute(HttpContext);
+            getPARequestHandler.Handle(HttpContext);
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace LevelUpAPI.Controllers
         public void Add()
         {
             AddPARequestHandler addPARequestHandler = new AddPARequestHandler(_physicalActivitiesRepository);
-            addPARequestHandler.Execute(HttpContext);
+            addPARequestHandler.Handle(HttpContext);
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace LevelUpAPI.Controllers
         public void GetEntries()
         {
             GetPAEntriesRequestHandler getPAEntriesRequestHandler = new GetPAEntriesRequestHandler(_userRepository, _physicalActivitiesEntryRepository);
-            getPAEntriesRequestHandler.Execute(HttpContext);
+            getPAEntriesRequestHandler.Handle(HttpContext);
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace LevelUpAPI.Controllers
         public void AddEntry()
         {
             AddPAEntryRequestHandler addPAEntryRequestHandler = new AddPAEntryRequestHandler(_userRepository, _physicalActivitiesRepository, _physicalActivitiesEntryRepository, _questTypeRepository, _questRepository);
-            addPAEntryRequestHandler.Execute(HttpContext);
+            addPAEntryRequestHandler.Handle(HttpContext);
         }
 
         /// <summary>

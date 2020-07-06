@@ -37,7 +37,7 @@ namespace LevelUpAPI.Controllers
         public void Get()
         {
             GetFoodEntriesRequestHandler getFoodEntriesRequestHandler = new GetFoodEntriesRequestHandler(_userRepository, _foodEntryRepository, _offDataRepository);
-            getFoodEntriesRequestHandler.Execute(HttpContext);
+            getFoodEntriesRequestHandler.Handle(HttpContext);
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace LevelUpAPI.Controllers
         public void GetCount()
         {
             GetFoodEntriesCountRequestHandler getFoodEntriesCountRequestHandler = new GetFoodEntriesCountRequestHandler(_userRepository, _foodEntryRepository);
-            getFoodEntriesCountRequestHandler.Execute(HttpContext);
+            getFoodEntriesCountRequestHandler.Handle(HttpContext);
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace LevelUpAPI.Controllers
         public void AddCustom()
         {
             AddCustomFoodEntryRequestHandler addCustomFoodEntryRequestHandler = new AddCustomFoodEntryRequestHandler(_foodEntryRepository, _userRepository, _offDataRepository, _questRepository, _questTypeRepository);
-            addCustomFoodEntryRequestHandler.Execute(HttpContext);
+            addCustomFoodEntryRequestHandler.Handle(HttpContext);
         }
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace LevelUpAPI.Controllers
         public void Add()
         {
             AddFoodEntryRequestHandler addFoodEntryRequestHandler = new AddFoodEntryRequestHandler(_foodEntryRepository, _offDataRepository, _questRepository, _questTypeRepository, _userRepository);
-            addFoodEntryRequestHandler.Execute(HttpContext);
+            addFoodEntryRequestHandler.Handle(HttpContext);
         }
 
         /// <summary>

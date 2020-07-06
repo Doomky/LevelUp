@@ -33,7 +33,7 @@ namespace LevelUpAPI.Controllers
         public void GetOpenFoodFactsDataFromBarcode(string barcode)
         {
             GetOFFDataRequestHandler getOFFDataRequestHandler = new GetOFFDataRequestHandler(_oFFDataRepository, _oFFCategoryRepository, _oFFDataCategoryRepository, barcode);
-            getOFFDataRequestHandler.Execute(HttpContext);
+            getOFFDataRequestHandler.Handle(HttpContext);
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace LevelUpAPI.Controllers
         public void GetOpenFoodFactsDataFromCategory(string categoryName)
         {
             GetOFFDataFromCategoryRequestHandler getOFFDataFromCategoryRequestHandler = new GetOFFDataFromCategoryRequestHandler(_oFFDataCategoryRepository, categoryName);
-            getOFFDataFromCategoryRequestHandler.Execute(HttpContext);
+            getOFFDataFromCategoryRequestHandler.Handle(HttpContext);
         }
     }
 }

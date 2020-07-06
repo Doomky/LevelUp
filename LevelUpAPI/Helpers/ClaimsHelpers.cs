@@ -2,39 +2,27 @@
 using LevelUpAPI.Dbo;
 using LevelUpDTO;
 using Microsoft.AspNetCore.Http;
+using System.Net;
 using System.Security.Claims;
 
 namespace LevelUpAPI.Helpers
 {
     public static class ClaimsHelpers
     {
-        public static (bool, User) CheckClaimsForUser(DTORequest request, HttpContext context, IUserRepository userRepository)
+        public static (User, HttpStatusCode, string) CheckClaimsForUser(DTORequest request, ClaimsPrincipal claims, IUserRepository userRepository)
         {
             if (request == null)
-            {
-                context.Response.StatusCode = StatusCodes.Status400BadRequest;
-                return (false, null);
-            }
-
-            ClaimsPrincipal claims = context.User;
+                return (null, HttpStatusCode.BadRequest, "no request.");
 
             if (claims == null)
-            {
-                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                context.Response.WriteAsync("no claims").GetAwaiter().GetResult();
-                return (false, null);
-            }
+                return (null, HttpStatusCode.Unauthorized, "no claims.");
 
             User user = userRepository.GetUserByClaims(claims).GetAwaiter().GetResult();
 
             if (user == null)
-            {
-                context.Response.StatusCode = StatusCodes.Status400BadRequest;
-                context.Response.WriteAsync("no user for this client_id").GetAwaiter().GetResult();
-                return (false, null);
-            }
+                return (null, HttpStatusCode.BadRequest, "no user for this claims");
 
-            return (true, user);
+            return (user, HttpStatusCode.OK, null);
         }
     }
 }

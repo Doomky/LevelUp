@@ -2,9 +2,12 @@
 using LevelUpAPI.Dbo;
 using LevelUpDTO;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -14,12 +17,12 @@ namespace LevelUpAPI.RequestHandlers
     {
         private readonly IPhysicalActivitiesRepository _physicalActivitiesRepository;
 
-        public AddPARequestHandler(IPhysicalActivitiesRepository physicalActivitiesRepository)
+        public AddPARequestHandler(ClaimsPrincipal claims, AddPADTORequest dtoRequest, ILogger logger, IPhysicalActivitiesRepository physicalActivitiesRepository) : base(claims, dtoRequest, logger)
         {
             _physicalActivitiesRepository = physicalActivitiesRepository;
         }
 
-        protected override async Task<AddPADTOResponse> ExecuteRequest(HttpContext context)
+        protected async override Task<(AddPADTOResponse, HttpStatusCode, string)> Handle_Internal()
         {
             if (string.IsNullOrWhiteSpace(DTORequest.Name) || DTORequest.CalPerKgPerHour == null)
             {

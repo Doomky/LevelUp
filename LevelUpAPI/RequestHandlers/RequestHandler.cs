@@ -4,61 +4,45 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using LevelUpDTO;
+using System.Net;
+using Microsoft.Extensions.Logging;
+using System.Security.Claims;
 
 namespace LevelUpAPI
 {
-    public abstract class RequestHandler<TDTORequest, TDTOResponse> where TDTORequest : DTORequest, new() where TDTOResponse : DTOResponse
+    public abstract class RequestHandler<TDTORequest, TDTOResponse> 
+        where TDTORequest : DTORequest
+        where TDTOResponse : DTOResponse
     {
         protected TDTORequest DTORequest { get; set; }
-        protected TDTOResponse DTOResponse { get; set; }
 
-        protected virtual async Task<HttpContext> CheckHeader(HttpContext context)
+        protected ILogger Logger { get; set; }
+
+        protected ClaimsPrincipal Claims { get; set; }
+
+        protected RequestHandler(ClaimsPrincipal claims, TDTORequest dTORequest, ILogger logger)
         {
-            return await Task.FromResult(context); 
-        }
-        protected virtual async Task<HttpContext> CheckBody(HttpContext context)
-        {
-            DTORequest = new TDTORequest();
-            if (DTORequest.GetMethodType() == LevelUpDTO.DTORequest.Method.POST)
-            {
-                string bodyStr = "";
-                Stream body = context.Request.Body;
-                using (StreamReader reader = new StreamReader(body))
-                {
-                    bodyStr = await reader.ReadToEndAsync();
-                }
-                DTORequest = JsonSerializer.Deserialize<TDTORequest>(bodyStr);
-            }
-            return context;
+            Claims = claims;
+            DTORequest = dTORequest;
+            Logger = logger;
         }
 
-        protected virtual async Task<TDTOResponse> ExecuteRequest(HttpContext context)
+        protected virtual async Task<(TDTOResponse, HttpStatusCode, string)> Handle_Internal()
         {
             throw new NotImplementedException();
         }
 
-        public async Task<TDTOResponse> Execute(HttpContext context)
+        public async Task<(TDTOResponse, HttpStatusCode, string)> Handle()
         {
             try
             {
-                context = await CheckHeader(context);
-                if (context == null)
-                    return null;
-                context = await CheckBody(context);
-                if (context == null)
-                    return null;
-                return await ExecuteRequest(context);
+                return await Handle_Internal();
             }
             catch (Exception e)
             {
-                context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-                return null;
+                Logger.LogError(e.Message);
+                return (null, HttpStatusCode.InternalServerError, e.Message);
             }
-        }
-
-        public TDTOResponse GetDTOResponse()
-        {
-            return DTOResponse;
         }
     }
 }

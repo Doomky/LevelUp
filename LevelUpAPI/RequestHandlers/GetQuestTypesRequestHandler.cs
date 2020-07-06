@@ -2,35 +2,35 @@
 using LevelUpAPI.Dbo;
 using LevelUpDTO;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace LevelUpAPI.RequestHandlers
 {
-    public class GetQuestTypesRequestHandler : RequestHandler<GetQuestTypesDTORequest>
+    public class GetQuestTypesRequestHandler : RequestHandler<GetQuestTypesDTORequest, GetQuestTypesDTOResponse>
     {
         private readonly IQuestTypeRepository _questTypeRepository;
 
-        public GetQuestTypesRequestHandler(IQuestTypeRepository questTypeRepository)
+        public GetQuestTypesRequestHandler(IQuestTypeRepository questTypeRepository, GetQuestTypesDTORequest dTORequest, ILogger logger) : base(dTORequest,logger)
         {
             _questTypeRepository = questTypeRepository;
         }
 
-        protected override void ExecuteRequest(HttpContext context)
+        protected override Task<(GetQuestTypesDTOResponse, HttpStatusCode, string)> Handle_Internal()
         {
-            IEnumerable<QuestType> questTypes = _questTypeRepository.GetAllQuestTypes();
+            IEnumerable<QuestType> questTypes = await _questTypeRepository.GetAllQuestTypes();
 
-            if (questTypes != null)
+            GetQuestTypesDTOResponse getQuestTypesDTOResponse = new GetQuestTypesDTOResponse()
             {
-                string questTypesJson = JsonSerializer.Serialize(questTypes);
-                context.Response.StatusCode = StatusCodes.Status200OK;
-                context.Response.WriteAsync(questTypesJson).GetAwaiter().GetResult();
-            }
-            else
-                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+
+            };
+
+            return (getQuestTypesDTOResponse, HttpStatusCode.OK, null);
         }
     }
 }

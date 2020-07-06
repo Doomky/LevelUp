@@ -3,7 +3,10 @@ using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Dbo;
 using LevelUpDTO;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using System;
+using System.Net;
+using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.Tasks;
 using static LevelUpAPI.DataAccess.QuestHandlers.Interfaces.IQuestHandler;
@@ -19,7 +22,7 @@ namespace LevelUpAPI.RequestHandlers
         private readonly IQuestRepository _questRepository;
         private readonly IQuestTypeRepository _questTypeRepository;
 
-        public AddCustomFoodEntryRequestHandler(IFoodEntryRepository foodEntryRepository, IUserRepository userRepository, IOFFDataRepository oFFDataRepository, IQuestRepository questRepository, IQuestTypeRepository questTypeRepository)
+        public AddCustomFoodEntryRequestHandler(ClaimsPrincipal claims, AddCustomFoodEntryDTORequest dTORequest, ILogger logger, IFoodEntryRepository foodEntryRepository, IUserRepository userRepository, IOFFDataRepository oFFDataRepository, IQuestRepository questRepository, IQuestTypeRepository questTypeRepository) : base(claims, dTORequest, logger)
         {
             _foodEntryRepository = foodEntryRepository;
             _userRepository = userRepository;
@@ -28,13 +31,14 @@ namespace LevelUpAPI.RequestHandlers
             _questTypeRepository = questTypeRepository;
         }
 
-        protected override async Task<AddCustomFoodEntryDTOResponse> ExecuteRequest(HttpContext context)
+        protected async override Task<(AddCustomFoodEntryDTOResponse, HttpStatusCode, string)> Handle_Internal()
         {
-            (bool isOk, User user) = CheckClaimsForUser(DTORequest, context, _userRepository);
-            if (!isOk || user == null)
-                return null;
+            (User user, HttpStatusCode statusCode, string err) = CheckClaimsForUser(DTORequest, Claims, _userRepository);
+            if (user == null)
+                return (null, HttpStatusCode.BadRequest, err);
 
-            OpenFoodFactsData offData = _oFFDataRepository.Insert(new OpenFoodFactsData() { 
+            OpenFoodFactsData offData = await _oFFDataRepository.Insert(new OpenFoodFactsData()
+            {
 
                 Name = DTORequest.Name,
                 IsCustom = true,
@@ -54,36 +58,36 @@ namespace LevelUpAPI.RequestHandlers
                 SaltServing = DTORequest.SaltServing,
                 SaturatedFatServing = DTORequest.SaturatedFatServing,
                 SugarsServing = DTORequest.SugarsServing,
-            }).GetAwaiter().GetResult();
+            });
 
-            FoodEntry foodEntryData = _foodEntryRepository.Insert(new FoodEntry()
+            FoodEntry foodEntryData = await _foodEntryRepository.Insert(new FoodEntry()
             {
                 Datetime = DateTime.Now,
                 UserId = user.Id,
                 OpenFoodFactsDataId = offData.Id
-            }).GetAwaiter().GetResult();
+            });
 
-            if (foodEntryData != null)
-            {
-                // update all quests based on datas
-                var quests = _questRepository.Get(user, _questTypeRepository, QuestState.InProgress).GetAwaiter().GetResult();
-                foreach (var quest in quests)
-                {
-                    var questHandler = QuestHandlers.Create(quest, user, _questTypeRepository);
-                    questHandler.Update("Calories", (foodEntryData.Servings * offData.EnergyServing).ToString());
-                    _questRepository.Update(quest).GetAwaiter().GetResult();
-                }
+            if (foodEntryData == null)
+                return (null, HttpStatusCode.NoContent, null);
 
-                string foodEntryJson = JsonSerializer.Serialize(foodEntryData);
-                context.Response.StatusCode = StatusCodes.Status200OK;
-                context.Response.WriteAsync(foodEntryJson).GetAwaiter().GetResult();
-                return JsonSerializer.Deserialize<AddCustomFoodEntryDTOResponse>(foodEntryJson);
-            }
-            else
+            var quests = await _questRepository.Get(user, _questTypeRepository, QuestState.InProgress);
+
+            foreach (var quest in quests)
             {
-                context.Response.StatusCode = StatusCodes.Status204NoContent;
-                return null;
+                var questHandler = QuestHandlers.Create(quest, user, _questTypeRepository);
+                questHandler.Update("Calories", (foodEntryData.Servings * offData.EnergyServing).ToString());
+                await _questRepository.Update(quest);
             }
+
+            AddCustomFoodEntryDTOResponse dtoResponse = new AddCustomFoodEntryDTOResponse(
+                foodEntryData.Id,
+                foodEntryData.UserId,
+                foodEntryData.OpenFoodFactsDataId,
+                foodEntryData.Datetime,
+                foodEntryData.Servings
+            );
+
+            return (dtoResponse, HttpStatusCode.OK, null);
         }
     }
 }

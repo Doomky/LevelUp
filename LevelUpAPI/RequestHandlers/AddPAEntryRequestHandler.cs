@@ -8,6 +8,9 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using static LevelUpAPI.Helpers.ClaimsHelpers;
 using static LevelUpAPI.DataAccess.QuestHandlers.Interfaces.IQuestHandler;
+using Microsoft.Extensions.Logging;
+using System.Security.Claims;
+using System.Net;
 
 namespace LevelUpAPI.RequestHandlers
 {
@@ -19,7 +22,7 @@ namespace LevelUpAPI.RequestHandlers
         private readonly IQuestTypeRepository _questTypeRepository;
         private readonly IQuestRepository _questRepository;
 
-        public AddPAEntryRequestHandler(IUserRepository userRepository, IPhysicalActivitiesRepository physicalActivitiesRepository, IPhysicalActivitiesEntryRepository physicalActivitiesEntryRepository, IQuestTypeRepository questTypeRepository, IQuestRepository questRepository)
+        public AddPAEntryRequestHandler(ClaimsPrincipal claims, AddPAEntryDTORequest dtoRequest, ILogger logger, IUserRepository userRepository, IPhysicalActivitiesRepository physicalActivitiesRepository, IPhysicalActivitiesEntryRepository physicalActivitiesEntryRepository, IQuestTypeRepository questTypeRepository, IQuestRepository questRepository) : base(claims, dtoRequest, logger)
         {
             _userRepository = userRepository;
             _physicalActivitiesRepository = physicalActivitiesRepository;
@@ -28,46 +31,38 @@ namespace LevelUpAPI.RequestHandlers
             _questRepository = questRepository;
         }
 
-        protected override async Task<AddPAEntryDTOResponse> ExecuteRequest(HttpContext context)
+        protected async override Task<(AddPAEntryDTOResponse, HttpStatusCode, string)> Handle_Internal()
         {
-            (bool isOk, User user) = CheckClaimsForUser(DTORequest, context, _userRepository);
-            if (!isOk || user == null)
-                return null;
+            (User user, HttpStatusCode statusCode, string err) = CheckClaimsForUser(DTORequest, Claims, _userRepository);
+            if (user == null)
+                return (null, statusCode, err);
 
             PhysicalActivity PA = _physicalActivitiesRepository.GetPhysicalActivity(DTORequest.Name);
-            if (PA == null)
-            {
-                context.Response.StatusCode = StatusCodes.Status204NoContent;
-                return null;
-            }
 
-            PhysicalActivityEntry PAEntry = _physicalActivitiesEntryRepository.Insert(new PhysicalActivityEntry()
+            if (PA == null)
+                return (null, HttpStatusCode.NoContent, null);
+
+            PhysicalActivityEntry PAEntry = await _physicalActivitiesEntryRepository.Insert(new PhysicalActivityEntry()
             {
                 UserId = user.Id,
                 PhysicalActivitiesId = PA.Id,
                 DatetimeStart = DateTime.Parse(DTORequest.dateTimeStart),
                 DatetimeEnd = DateTime.Parse(DTORequest.dateTimeEnd)
-            }).GetAwaiter().GetResult();
+            });
 
-            if (PAEntry != null)
+            if (PAEntry == null)
+                return (null, HttpStatusCode.NoContent, null);
+
+            // update all quests based on datas
+            var quests = await _questRepository.Get(user, _questTypeRepository, QuestState.InProgress);
+            foreach (var quest in quests)
             {
-                // update all quests based on datas
-                var quests = _questRepository.Get(user, _questTypeRepository, QuestState.InProgress ).GetAwaiter().GetResult();
-                foreach (var quest in quests)
-                {
-                    var questHandler = QuestHandlers.Create(quest, user, _questTypeRepository);
-                    questHandler.Update(PhysicalActivityQuestHandler.PHYSICAL_ACTIVTY_KEY, "1");
-                    _questRepository.Update(quest).GetAwaiter().GetResult();
-                }
-
-                string PAEntryJson = JsonSerializer.Serialize(PAEntry);
-                context.Response.StatusCode = StatusCodes.Status200OK;
-                context.Response.WriteAsync(PAEntryJson).GetAwaiter().GetResult();
-                return JsonSerializer.Deserialize<AddPAEntryDTOResponse>(PAEntryJson);
+                var questHandler = QuestHandlers.Create(quest, user, _questTypeRepository);
+                questHandler.Update(PhysicalActivityQuestHandler.PHYSICAL_ACTIVTY_KEY, "1");
+                await _questRepository.Update(quest);
             }
-            else
-                context.Response.StatusCode = StatusCodes.Status204NoContent;
-            return null;
+
+            return (new AddPAEntryDTOResponse(PAEntry.Id, PAEntry.UserId, PAEntry.PhysicalActivitiesId, PAEntry.DatetimeStart, PAEntry.DatetimeEnd), HttpStatusCode.OK, null);
         }
     }
 }

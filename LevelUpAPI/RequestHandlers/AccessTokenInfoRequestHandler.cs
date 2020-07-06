@@ -2,7 +2,10 @@
 using LevelUpAPI.Dbo;
 using LevelUpDTO;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using System;
+using System.Net;
+using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.Tasks;
 using static LevelUpAPI.Helpers.ClaimsHelpers;
@@ -13,24 +16,22 @@ namespace LevelUpAPI.RequestHandlers
     {
         private IUserRepository _userRepository;
 
-        public AccessTokenInfoRequestHandler(IUserRepository userRepository)
+        public AccessTokenInfoRequestHandler(IUserRepository userRepository, ClaimsPrincipal claims, AccessTokenInfoDTORequest dTORequest, ILogger logger) : base(claims, dTORequest, logger)
         {
             _userRepository = userRepository;
         }
 
-        protected override async Task<AccessTokenInfoDTOResponse> ExecuteRequest(HttpContext context)
+        protected async override Task<(AccessTokenInfoDTOResponse, HttpStatusCode, string)> Handle_Internal()
         {
-            (bool isOk, User user) = CheckClaimsForUser(DTORequest, context, _userRepository);
-            if (!isOk || user == null)
-                return null;
+            (User user, HttpStatusCode statusCode, string err) = CheckClaimsForUser(DTORequest, Claims, _userRepository);
+            if (user == null)
+                return (null, statusCode, err);
 
             AccessTokenInfo accessTokenInfo = new AccessTokenInfo(user);
 
             string accessTokenInfoJson = JsonSerializer.Serialize(accessTokenInfo);
 
-            context.Response.StatusCode = StatusCodes.Status200OK;
-            context.Response.WriteAsync(accessTokenInfoJson).GetAwaiter().GetResult();
-            return JsonSerializer.Deserialize<AccessTokenInfoDTOResponse>(accessTokenInfoJson);
+            return (new AccessTokenInfoDTOResponse(accessTokenInfo.AccessExpiration, accessTokenInfo.AccessToken), HttpStatusCode.OK, null);
         }
     }
 }

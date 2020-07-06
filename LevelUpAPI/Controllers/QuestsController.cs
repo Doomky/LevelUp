@@ -38,7 +38,7 @@ namespace LevelUpAPI.Controllers
         {
             QuestState? questState = questStateName.AsQuestStateEnum();
             GetQuestRequestHandler getQuestRequestHandler = new GetQuestRequestHandler(_userRepository, _questRepository, _questTypeRepository, questState);
-            getQuestRequestHandler.Execute(HttpContext);
+            getQuestRequestHandler.Handle(HttpContext);
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace LevelUpAPI.Controllers
         public void GetQuestCategories()
         {
             GetQuestCategoriesRequestHandler getQuestCategoriesRequestHandler = new GetQuestCategoriesRequestHandler(_categoryRepository);
-            getQuestCategoriesRequestHandler.Execute(HttpContext);
+            getQuestCategoriesRequestHandler.Handle(HttpContext);
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace LevelUpAPI.Controllers
         public void GetByCategory(string categoryName)
         {
             GetQuestByCategoryRequestHandler getQuestByCategoryRequestHandler = new GetQuestByCategoryRequestHandler(_userRepository, _questRepository, _categoryRepository, _questTypeRepository, categoryName);
-            getQuestByCategoryRequestHandler.Execute(HttpContext);
+            getQuestByCategoryRequestHandler.Handle(HttpContext);
         }
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace LevelUpAPI.Controllers
         public void Add()
         {
             AddQuestRequestHandler addQuestRequestHandler = new AddQuestRequestHandler(_userRepository, _questRepository, _questTypeRepository, _categoryRepository);
-            addQuestRequestHandler.Execute(HttpContext);
+            addQuestRequestHandler.Handle(HttpContext);
         }
 
         /// <summary>
@@ -173,7 +173,7 @@ namespace LevelUpAPI.Controllers
         public ClaimQuestsDTOResponse Claim()
         {
             ClaimQuestsRequestHandler claimQuestsRequestHandler = new ClaimQuestsRequestHandler(_userRepository, _questRepository, _questTypeRepository, _avatarRepository);
-            claimQuestsRequestHandler.Execute(HttpContext);
+            claimQuestsRequestHandler.Handle(HttpContext);
             return (ClaimQuestsDTOResponse)claimQuestsRequestHandler.GetDTOResponse();
         }
     }

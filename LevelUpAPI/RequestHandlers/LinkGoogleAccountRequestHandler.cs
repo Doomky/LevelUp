@@ -3,33 +3,37 @@ using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Dbo;
 using LevelUpDTO;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Text.Json;
+using System.Threading.Tasks;
 using static LevelUpAPI.Helpers.ClaimsHelpers;
 
 namespace LevelUpAPI.RequestHandlers
 {
-    public class LinkGoogleAccountRequestHandler : RequestHandler<LinkGoogleAccountDTORequest>
+    public class LinkGoogleAccountRequestHandler : RequestHandler<LinkGoogleAccountDTORequest, LinkGoogleAccountDTOResponse>
     {
         private IUserRepository _userRepository;
 
-        public LinkGoogleAccountRequestHandler(IUserRepository userRepository)
+        public LinkGoogleAccountRequestHandler(ClaimsPrincipal claims, LinkGoogleAccountDTORequest dTORequest, ILogger logger, IUserRepository userRepository) : base(claims, dTORequest, logger)
         {
             _userRepository = userRepository;
         }
 
-        protected override void ExecuteRequest(HttpContext context)
+        protected override async Task<(LinkGoogleAccountDTOResponse, HttpStatusCode, string)> Handle_Internal()
         {
-            (bool isOk, User user) = CheckClaimsForUser(Request, context, _userRepository);
-            if (!isOk || user == null)
-                return;
+            (User user, HttpStatusCode statusCode, string errMsg) = CheckClaimsForUser(DTORequest, Claims, _userRepository);
+            if (user == null)
+                return (null, statusCode, errMsg);
 
             var values = new Dictionary<string, string>
             {
-                { "code", Request.GoogleAuthCode },
+                { "code", DTORequest.GoogleAuthCode },
                 { "client_id", "498756810683-agbruikv9b2j9hjs59rrbpb6j13l0l41.apps.googleusercontent.com" },
                 { "client_secret", "9QrjOKzI4ldnqXx_uqcrbOK0" },
                 { "access_type", "offline"},
@@ -47,18 +51,15 @@ namespace LevelUpAPI.RequestHandlers
                 user.GoogleRefreshToken = tokenAsJson.TryGetString("refresh_token");
                 int expires_in = (int)tokenAsJson.TryGetInt("expires_in");
                 user.GoogleAccessExpiration = DateTime.Now.AddSeconds(expires_in);
-
                 AccessTokenInfo accessTokenInfo = new AccessTokenInfo(user);
-                string accessTokenInfoJson = JsonSerializer.Serialize(accessTokenInfo);
-
-                context.Response.WriteAsync(accessTokenInfoJson).GetAwaiter().GetResult();
-                _userRepository.Update(user);
+                await _userRepository.Update(user);
+                LinkGoogleAccountDTOResponse dTOResponse = new LinkGoogleAccountDTOResponse(accessTokenInfo.AccessToken, accessTokenInfo.AccessExpiration);
+                return (dTOResponse, HttpStatusCode.OK, null);
             }
             else
             {
-                context.Response.WriteAsync(response).GetAwaiter().GetResult();
+                return (null, HttpStatusCode.BadRequest, "");
             }
-            context.Response.StatusCode = (int)httpResponse.StatusCode;
         }
     }
 }

@@ -37,7 +37,7 @@ namespace LevelUpAPI.Controllers
         public void Get()
         {
             GetAvatarInfoRequestHandler getAvatarInfoRequestHandler = new GetAvatarInfoRequestHandler(_userRepository, _avatarRepository);
-            getAvatarInfoRequestHandler.Execute(HttpContext);
+            getAvatarInfoRequestHandler.Handle(HttpContext);
         }
 
         /// <summary>
