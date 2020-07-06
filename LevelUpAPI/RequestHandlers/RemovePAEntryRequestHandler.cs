@@ -2,48 +2,47 @@
 using LevelUpAPI.Dbo;
 using LevelUpDTO;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
+using System.Net;
+using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.Tasks;
 using static LevelUpAPI.Helpers.ClaimsHelpers;
 
 namespace LevelUpAPI.RequestHandlers
 {
-    public class RemovePAEntryRequestHandler : RequestHandler<RemovePAEntryDTORequest>
+    public class RemovePAEntryRequestHandler : RequestHandler<RemovePAEntryDTORequest, RemovePAEntryDTOResponse>
     {
         private readonly IUserRepository _userRepository;
         private readonly IPhysicalActivitiesEntryRepository _physicalActivitiesEntryRepository;
 
-        public RemovePAEntryRequestHandler(IUserRepository userRepository, IPhysicalActivitiesEntryRepository physicalActivitiesEntryRepository)
+        public RemovePAEntryRequestHandler(
+            IUserRepository userRepository,
+            IPhysicalActivitiesEntryRepository physicalActivitiesEntryRepository,
+            ClaimsPrincipal claims,
+            RemovePAEntryDTORequest dTORequest,
+            ILogger logger)
+            : base(claims, dTORequest, logger)
         {
             _userRepository = userRepository;
             _physicalActivitiesEntryRepository = physicalActivitiesEntryRepository;
         }
 
-        protected override void ExecuteRequest(HttpContext context)
+        protected override async Task<(RemovePAEntryDTOResponse, HttpStatusCode, string)> Handle_Internal()
         {
-            (bool isOk, User user) = CheckClaimsForUser(Request, context, _userRepository);
-            if (!isOk || user == null)
-                return;
+            (User user, HttpStatusCode statusCode, string err) = CheckClaimsForUser(DTORequest, Claims, _userRepository);
+            if (user == null)
+                return (null, statusCode, err);
 
-            PhysicalActivityEntry PAEntry = _physicalActivitiesEntryRepository.Get(Request.Id).GetAwaiter().GetResult().FirstOrDefault();
+            PhysicalActivityEntry PAEntry = _physicalActivitiesEntryRepository.Get(DTORequest.Id).GetAwaiter().GetResult().FirstOrDefault();
             if (PAEntry == null)
-            {
-                context.Response.StatusCode = StatusCodes.Status400BadRequest;
-                context.Response.WriteAsync("Could not find the physical activity entry, please check body data sanity");
-                return;
-            }
+                return (null, HttpStatusCode.BadRequest, "Could not find the given physical activity entry, please check body data sanity");
 
-            if (!_physicalActivitiesEntryRepository.Delete(Request.Id).GetAwaiter().GetResult())
-            {
-                context.Response.StatusCode = StatusCodes.Status400BadRequest;
-                context.Response.WriteAsync("Could not remove the food entry");
-            }
-            else
-            {
-                context.Response.StatusCode = StatusCodes.Status200OK;
-            }
+            if (!_physicalActivitiesEntryRepository.Delete(DTORequest.Id).GetAwaiter().GetResult())
+                return (null, HttpStatusCode.BadRequest, "Could not remove the given physical activity entry");
+            return (new RemovePAEntryDTOResponse(DTORequest.Id), HttpStatusCode.OK, null);
         }
     }
 }

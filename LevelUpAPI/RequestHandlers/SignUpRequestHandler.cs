@@ -2,10 +2,14 @@
 using Microsoft.AspNetCore.Http;
 using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpDTO;
+using System.Security.Claims;
+using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
+using System.Net;
 
 namespace LevelUpAPI
 {
-    public class SignUpRequestHandler : RequestHandler<SignUpDTORequest>
+    public class SignUpRequestHandler : RequestHandler<SignUpDTORequest, SignUpDTOResponse>
     {
         public const string HTTP = "http://";
         public const string address = "localhost";
@@ -15,37 +19,47 @@ namespace LevelUpAPI
         private readonly IAvatarRepository _avatarRepository;
         private readonly IUserRepository _userRepository;
 
-        public SignUpRequestHandler(IAvatarRepository avatarRepository, IUserRepository userRepository)
+        public SignUpRequestHandler(
+            IAvatarRepository avatarRepository,
+            IUserRepository userRepository,
+            ClaimsPrincipal claims,
+            SignUpDTORequest dTORequest,
+            ILogger logger)
+            : base(claims, dTORequest, logger)
         {
             _avatarRepository = avatarRepository;
             _userRepository = userRepository;
         }
 
-        protected override void ExecuteRequest(HttpContext context)
+        protected override async Task<(SignUpDTOResponse, HttpStatusCode, string)> Handle_Internal()
         {
-            if (Request == null || string.IsNullOrWhiteSpace(Request.Login)
-                || string.IsNullOrWhiteSpace(Request.Firstname)
-                || string.IsNullOrWhiteSpace(Request.Lastname)
-                || string.IsNullOrWhiteSpace(Request.EmailAddress)
-                || string.IsNullOrWhiteSpace(Request.PasswordHash))
-            {
-                context.Response.StatusCode = StatusCodes.Status400BadRequest;
-                return;
-            }
+            if (DTORequest == null)
+                return (null, HttpStatusCode.BadRequest, "Request malformed, please check body data sanity");
 
-            if (!_userRepository.CanSignUp(Request).GetAwaiter().GetResult())
-            {
-                context.Response.StatusCode = StatusCodes.Status409Conflict;
-                return;
-            }
+            if (!_userRepository.CanSignUp(DTORequest).GetAwaiter().GetResult())
+                return (null, HttpStatusCode.Conflict, "User already exists, please use another email address or login");
             else
             {
                 Dbo.Avatar avatar = _avatarRepository.Create().GetAwaiter().GetResult();
-                Dbo.User user = _userRepository.SignUp(Request, avatar.Id).GetAwaiter().GetResult();
+                Dbo.User user = _userRepository.SignUp(DTORequest, avatar.Id).GetAwaiter().GetResult();
                 if (user != null)
-                    context.Response.StatusCode = StatusCodes.Status200OK;
-                return;
+                    return (new SignUpDTOResponse(
+                        user.Id,
+                        user.Login,
+                        user.Firstname,
+                        user.Lastname,
+                        user.Gender,
+                        user.WeightKg,
+                        user.Email,
+                        avatar.Id,
+                        avatar.Level,
+                        avatar.Xp,
+                        avatar.XpMax,
+                        avatar.Size,
+                        user.CreationDate),
+                        HttpStatusCode.OK, null);
             }
+            return (null, HttpStatusCode.BadRequest, "Could not register the user, please contact us");
         }
     }
 }

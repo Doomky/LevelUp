@@ -5,10 +5,14 @@ using IdentityModel.Client;
 using LevelUpDTO;
 using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.DataAccess.GoogleFit;
+using System.Security.Claims;
+using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
+using System.Net;
 
 namespace LevelUpAPI.RequestHandlers
 {
-    public class SignInRequestHandler : RequestHandler<SignInDTORequest>
+    public class SignInRequestHandler : RequestHandler<SignInDTORequest, SignInDTOResponse>
     {
         public const string HTTP = "http://";
         public const string address = "localhost";
@@ -17,38 +21,34 @@ namespace LevelUpAPI.RequestHandlers
 
         private IUserRepository _userRepository;
 
-        public SignInRequestHandler(IUserRepository userRepository)
+        public SignInRequestHandler(
+            IUserRepository userRepository,
+            ClaimsPrincipal claims,
+            SignInDTORequest dTORequest,
+            ILogger logger)
+            : base(claims, dTORequest, logger)
         {
             _userRepository = userRepository;
         }
 
-        protected override void ExecuteRequest(HttpContext context)
+        protected override async Task<(SignInDTOResponse, HttpStatusCode, string)> Handle_Internal()
         {
-            if (Request == null || string.IsNullOrWhiteSpace(Request.PasswordHash)
-                || (string.IsNullOrWhiteSpace(Request.Login) && string.IsNullOrWhiteSpace(Request.EmailAddress)))
-            {
-                context.Response.StatusCode = StatusCodes.Status400BadRequest;
-                return;
-            }
+            if (DTORequest == null)
+                return (null, HttpStatusCode.BadRequest, "Request malformed, please check body data sanity");
 
-            if (!_userRepository.CanSignIn(Request).GetAwaiter().GetResult())
-            {
-                context.Response.StatusCode = StatusCodes.Status400BadRequest;
-                return;
-            }
+            if (!_userRepository.CanSignIn(DTORequest).GetAwaiter().GetResult())
+                return (null, HttpStatusCode.BadRequest, "You are already signed in !");
 
             Dbo.User user;
-            if (!string.IsNullOrEmpty(Request.EmailAddress))
+            if (!string.IsNullOrEmpty(DTORequest.EmailAddress))
             {
-                user = _userRepository.GetUserByLoginOrEmail(null, Request.EmailAddress).GetAwaiter().GetResult();
+                user = _userRepository.GetUserByLoginOrEmail(null, DTORequest.EmailAddress).GetAwaiter().GetResult();
                 
                 if (user != null)
-                {
-                    Request.Login = user.Login;
-                }
+                    DTORequest.Login = user.Login;
             }
             else
-                user = _userRepository.GetUserByLoginOrEmail(Request.Login, null).GetAwaiter().GetResult();
+                user = _userRepository.GetUserByLoginOrEmail(DTORequest.Login, null).GetAwaiter().GetResult();
 
             string fullAddress = $"{HTTP}{address}:{port}";
             var client = new HttpClient();
@@ -56,22 +56,23 @@ namespace LevelUpAPI.RequestHandlers
             ClientCredentialsTokenRequest clientCredentialsTokenRequest = new ClientCredentialsTokenRequest
             {
                 Address = discoDoc.TokenEndpoint,
-                ClientId = Request.Login,
-                ClientSecret = Request.PasswordHash,
+                ClientId = DTORequest.Login,
+                ClientSecret = DTORequest.PasswordHash,
                 Scope = "api1"
             };
             TokenResponse tokenResponse = client.RequestClientCredentialsTokenAsync(clientCredentialsTokenRequest).GetAwaiter().GetResult();
             
             string jsonAsString = tokenResponse.Json.ToString();
 
-            context.Response.StatusCode = (int)tokenResponse.HttpStatusCode;
-            if (context.Response.StatusCode == StatusCodes.Status200OK)
+            if (tokenResponse.HttpStatusCode == HttpStatusCode.OK)
             {
                 user.LastLoginDate = DateTime.Now;
-                _userRepository.Update(user);
+                await _userRepository.Update(user);
             }
 
-            context.Response.WriteAsync(jsonAsString).GetAwaiter().GetResult();
+            return (new SignInDTOResponse(jsonAsString),
+                tokenResponse.HttpStatusCode,
+                tokenResponse.IsError ? tokenResponse.Error : null);
         }
     }
 }

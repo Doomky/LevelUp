@@ -6,10 +6,14 @@ using LevelUpDTO;
 using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Dbo;
 using static LevelUpAPI.Helpers.ClaimsHelpers;
+using System.Security.Claims;
+using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
+using System.Net;
 
 namespace LevelUpAPI.RequestHandlers
 {
-    public class SignOutRequestHandler : RequestHandler<SignOutDTORequest>
+    public class SignOutRequestHandler : RequestHandler<SignOutDTORequest, SignOutDTOResponse>
     {
         public const string HTTP = "http://";
         public const string address = "localhost";
@@ -18,16 +22,21 @@ namespace LevelUpAPI.RequestHandlers
 
         private IUserRepository _userRepository;
 
-        public SignOutRequestHandler(IUserRepository userRepository)
+        public SignOutRequestHandler(
+            IUserRepository userRepository,
+            ClaimsPrincipal claims,
+            SignOutDTORequest dTORequest,
+            ILogger logger)
+            : base(claims, dTORequest, logger)
         {
             _userRepository = userRepository;
         }
 
-        protected override void ExecuteRequest(HttpContext context)
+        protected override async Task<(SignOutDTOResponse, HttpStatusCode, string)> Handle_Internal()
         {
-            (bool isOk, User user) = CheckClaimsForUser(Request, context, _userRepository);
-            if (!isOk || user == null)
-                return;
+            (User user, HttpStatusCode statusCode, string err) = CheckClaimsForUser(DTORequest, Claims, _userRepository);
+            if (user == null)
+                return (null, statusCode, err);
 
             string fullAddress = $"{HTTP}{address}:{port}";
             var client = new HttpClient();
@@ -37,12 +46,14 @@ namespace LevelUpAPI.RequestHandlers
                 Address = discoDoc.RevocationEndpoint,
                 ClientId = user.Login,
                 ClientSecret = user.PasswordHash,
-                Token = Request.AccessToken,
+                Token = DTORequest.AccessToken,
                 TokenTypeHint = "access_token"
             };
             TokenRevocationResponse tokenRevocationResponse = client.RevokeTokenAsync(tokenRevocationRequest).GetAwaiter().GetResult();
 
-            context.Response.StatusCode = (int)tokenRevocationResponse.HttpStatusCode;
+            return (new SignOutDTOResponse(),
+                tokenRevocationResponse.HttpStatusCode,
+                tokenRevocationResponse.IsError ? tokenRevocationResponse.Error : null);
         }
     }
 }
