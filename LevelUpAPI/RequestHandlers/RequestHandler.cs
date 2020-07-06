@@ -32,7 +32,7 @@ namespace LevelUpAPI
             throw new NotImplementedException();
         }
 
-        public async Task<(TDTOResponse, HttpStatusCode, string)> Handle()
+        public async Task<(TDTOResponse response, HttpStatusCode statusCode, string errorMessage)> Handle()
         {
             try
             {

@@ -44,9 +44,6 @@ namespace LevelUpAPI.RequestHandlers
                 if (avatar != null)
                     return (new UpdateAvatarDTOResponse(
                         avatar.Id,
-                        avatar.Level,
-                        avatar.Xp,
-                        avatar.XpMax,
                         avatar.Size),
                         HttpStatusCode.OK, null);
             }
