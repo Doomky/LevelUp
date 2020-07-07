@@ -36,8 +36,7 @@ namespace LevelUpDTO
                 ImgUrl = imgUrl;
             }
         }
-
-        List<FoodEntryDTOResponse> FoodEntries { get; set; }
+        public List<FoodEntryDTOResponse> FoodEntries { get; set; }
         public GetFoodEntriesDTOResponse(List<FoodEntryDTOResponse> foodEntries)
         {
             FoodEntries = foodEntries;

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Security.Claims;
 using System.Text.Json;
@@ -35,7 +36,7 @@ namespace LevelUpAPI.RequestHandlers
 
             IEnumerable<FoodEntry> foodEntries = await _foodEntryRepository.GetFromUser(user.Login);
 
-            List<FoodEntryDTOResponse> foodEntryDatas = new List<FoodEntryDTOResponse>();
+            List<FoodEntryDTOResponse> foodEntryDTOs = new List<FoodEntryDTOResponse>();
 
             foreach (FoodEntry entry in foodEntries)
             {
@@ -54,14 +55,13 @@ namespace LevelUpAPI.RequestHandlers
                     offData.SugarsServing,
                     offData.ImgUrl
                 );
-
-                foodEntryDatas.Add(foodEntryDTO);
+                foodEntryDTOs.Add(foodEntryDTO);
             }
 
             if (foodEntries == null)
                 return (null, HttpStatusCode.BadRequest, null);
 
-            GetFoodEntriesDTOResponse dtoReponse = new GetFoodEntriesDTOResponse();
+            GetFoodEntriesDTOResponse dtoReponse = new GetFoodEntriesDTOResponse(foodEntryDTOs);
 
             return (dtoReponse, HttpStatusCode.BadRequest, null);
         }

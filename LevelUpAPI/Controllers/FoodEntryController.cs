@@ -38,7 +38,7 @@ namespace LevelUpAPI.Controllers
         /// <response code="400">The request is malformed or the user does not exist.</response>
         /// <response code="401">The user is not signed in.</response>
         [HttpGet]
-        public async Task<IActionResult> Get([FromBody] GetFoodEntriesDTORequest dtoRequest)
+        public async Task<ActionResult<GetFoodEntriesDTOResponse>> Get([FromBody] GetFoodEntriesDTORequest dtoRequest)
         {
             GetFoodEntriesRequestHandler getFoodEntriesRequestHandler = new GetFoodEntriesRequestHandler(User, dtoRequest, _logger, _userRepository, _foodEntryRepository, _offDataRepository);
             (var dtoResponse, HttpStatusCode statusCode, string err) = await getFoodEntriesRequestHandler.Handle();
