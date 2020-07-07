@@ -8,6 +8,9 @@ using System.Text.Json;
 using System.Linq;
 using System.Threading.Tasks;
 using static LevelUpAPI.Helpers.ClaimsHelpers;
+using Microsoft.Extensions.Logging;
+using System.Security.Claims;
+using System.Net;
 
 namespace LevelUpAPI.RequestHandlers
 {
@@ -16,30 +19,28 @@ namespace LevelUpAPI.RequestHandlers
         private readonly IUserRepository _userRepository;
         private readonly IFoodEntryRepository _foodEntryRepository;
 
-        public GetFoodEntriesCountRequestHandler(IUserRepository userRepository, IFoodEntryRepository foodEntryRepository)
+        public GetFoodEntriesCountRequestHandler(ClaimsPrincipal claims, GetFoodEntriesCountDTORequest dtoRequest, ILogger logger, IUserRepository userRepository, IFoodEntryRepository foodEntryRepository) : base(claims, dtoRequest, logger)
         {
             _userRepository = userRepository;
             _foodEntryRepository = foodEntryRepository;
         }
 
-        protected override async Task<GetFoodEntriesDTOResponse> ExecuteRequest(HttpContext context)
+        protected async override Task<(GetFoodEntriesDTOResponse, HttpStatusCode, string)> Handle_Internal()
         {
-            (bool isOk, User user) = CheckClaimsForUser(DTORequest, context, _userRepository);
-            if (!isOk || user == null)
-                return null;
+            (User user, HttpStatusCode statusCode, string err) = CheckClaimsForUser(DTORequest, Claims, _userRepository);
+            if (user == null)
+                return (null, statusCode, err);
 
             List<NbFoodEntryByLogin> foodEntries = _foodEntryRepository.GetNbFoodEntries(user.Login);
 
-            if (foodEntries != null)
-            {
-                string foodEntriesJson = JsonSerializer.Serialize(foodEntries);
-                context.Response.StatusCode = StatusCodes.Status200OK;
-                context.Response.WriteAsync(foodEntriesJson).GetAwaiter().GetResult();
-                return JsonSerializer.Deserialize<GetFoodEntriesDTOResponse>(foodEntriesJson);
-            }
-            else
-                context.Response.StatusCode = StatusCodes.Status400BadRequest;
-            return null;
+            if (foodEntries == null)
+                return (null, HttpStatusCode.BadRequest, null);
+
+            List<GetFoodEntriesDTOResponse.NbFoodEntryByLoginDTOResponse> dtoFoodEntries = foodEntries.Select(foodEntry =>
+                new GetFoodEntriesDTOResponse.NbFoodEntryByLoginDTOResponse(foodEntry.Login, foodEntry.Name, foodEntry.Total)
+            ).ToList();
+
+            return (new GetFoodEntriesDTOResponse(dtoFoodEntries), HttpStatusCode.OK, null);
         }
     }
 }

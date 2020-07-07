@@ -3,7 +3,10 @@ using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Dbo;
 using LevelUpDTO;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using System;
+using System.Net;
+using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.Tasks;
 using static LevelUpAPI.DataAccess.QuestHandlers.Interfaces.IQuestHandler;
@@ -18,7 +21,7 @@ namespace LevelUpAPI.RequestHandlers
         private readonly IQuestTypeRepository _questTypeRepository;
         private readonly IAvatarRepository _avatarRepository;
 
-        public ClaimQuestsRequestHandler(IUserRepository userRepository, IQuestRepository questRepository, IQuestTypeRepository questTypeRepository, IAvatarRepository avatarRepository)
+        public ClaimQuestsRequestHandler(ClaimsPrincipal claims, ClaimQuestsDTORequest dtoRequest, ILogger logger, IUserRepository userRepository, IQuestRepository questRepository, IQuestTypeRepository questTypeRepository, IAvatarRepository avatarRepository) : base(claims, dtoRequest, logger)
         {
             _userRepository = userRepository;
             _questRepository = questRepository;
@@ -26,14 +29,14 @@ namespace LevelUpAPI.RequestHandlers
             _avatarRepository = avatarRepository;
         }
 
-        protected override async Task<ClaimQuestsDTOResponse> ExecuteRequest(HttpContext context)
+        protected async override Task<(ClaimQuestsDTOResponse, HttpStatusCode, string)> Handle_Internal()
         {
-            (bool isOk, User user) = CheckClaimsForUser(DTORequest, context, _userRepository);
-            if (!isOk || user == null)
-                return null;
+            (User user, HttpStatusCode statusCode, string err) = CheckClaimsForUser(DTORequest, Claims, _userRepository);
+            if (user == null)
+                return (null, statusCode, err);
 
-            Quest quest = _questRepository.GetById(user, DTORequest.questId).GetAwaiter().GetResult();
-            QuestHandler questHandler = QuestHandlers.Create(quest, user, _questTypeRepository) ;
+            Quest quest = await _questRepository.GetById(user, DTORequest.questId);
+            QuestHandler questHandler = QuestHandlers.Create(quest, user, _questTypeRepository);
             ClaimQuestsDTOResponse claimQuestDTOResponse;
             string serializedString;
 

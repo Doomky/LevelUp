@@ -2,11 +2,15 @@
 using LevelUpAPI.Dbo;
 using LevelUpDTO;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.Tasks;
+using static LevelUpDTO.GetPADTOResponse;
 
 namespace LevelUpAPI.RequestHandlers
 {
@@ -14,25 +18,23 @@ namespace LevelUpAPI.RequestHandlers
     {
         private readonly IPhysicalActivitiesRepository _physicalActivitiesRepository;
 
-        public GetPARequestHandler(IPhysicalActivitiesRepository physicalActivitiesRepository)
+        public GetPARequestHandler(ClaimsPrincipal claims, GetPADTORequest dTORequest, ILogger logger, IPhysicalActivitiesRepository physicalActivitiesRepository) : base(claims, dTORequest, logger)
         {
             _physicalActivitiesRepository = physicalActivitiesRepository;
         }
 
-        protected override async Task<GetPADTOResponse> ExecuteRequest(HttpContext context)
+        protected async override Task<(GetPADTOResponse, HttpStatusCode, string)> Handle_Internal()
         {
             IEnumerable<PhysicalActivity> physicalActivities = _physicalActivitiesRepository.GetAllPhysicalActivities();
 
-            if (physicalActivities != null)
-            {
-                string physicalActivitiesJson = JsonSerializer.Serialize(physicalActivities);
-                context.Response.StatusCode = StatusCodes.Status200OK;
-                context.Response.WriteAsync(physicalActivitiesJson).GetAwaiter().GetResult();
-                return JsonSerializer.Deserialize<GetPADTOResponse>(physicalActivitiesJson);
-            }
-            else
-                context.Response.StatusCode = StatusCodes.Status400BadRequest;
-            return null;
+            if (physicalActivities == null)
+                return (null, HttpStatusCode.BadRequest, null);
+
+            List<PhysicalActivityDTOResponse> physicalActivitiesDTO = physicalActivities.Select(physicalActivity => new PhysicalActivityDTOResponse(physicalActivity.Id, physicalActivity.Name, physicalActivity.CalPerKgPerHour)).ToList();
+
+            GetPADTOResponse getPADTOResponse = new GetPADTOResponse(physicalActivitiesDTO);
+
+            return (getPADTOResponse, HttpStatusCode.OK, null);
         }
     }
 }

@@ -2,12 +2,16 @@
 using LevelUpAPI.Dbo;
 using LevelUpDTO;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.Tasks;
 using static LevelUpAPI.Helpers.ClaimsHelpers;
+using static LevelUpDTO.GetPAEntriesDTOResponse;
 
 namespace LevelUpAPI.RequestHandlers
 {
@@ -16,30 +20,30 @@ namespace LevelUpAPI.RequestHandlers
         private readonly IUserRepository _userRepository;
         private readonly IPhysicalActivitiesEntryRepository _physicalActivitiesEntryRepository;
 
-        public GetPAEntriesRequestHandler(IUserRepository userRepository, IPhysicalActivitiesEntryRepository physicalActivitiesEntryRepository)
+        public GetPAEntriesRequestHandler(ClaimsPrincipal claims, GetPAEntriesDTORequest dtoRequest, ILogger logger, IUserRepository userRepository, IPhysicalActivitiesEntryRepository physicalActivitiesEntryRepository) : base(claims, dtoRequest, logger)
         {
             _userRepository = userRepository;
             _physicalActivitiesEntryRepository = physicalActivitiesEntryRepository;
         }
 
-        protected override async Task<GetPAEntriesDTOResponse> ExecuteRequest(HttpContext context)
+        protected async override Task<(GetPAEntriesDTOResponse, HttpStatusCode, string)> Handle_Internal()
         {
-            (bool isOk, User user) = CheckClaimsForUser(DTORequest, context, _userRepository);
-            if (!isOk || user == null)
-                return null;
+            (User user, HttpStatusCode statusCode, string errMsg) = CheckClaimsForUser(DTORequest, Claims, _userRepository);
+            if (user == null)
+                return (null, statusCode, errMsg);
 
             IEnumerable<PhysicalActivityEntry> PAEntries = _physicalActivitiesEntryRepository.GetByLogin(user.Login).GetAwaiter().GetResult();
 
-            if (PAEntries != null)
-            {
-                string PAEntriesJson = JsonSerializer.Serialize(PAEntries);
-                context.Response.StatusCode = StatusCodes.Status200OK;
-                context.Response.WriteAsync(PAEntriesJson).GetAwaiter().GetResult();
-                return JsonSerializer.Deserialize<GetPAEntriesDTOResponse>(PAEntriesJson);
-            }
-            else
-                context.Response.StatusCode = StatusCodes.Status400BadRequest;
-            return null;
+            if (PAEntries == null)
+                return (null, HttpStatusCode.BadRequest, errMsg);
+
+            List<PAEntryDTOResponse> paEntriesDTO = PAEntries.Select(paentry =>
+                new PAEntryDTOResponse(paentry.Id, paentry.UserId, paentry.PhysicalActivitiesId, paentry.DatetimeStart, paentry.DatetimeEnd)
+            ).ToList();
+
+            GetPAEntriesDTOResponse dtoResponse = new GetPAEntriesDTOResponse(paEntriesDTO);
+
+            return (dtoResponse, HttpStatusCode.OK, null);
         }
     }
 }

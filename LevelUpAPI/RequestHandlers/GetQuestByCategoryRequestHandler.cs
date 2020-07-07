@@ -2,11 +2,16 @@
 using LevelUpAPI.Dbo;
 using LevelUpDTO;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.Tasks;
 using static LevelUpAPI.Helpers.ClaimsHelpers;
+using static LevelUpDTO.GetQuestByCategoryDTOResponse;
 
 namespace LevelUpAPI.RequestHandlers
 {
@@ -18,7 +23,7 @@ namespace LevelUpAPI.RequestHandlers
         private readonly IQuestTypeRepository _questTypeRepository;
         private readonly string _categoryName;
 
-        public GetQuestByCategoryRequestHandler(IUserRepository userRepository, IQuestRepository questRepository, ICategoryRepository categoryRepository, IQuestTypeRepository questTypeRepository, string categoryName)
+        public GetQuestByCategoryRequestHandler(ClaimsPrincipal claims, GetQuestByCategoryDTORequest dTORequest, ILogger logger, IUserRepository userRepository, IQuestRepository questRepository, ICategoryRepository categoryRepository, IQuestTypeRepository questTypeRepository, string categoryName) : base(claims, dTORequest, logger)
         {
             _userRepository = userRepository;
             _questRepository = questRepository;
@@ -27,25 +32,35 @@ namespace LevelUpAPI.RequestHandlers
             _categoryName = categoryName;
         }
 
-        protected override async Task<GetQuestByCategoryDTOResponse> ExecuteRequest(HttpContext context)
+        protected async override Task<(GetQuestByCategoryDTOResponse, HttpStatusCode, string)> Handle_Internal()
         {
-            (bool isOk, User user) = CheckClaimsForUser(DTORequest, context, _userRepository);
-            if (!isOk || user == null)
-                return null;
+            (User user, HttpStatusCode statusCode, string err) = CheckClaimsForUser(DTORequest, Claims, _userRepository);
+            if (user == null)
+                return (null, statusCode, err);
 
-            Category category = _categoryRepository.GetByName(_categoryName).GetAwaiter().GetResult();
+            Category category = await _categoryRepository.GetByName(_categoryName);
+
             if (category == null)
-            {
-                context.Response.StatusCode = StatusCodes.Status400BadRequest;
-                context.Response.WriteAsync("the category does not exit").GetAwaiter().GetResult();
-                return null;
-            }
+                return (null, HttpStatusCode.BadRequest, "the category does not exit");
+            
+            IEnumerable<Quest> quests = await _questRepository.Get(user, category.Id, _questTypeRepository, null);
 
-            IEnumerable<Quest> quests = _questRepository.Get(user, category.Id, _questTypeRepository, null).GetAwaiter().GetResult();
-            string questsJson = JsonSerializer.Serialize(quests);
-            context.Response.StatusCode = StatusCodes.Status200OK;
-            context.Response.WriteAsync(questsJson).GetAwaiter().GetResult();
-            return JsonSerializer.Deserialize<GetQuestByCategoryDTOResponse>(questsJson);
+            List<QuestDTOResponse> questsDTOs = quests.Select(quest => new QuestDTOResponse(
+                quest.Id,
+                quest.CategoryId,
+                quest.TypeId,
+                quest.ProgressValue,
+                quest.ProgressCount,
+                quest.UserId,
+                quest.XpValue,
+                quest.CreationDate,
+                quest.ExpirationDate,
+                quest.IsClaimed
+            )).ToList();
+
+            GetQuestByCategoryDTOResponse dtoReponse = new GetQuestByCategoryDTOResponse(questsDTOs);
+
+            return (dtoReponse, HttpStatusCode.OK, null);
         }
     }
 }

@@ -2,46 +2,49 @@
 using LevelUpAPI.Dbo;
 using LevelUpDTO;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using System;
+using System.Net;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using static LevelUpAPI.Helpers.ClaimsHelpers;
 
 namespace LevelUpAPI.RequestHandlers
 {
-    public class RemoveFoodEntryRequestHandler : RequestHandler<RemoveFoodEntryDTORequest>
+    public class RemoveFoodEntryRequestHandler : RequestHandler<RemoveFoodEntryDTORequest, RemoveFoodEntryDTOResponse>
     {
         private readonly IUserRepository _userRepository;
         private readonly IFoodEntryRepository _foodEntryRepository;
 
-        public RemoveFoodEntryRequestHandler(IUserRepository userRepository, IFoodEntryRepository foodEntryRepository)
+        public RemoveFoodEntryRequestHandler(ClaimsPrincipal claims, RemoveFoodEntryDTORequest dtoRequest, ILogger logger, IUserRepository userRepository, IFoodEntryRepository foodEntryRepository) : base(claims, dtoRequest, logger)
         {
             _userRepository = userRepository;
             _foodEntryRepository = foodEntryRepository;
         }
 
-        protected override void ExecuteRequest(HttpContext context)
+        protected async override Task<(RemoveFoodEntryDTOResponse, HttpStatusCode, string)> Handle_Internal()
         {
-            (bool isOk, User user) = CheckClaimsForUser(Request, context, _userRepository);
-            if (!isOk || user == null)
-                return;
+            (User user, HttpStatusCode errStatusCode, string err) = CheckClaimsForUser(DTORequest, Claims, _userRepository);
+            if (user == null)
+                return (null, errStatusCode, err);
 
-            FoodEntry foodEntry = _foodEntryRepository.GetFoodEntryById(Request.Id);
+            FoodEntry foodEntry = _foodEntryRepository.GetFoodEntryById(DTORequest.Id);
+            HttpStatusCode statusCode = HttpStatusCode.OK;
+            RemoveFoodEntryDTOResponse dtoResponse = new RemoveFoodEntryDTOResponse();
+            string errMsg = null;
+
             if (foodEntry == null)
             {
-                context.Response.StatusCode = StatusCodes.Status400BadRequest;
-                context.Response.WriteAsync("Could not find the food entry, please check body data sanity");
-                return;
+                statusCode = HttpStatusCode.BadRequest;
+                errMsg = "Could not find the food entry, please check body data sanity";
+            }
+            else if (! await _foodEntryRepository.Delete(DTORequest.Id))
+            {
+                statusCode = HttpStatusCode.BadRequest;
+                errMsg = "Could not remove the food entry";
             }
 
-            if (!_foodEntryRepository.Delete(Request.Id).GetAwaiter().GetResult())
-            {
-                context.Response.StatusCode = StatusCodes.Status400BadRequest;
-                context.Response.WriteAsync("Could not remove the food entry");
-            }
-            else
-            {
-                context.Response.StatusCode = StatusCodes.Status200OK;
-            }
+            return (dtoResponse, statusCode, errMsg);
         }
     }
 }

@@ -2,11 +2,15 @@
 using LevelUpAPI.Dbo;
 using LevelUpDTO;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.Tasks;
+using static LevelUpDTO.GetQuestCategoriesDTOResponse;
 
 namespace LevelUpAPI.RequestHandlers
 {
@@ -14,25 +18,25 @@ namespace LevelUpAPI.RequestHandlers
     {
         private readonly ICategoryRepository _categoryRepository;
 
-        public GetQuestCategoriesRequestHandler(ICategoryRepository categoryRepository)
+        public GetQuestCategoriesRequestHandler(ClaimsPrincipal claims, GetQuestCategoriesDTORequest dTORequest, ILogger logger, ICategoryRepository categoryRepository) : base(claims, dTORequest, logger)
         {
             _categoryRepository = categoryRepository;
         }
 
-        protected override async Task<GetQuestCategoriesDTOResponse> ExecuteRequest(HttpContext context)
+        protected async override Task<(GetQuestCategoriesDTOResponse, HttpStatusCode, string)> Handle_Internal()
         {
             IEnumerable<Category> categories = _categoryRepository.GetAllCategories();
 
-            if (categories != null)
-            {
-                string categoriesJson = JsonSerializer.Serialize(categories);
-                context.Response.StatusCode = StatusCodes.Status200OK;
-                context.Response.WriteAsync(categoriesJson).GetAwaiter().GetResult();
-                return JsonSerializer.Deserialize<GetQuestCategoriesDTOResponse>(categoriesJson);
-            }
-            else
-                context.Response.StatusCode = StatusCodes.Status400BadRequest;
-            return null;
+            if (categories == null)
+                return (null, HttpStatusCode.BadRequest, null);
+
+            List<CategoryDTOResponse> categoriesDTOs = categories.Select( category =>
+                new CategoryDTOResponse(category.Id, category.Name)
+            ).ToList();
+
+            GetQuestCategoriesDTOResponse dtoReponse = new GetQuestCategoriesDTOResponse(categoriesDTOs);
+
+            return (dtoReponse, HttpStatusCode.OK, null);
         }
     }
 }

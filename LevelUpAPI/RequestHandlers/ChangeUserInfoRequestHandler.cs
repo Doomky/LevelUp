@@ -5,6 +5,9 @@ using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Dbo;
 using static LevelUpAPI.Helpers.ClaimsHelpers;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using System.Security.Claims;
+using System.Net;
 
 namespace LevelUpAPI.RequestHandlers
 {
@@ -12,38 +15,30 @@ namespace LevelUpAPI.RequestHandlers
     {
         private readonly IUserRepository _userRepository;
 
-        public ChangeUserInfoRequestHandler(IUserRepository userRepository)
+        public ChangeUserInfoRequestHandler(ClaimsPrincipal claims, ChangeUserInfoDTORequest dTORequest, ILogger logger, IUserRepository userRepository) : base(claims, dTORequest, logger)
         {
             _userRepository = userRepository;
         }
 
-        protected override async Task<ChangeUserInfoDTOResponse> ExecuteRequest(HttpContext context)
+
+        protected async override Task<(ChangeUserInfoDTOResponse, HttpStatusCode, string)> Handle_Internal()
         {
-            (bool isOk, User user) = CheckClaimsForUser(DTORequest, context, _userRepository);
-            if (!isOk || user == null)
-                return null;
+            (User user, HttpStatusCode statusCode, string err) = CheckClaimsForUser(DTORequest, Claims, _userRepository);
+            if (user == null)
+                return (null, statusCode, err);
 
-            if (DTORequest.NewEmail != user.Email && !string.IsNullOrWhiteSpace(DTORequest.NewEmail))
-            {
+            if (!string.IsNullOrWhiteSpace(DTORequest.NewEmail))
                 user.Email = DTORequest.NewEmail;
-            }
-            if (DTORequest.NewFirstname != user.Firstname && !string.IsNullOrWhiteSpace(DTORequest.NewFirstname))
-            {
+            if (!string.IsNullOrWhiteSpace(DTORequest.NewFirstname))
                 user.Firstname = DTORequest.NewFirstname;
-            }
-            if (DTORequest.NewLastname != user.Lastname && !string.IsNullOrWhiteSpace(DTORequest.NewLastname))
-            {
+            if (!string.IsNullOrWhiteSpace(DTORequest.NewLastname))
                 user.Lastname = DTORequest.NewLastname;
-            }
-            if (DTORequest.NewWeightKg != user.WeightKg && DTORequest.NewWeightKg != null)
-            {
+            if (DTORequest.NewWeightKg.HasValue)
                 user.WeightKg = DTORequest.NewWeightKg.Value;
-            }
 
-            _userRepository.Update(user).GetAwaiter().GetResult();
+            await _userRepository.Update(user);
 
-            context.Response.StatusCode = StatusCodes.Status200OK;
-            return new ChangeUserInfoDTOResponse();
+            return (new ChangeUserInfoDTOResponse(), HttpStatusCode.OK, null);
         }
     }
 }

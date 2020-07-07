@@ -3,7 +3,10 @@ using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Dbo;
 using LevelUpDTO;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using System;
+using System.Net;
+using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.Tasks;
 using static LevelUpAPI.Helpers.ClaimsHelpers;
@@ -17,7 +20,7 @@ namespace LevelUpAPI.RequestHandlers
         private readonly IQuestTypeRepository _questTypeRepository;
         private readonly ICategoryRepository _categoryRepository;
 
-        public AddQuestRequestHandler(IUserRepository userRepository, IQuestRepository questRepository, IQuestTypeRepository questTypeRepository, ICategoryRepository categoryRepository)
+        public AddQuestRequestHandler(ClaimsPrincipal claims, AddQuestDTORequest dTORequest, ILogger logger, IUserRepository userRepository, IQuestRepository questRepository, IQuestTypeRepository questTypeRepository, ICategoryRepository categoryRepository) : base(claims, dTORequest, logger)
         {
             _userRepository = userRepository;
             _questRepository = questRepository;
@@ -25,27 +28,22 @@ namespace LevelUpAPI.RequestHandlers
             _categoryRepository = categoryRepository;
         }
 
-        protected override async Task<AddQuestDTOResponse> ExecuteRequest(HttpContext context)
+        protected async override Task<(AddQuestDTOResponse, HttpStatusCode, string)> Handle_Internal()
         {
-            (bool isOk, User user) = CheckClaimsForUser(DTORequest, context, _userRepository);
-            if (!isOk || user == null)
-                return null;
+            (User user, HttpStatusCode statusCode, string err) = CheckClaimsForUser(DTORequest, Claims, _userRepository);
 
-            Quest quest = Quests.Create(DTORequest, user, _questTypeRepository, _categoryRepository).GetAwaiter().GetResult();
+            if (user == null)
+                return (null, statusCode, err);
 
-            quest = _questRepository.Insert(quest).GetAwaiter().GetResult();
-            if (quest != null)
-            {
-                string questJson = JsonSerializer.Serialize(quest);
-                context.Response.StatusCode = StatusCodes.Status200OK;
-                context.Response.WriteAsync(questJson).GetAwaiter().GetResult();
-                return JsonSerializer.Deserialize<AddQuestDTOResponse>(questJson);
-            }
-            else
-            {
-                context.Response.StatusCode = StatusCodes.Status204NoContent;
-                return null;
-            }
+            Quest quest = await Quests.Create(DTORequest, user, _questTypeRepository, _categoryRepository);
+            quest = await _questRepository.Insert(quest);
+
+            if (quest == null)
+                return (null, HttpStatusCode.NoContent, null);
+
+            AddQuestDTOResponse dtoResponse = new AddQuestDTOResponse(quest.Id, quest.CategoryId, quest.TypeId, quest.ProgressValue, quest.ProgressCount, quest.UserId, quest.XpValue, quest.CreationDate, quest.ExpirationDate, quest.IsClaimed);
+
+            return (dtoResponse, HttpStatusCode.OK, null);
         }
     }
 }

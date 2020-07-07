@@ -2,11 +2,15 @@
 using LevelUpAPI.Dbo;
 using LevelUpDTO;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Net;
+using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.Tasks;
 using static LevelUpAPI.Helpers.ClaimsHelpers;
+using static LevelUpDTO.GetFoodEntriesDTOResponse;
 
 namespace LevelUpAPI.RequestHandlers
 {
@@ -16,35 +20,50 @@ namespace LevelUpAPI.RequestHandlers
         private readonly IFoodEntryRepository _foodEntryRepository;
         private readonly IOFFDataRepository _OFFDataRepository;
 
-        public GetFoodEntriesRequestHandler(IUserRepository userRepository, IFoodEntryRepository foodEntryRepository, IOFFDataRepository oFFDataRepository)
+        public GetFoodEntriesRequestHandler(ClaimsPrincipal claims, GetFoodEntriesDTORequest dTORequest, ILogger logger, IUserRepository userRepository, IFoodEntryRepository foodEntryRepository, IOFFDataRepository oFFDataRepository) : base(claims, dTORequest, logger)
         {
             _userRepository = userRepository;
             _foodEntryRepository = foodEntryRepository;
             _OFFDataRepository = oFFDataRepository;
         }
 
-        protected override async Task<GetFoodEntriesDTOResponse> ExecuteRequest(HttpContext context)
+        protected async override Task<(GetFoodEntriesDTOResponse, HttpStatusCode, string)> Handle_Internal()
         {
-            (bool isOk, User user) = CheckClaimsForUser(DTORequest, context, _userRepository);
-            if (!isOk || user == null)
-                return null;
+            (User user, HttpStatusCode statusCode, string err) = CheckClaimsForUser(DTORequest, Claims, _userRepository);
+            if (user == null)
+                return (null, statusCode, err);
 
-            IEnumerable<FoodEntry> foodEntries = _foodEntryRepository.GetFromUser(user.Login).GetAwaiter().GetResult();
+            IEnumerable<FoodEntry> foodEntries = await _foodEntryRepository.GetFromUser(user.Login);
 
-            List<FoodEntryData> foodEntryDatas = new List<FoodEntryData>();
+            List<FoodEntryDTOResponse> foodEntryDatas = new List<FoodEntryDTOResponse>();
+
             foreach (FoodEntry entry in foodEntries)
-                foodEntryDatas.Add(new FoodEntryData(entry, _OFFDataRepository.GetById(entry.OpenFoodFactsDataId).GetAwaiter().GetResult()));
-            
-            if (foodEntries != null)
             {
-                string foodEntriesJson = JsonSerializer.Serialize(foodEntryDatas);
-                context.Response.StatusCode = StatusCodes.Status200OK;
-                context.Response.WriteAsync(foodEntriesJson).GetAwaiter().GetResult();
-                JsonSerializer.Deserialize<GetFoodEntriesDTOResponse>(foodEntriesJson);
+                OpenFoodFactsData offData = await _OFFDataRepository.GetById(entry.OpenFoodFactsDataId);
+                FoodEntryDTOResponse foodEntryDTO = new FoodEntryDTOResponse(
+                    entry.Datetime,
+                    entry.Servings,
+                    offData.Code,
+                    offData.Name,
+                    offData.EnergyServing,
+                    offData.SodiumServing,
+                    offData.SaltServing,
+                    offData.FatServing,
+                    offData.SaturatedFatServing,
+                    offData.ProteinsServing,
+                    offData.SugarsServing,
+                    offData.ImgUrl
+                );
+
+                foodEntryDatas.Add(foodEntryDTO);
             }
-            else
-                context.Response.StatusCode = StatusCodes.Status400BadRequest;
-            return null;
+
+            if (foodEntries == null)
+                return (null, HttpStatusCode.BadRequest, null);
+
+            GetFoodEntriesDTOResponse dtoReponse = new GetFoodEntriesDTOResponse();
+
+            return (dtoReponse, HttpStatusCode.BadRequest, null);
         }
     }
 }

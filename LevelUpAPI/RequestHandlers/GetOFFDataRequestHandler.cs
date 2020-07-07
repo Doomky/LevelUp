@@ -3,9 +3,12 @@ using LevelUpAPI.Dbo;
 using LevelUpAPI.Dbo.OpenFoodFacts;
 using LevelUpDTO;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -18,7 +21,7 @@ namespace LevelUpAPI.RequestHandlers
         private readonly IOFFCategoryRepository _OFFCategoryRepository;
         private readonly IOFFDatasCategoryRepository _OFFDatasCategoryRepository;
 
-        public GetOFFDataRequestHandler(IOFFDataRepository oFFDataRepository, IOFFCategoryRepository oFFCategoryRepository, IOFFDatasCategoryRepository oFFDatasCategoryRepository, string barcode)
+        public GetOFFDataRequestHandler(ClaimsPrincipal claims, GetOFFDataDTORequest dTORequest, ILogger logger, IOFFDataRepository oFFDataRepository, IOFFCategoryRepository oFFCategoryRepository, IOFFDatasCategoryRepository oFFDatasCategoryRepository, string barcode) : base(claims, dTORequest, logger)
         {
             _barcode = barcode;
             _OFFDataRepository = oFFDataRepository;
@@ -26,69 +29,100 @@ namespace LevelUpAPI.RequestHandlers
             _OFFDatasCategoryRepository = oFFDatasCategoryRepository;
         }
 
-        protected override async Task<GetOFFDataDTOResponse> ExecuteRequest(HttpContext context)
+        protected async override Task<(GetOFFDataDTOResponse, HttpStatusCode, string)> Handle_Internal()
         {
             if (DTORequest == null)
-            {
-                context.Response.StatusCode = StatusCodes.Status400BadRequest;
-                return null;
-            }
+                return (null, HttpStatusCode.BadRequest, null);
 
-            OpenFoodFactsData openFoodFactsData = _OFFDataRepository.GetByBarcode(_barcode).GetAwaiter().GetResult();
+            OpenFoodFactsData openFoodFactsData = await _OFFDataRepository.GetByBarcode(_barcode);
 
             if (openFoodFactsData != null)
             {
-                string openFoodFactsDataJson = JsonSerializer.Serialize(openFoodFactsData);
-                context.Response.StatusCode = StatusCodes.Status200OK;
-                context.Response.WriteAsync(openFoodFactsDataJson).GetAwaiter().GetResult();
-                return JsonSerializer.Deserialize<GetOFFDataDTOResponse>(openFoodFactsDataJson);
+                GetOFFDataDTOResponse dtoResponse = new GetOFFDataDTOResponse(
+                    openFoodFactsData.Id,
+                    openFoodFactsData.Code,
+                    openFoodFactsData.Name,
+                    openFoodFactsData.Energy100g,
+                    openFoodFactsData.Sodium100g,
+                    openFoodFactsData.Salt100g,
+                    openFoodFactsData.Fat100g,
+                    openFoodFactsData.SaturatedFat100g,
+                    openFoodFactsData.Proteins100g,
+                    openFoodFactsData.Sugars100g,
+                    openFoodFactsData.EnergyServing,
+                    openFoodFactsData.SodiumServing,
+                    openFoodFactsData.SaltServing,
+                    openFoodFactsData.FatServing,
+                    openFoodFactsData.SaturatedFatServing,
+                    openFoodFactsData.ProteinsServing,
+                    openFoodFactsData.SugarsServing,
+                    openFoodFactsData.ImgUrl,
+                    openFoodFactsData.IsCustom
+                );
+
+                return (dtoResponse, HttpStatusCode.OK, null);
             }
-            else
+
+            ProductData productData;
+            (openFoodFactsData, productData) = await _OFFDataRepository.InsertFromBarcode(_barcode);
+            HttpStatusCode statusCode = HttpStatusCode.OK;
+            string errMsg = null;
+            GetOFFDataDTOResponse dtoReponse = null;
+
+            if (openFoodFactsData != null && productData != null)
             {
-                ProductData productData;
-                (openFoodFactsData, productData) = _OFFDataRepository.InsertFromBarcode(_barcode).GetAwaiter().GetResult();
-
-                if (openFoodFactsData != null && productData != null)
+                string[] categories = productData.Categories.Split(", ");
+                foreach (string category in categories)
                 {
-                    string[] categories = productData.Categories.Split(", ");
-                    foreach (string category in categories)
+                    if (await _OFFCategoryRepository.GetByName(category) == null)
                     {
-                        if (_OFFCategoryRepository.GetByName(category).GetAwaiter().GetResult() == null)
+                        OpenFoodFactsCategory openFoodFactsCategory = new OpenFoodFactsCategory()
                         {
-                            OpenFoodFactsCategory openFoodFactsCategory = new OpenFoodFactsCategory
-                            {
-                                Name = category
-                            };
-                            openFoodFactsCategory = _OFFCategoryRepository.Insert(openFoodFactsCategory).GetAwaiter().GetResult();
-                            if (openFoodFactsCategory == null)
-                            {
-                                context.Response.StatusCode = StatusCodes.Status204NoContent;
-                                return null;
-                            }
+                            Name = category
+                        };
 
-                            OpenFoodFactsDatasCategory openFoodFactsDatasCategory = new OpenFoodFactsDatasCategory
-                            {
-                                CategoryId = openFoodFactsCategory.Id,
-                                DataId = openFoodFactsData.Id
-                            };
-                            openFoodFactsDatasCategory = _OFFDatasCategoryRepository.Insert(openFoodFactsDatasCategory).GetAwaiter().GetResult();
-                            if (openFoodFactsDatasCategory == null)
-                            {
-                                context.Response.StatusCode = StatusCodes.Status204NoContent;
-                                return null;
-                            }
-                        }
+                        openFoodFactsCategory = await _OFFCategoryRepository.Insert(openFoodFactsCategory);
+                        
+                        if (openFoodFactsCategory == null)
+                            statusCode = HttpStatusCode.NoContent;
+
+                        OpenFoodFactsDatasCategory openFoodFactsDatasCategory = new OpenFoodFactsDatasCategory
+                        {
+                            CategoryId = openFoodFactsCategory.Id,
+                            DataId = openFoodFactsData.Id
+                        };
+
+                        openFoodFactsDatasCategory = _OFFDatasCategoryRepository.Insert(openFoodFactsDatasCategory).GetAwaiter().GetResult();
+                        if (openFoodFactsDatasCategory == null)
+                            statusCode = HttpStatusCode.NoContent;
                     }
-
-                    string openFoodFactsDataJson = JsonSerializer.Serialize(openFoodFactsData);
-                    context.Response.StatusCode = StatusCodes.Status200OK;
-                    context.Response.WriteAsync(openFoodFactsDataJson).GetAwaiter().GetResult();
-                    return JsonSerializer.Deserialize<GetOFFDataDTOResponse>(openFoodFactsDataJson);
-                }
-                else
-                    context.Response.StatusCode = StatusCodes.Status204NoContent;
-                return null;
+                };
             }
+
+            statusCode = HttpStatusCode.OK;
+            dtoReponse = new GetOFFDataDTOResponse(
+                openFoodFactsData.Id,
+                openFoodFactsData.Code,
+                openFoodFactsData.Name,
+                openFoodFactsData.Energy100g,
+                openFoodFactsData.Sodium100g,
+                openFoodFactsData.Salt100g,
+                openFoodFactsData.Fat100g,
+                openFoodFactsData.SaturatedFat100g,
+                openFoodFactsData.Proteins100g,
+                openFoodFactsData.Sugars100g,
+                openFoodFactsData.EnergyServing,
+                openFoodFactsData.SodiumServing,
+                openFoodFactsData.SaltServing,
+                openFoodFactsData.FatServing,
+                openFoodFactsData.SaturatedFatServing,
+                openFoodFactsData.ProteinsServing,
+                openFoodFactsData.SugarsServing,
+                openFoodFactsData.ImgUrl,
+                openFoodFactsData.IsCustom
+            );
+
+            return (dtoReponse, statusCode, errMsg);
         }
     }
 }

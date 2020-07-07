@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.Tasks;
 using static LevelUpAPI.Helpers.ClaimsHelpers;
@@ -17,15 +18,13 @@ namespace LevelUpAPI.RequestHandlers
     public class GetQuestRequestHandler : RequestHandler<GetQuestDTORequest, GetQuestDTOResponse>
     {
         private readonly QuestState? _questState = null;
-        private readonly User _user;
         private readonly IUserRepository _userRepository;
         private readonly IQuestRepository _questRepository;
         private readonly IQuestTypeRepository _questTypeRepository;
 
-        public GetQuestRequestHandler(QuestState? questState, User user, GetQuestDTORequest dTORequest, ILogger logger, IUserRepository userRepository, IQuestRepository questRepository, IQuestTypeRepository questTypeRepository) : base(dTORequest,logger)
+        public GetQuestRequestHandler(QuestState? questState, ClaimsPrincipal claims, GetQuestDTORequest dTORequest, ILogger logger, IUserRepository userRepository, IQuestRepository questRepository, IQuestTypeRepository questTypeRepository) : base(claims, dTORequest,logger)
         {
             _questState = questState;
-            _user = user;
             _userRepository = userRepository;
             _questRepository = questRepository;
             _questTypeRepository = questTypeRepository;
@@ -33,7 +32,11 @@ namespace LevelUpAPI.RequestHandlers
 
         protected override async Task<(GetQuestDTOResponse, HttpStatusCode, string)> Handle_Internal()
         {
-            IEnumerable<Quest> quests = await _questRepository.Get(_user, _questTypeRepository, _questState);
+            (User user, HttpStatusCode statusCode, string err) = CheckClaimsForUser(DTORequest, Claims, _userRepository);
+            if (user == null)
+                return (null, statusCode, err);
+
+            IEnumerable<Quest> quests = await _questRepository.Get(user, _questTypeRepository, _questState);
 
             string questsJson = JsonSerializer.Serialize(quests);
 

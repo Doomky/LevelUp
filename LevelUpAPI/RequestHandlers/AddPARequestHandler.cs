@@ -25,27 +25,25 @@ namespace LevelUpAPI.RequestHandlers
         protected async override Task<(AddPADTOResponse, HttpStatusCode, string)> Handle_Internal()
         {
             if (string.IsNullOrWhiteSpace(DTORequest.Name) || DTORequest.CalPerKgPerHour == null)
-            {
-                context.Response.StatusCode = StatusCodes.Status204NoContent;
-                return null;
-            }
+                return (null, HttpStatusCode.NoContent, null);
 
-            PhysicalActivity physicalActivity = _physicalActivitiesRepository.Insert(new PhysicalActivity()
+            PhysicalActivity physicalActivity = await _physicalActivitiesRepository.Insert(new PhysicalActivity()
             {
                 Name = DTORequest.Name,
                 CalPerKgPerHour = (decimal)DTORequest.CalPerKgPerHour
-            }).GetAwaiter().GetResult();
+            });
 
-            if (physicalActivity != null)
-            {
-                string physicalActivityJson = JsonSerializer.Serialize(physicalActivity);
-                context.Response.StatusCode = StatusCodes.Status200OK;
-                context.Response.WriteAsync(physicalActivityJson).GetAwaiter().GetResult();
-                return JsonSerializer.Deserialize<AddPADTOResponse>(physicalActivityJson);
-            }
-            else
-                context.Response.StatusCode = StatusCodes.Status400BadRequest;
-            return null;
+            if (physicalActivity == null)
+                return (null, HttpStatusCode.BadRequest, null);
+
+            AddPADTOResponse dtoResponse = new AddPADTOResponse(
+                physicalActivity.Id,
+                physicalActivity.Name,
+                physicalActivity.CalPerKgPerHour
+            );
+
+            return (dtoResponse, HttpStatusCode.OK, null);
         }
+
     }
 }

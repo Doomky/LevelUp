@@ -8,6 +8,8 @@ using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Dbo;
 using LevelUpDTO;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using System.Security.Claims;
 
 namespace LevelUpAPI.RequestHandlers
 {
@@ -29,58 +31,55 @@ namespace LevelUpAPI.RequestHandlers
         private readonly IPasswordRecoveryDataRepository _passwordRecoveryDataRepository;
         private readonly IConfiguration Configuration;
 
-        public ForgotPasswordRequestHandler(IUserRepository userRepository, IPasswordRecoveryDataRepository passwordRecoveryDataRepository, IConfiguration configuration)
+        public ForgotPasswordRequestHandler(ClaimsPrincipal claims, ForgotPasswordDTORequest dTORequest, ILogger logger, IUserRepository userRepository, IPasswordRecoveryDataRepository passwordRecoveryDataRepository, IConfiguration configuration) : base(claims, dTORequest, logger)
         {
             _userRepository = userRepository;
             _passwordRecoveryDataRepository = passwordRecoveryDataRepository;
             Configuration = configuration;
         }
 
-        protected override async Task<ForgotPasswordDTOResponse> ExecuteRequest(HttpContext context)
+        protected async override Task<(ForgotPasswordDTOResponse, HttpStatusCode, string)> Handle_Internal()
         {
-            if (DTORequest == null || (string.IsNullOrWhiteSpace(DTORequest.Login)
-                && string.IsNullOrWhiteSpace(DTORequest.EmailAddress)))
+            if (DTORequest == null || (string.IsNullOrWhiteSpace(DTORequest.Login) && string.IsNullOrWhiteSpace(DTORequest.EmailAddress)))
+                return (null, HttpStatusCode.BadRequest, null);
+
+            User user = await _userRepository.GetUserByLoginOrEmail(DTORequest.Login, DTORequest.EmailAddress);
+
+            if (user == null)
+                return (null, HttpStatusCode.BadRequest, null);
+
+            PasswordRecoveryData passwordRecoveryData = new PasswordRecoveryData()
             {
-                context.Response.StatusCode = StatusCodes.Status400BadRequest;
-                return null;
-            }
+                UserId = user.Id,
+                Date = DateTime.Now,
+                Hash = string.Format("{0:X}", DateTime.Now.ToString().GetHashCode())
+            };
 
-            User user = _userRepository.GetUserByLoginOrEmail(DTORequest.Login, DTORequest.EmailAddress).GetAwaiter().GetResult();
-            if (user != null)
+            passwordRecoveryData = await _passwordRecoveryDataRepository.Insert(passwordRecoveryData);
+
+            var section = Configuration.GetSection(EMAIL_SECTION);
+
+            var client = new SmtpClient()
             {
-                PasswordRecoveryData passwordRecoveryData = new PasswordRecoveryData()
-                {
-                    UserId = user.Id,
-                    Date = DateTime.Now,
-                    Hash = string.Format("{0:X}", DateTime.Now.ToString().GetHashCode())
-                };
+                Host = section.GetValue<string>(CLIENT_HOST_KEY),
+                Port = section.GetValue<int>(CLIENT_Port_KEY),
+                EnableSsl = true,
+                UseDefaultCredentials = false,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                Credentials = new NetworkCredential(
+                    section.GetValue<string>(CRENDENTIAL_LOGIN_KEY),
+                    section.GetValue<string>(CRENDENTIAL_PASSWORD_KEY))
+            };
 
-                passwordRecoveryData = _passwordRecoveryDataRepository.Insert(passwordRecoveryData).GetAwaiter().GetResult();
+            MailAddress from = new MailAddress(
+           section.GetValue<string>(EMAIL_FROM_KEY),
+           section.GetValue<string>(EMAIL_DISPLAY_NAME_KEY),
+           System.Text.Encoding.UTF8);
 
-                var section = Configuration.GetSection(EMAIL_SECTION);
+            MailAddress to = new MailAddress(user.Email);
+            MailMessage message = new MailMessage(from, to);
 
-                var client = new SmtpClient()
-                {
-                    Host = section.GetValue<string>(CLIENT_HOST_KEY),
-                    Port = section.GetValue<int>(CLIENT_Port_KEY),
-                    EnableSsl = true,
-                    UseDefaultCredentials = false,
-                    DeliveryMethod = SmtpDeliveryMethod.Network,
-                    Credentials = new NetworkCredential(
-                        section.GetValue<string>(CRENDENTIAL_LOGIN_KEY),
-                        section.GetValue<string>(CRENDENTIAL_PASSWORD_KEY))
-                };
-
-                {
-                    MailAddress from = new MailAddress(
-                   section.GetValue<string>(EMAIL_FROM_KEY),
-                   section.GetValue<string>(EMAIL_DISPLAY_NAME_KEY),
-                   System.Text.Encoding.UTF8);
-
-                    MailAddress to = new MailAddress(user.Email);
-                    MailMessage message = new MailMessage(from, to);
-
-                    message.Body =
+            message.Body =
 $@"Hi { user.Login},
 
 You ask for a password recovery because you forgot your password.
@@ -90,18 +89,14 @@ You will be asked to enter your new password and to confirm this password.
 Thanky you,
 
 LevelUp";
-                    message.BodyEncoding = System.Text.Encoding.UTF8;
-                    message.Subject = "LevelUp - Password Recovery";
-                    message.SubjectEncoding = System.Text.Encoding.UTF8;
-                    client.SendCompleted += new SendCompletedEventHandler(SendCompletedCallback);
-                    string userState = "LevelUp - Password Recovery";
-                    client.SendAsync(message, userState);
-                    return new ForgotPasswordDTOResponse();
-                }
-            }
-            else
-                context.Response.StatusCode = StatusCodes.Status400BadRequest;
-            return null;
+            message.BodyEncoding = System.Text.Encoding.UTF8;
+            message.Subject = "LevelUp - Password Recovery";
+            message.SubjectEncoding = System.Text.Encoding.UTF8;
+            client.SendCompleted += new SendCompletedEventHandler(SendCompletedCallback);
+            string userState = "LevelUp - Password Recovery";
+            client.SendAsync(message, userState);
+
+            return (new ForgotPasswordDTOResponse(), HttpStatusCode.OK, null);
         }
 
 

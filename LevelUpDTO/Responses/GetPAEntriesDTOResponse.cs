@@ -7,15 +7,18 @@ namespace LevelUpDTO
     {
         public class PAEntryDTOResponse
         {
-            public string Login { get; set; }
-            public string Name { get; set; }
-            public int? Total { get; set; }
-
-            public PAEntryDTOResponse(string login, string name, int? total)
+            public int Id { get; set; }
+            public int UserId { get; set; }
+            public int PhysicalActivitiesId { get; set; }
+            public DateTime DatetimeStart { get; set; }
+            public DateTime DatetimeEnd { get; set; }
+            public PAEntryDTOResponse(int id, int userId, int physicalActivitiesId, DateTime datetimeStart, DateTime datetimeEnd)
             {
-                Login = login;
-                Name = name;
-                Total = total;
+                Id = id;
+                UserId = userId;
+                PhysicalActivitiesId = physicalActivitiesId;
+                DatetimeStart = datetimeStart;
+                DatetimeEnd = datetimeEnd;
             }
         }
 

@@ -9,6 +9,7 @@ using System.Linq;
 using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
+using static LevelUpDTO.GetQuestTypesDTOResponse;
 
 namespace LevelUpAPI.RequestHandlers
 {
@@ -16,20 +17,21 @@ namespace LevelUpAPI.RequestHandlers
     {
         private readonly IQuestTypeRepository _questTypeRepository;
 
-        public GetQuestTypesRequestHandler(IQuestTypeRepository questTypeRepository, GetQuestTypesDTORequest dTORequest, ILogger logger) : base(dTORequest,logger)
+        public GetQuestTypesRequestHandler(IQuestTypeRepository questTypeRepository, GetQuestTypesDTORequest dTORequest, ILogger logger) : base(null, dTORequest,logger)
         {
             _questTypeRepository = questTypeRepository;
         }
 
-        protected override Task<(GetQuestTypesDTOResponse, HttpStatusCode, string)> Handle_Internal()
+        protected async override Task<(GetQuestTypesDTOResponse, HttpStatusCode, string)> Handle_Internal()
         {
-            IEnumerable<QuestType> questTypes = await _questTypeRepository.GetAllQuestTypes();
+            IEnumerable<QuestType> questTypes = _questTypeRepository.GetAllQuestTypes();
 
-            GetQuestTypesDTOResponse getQuestTypesDTOResponse = new GetQuestTypesDTOResponse()
-            {
+            List<QuestTypesDTOResponse> questTypesDTOs = questTypes.Select(questType => 
+            new QuestTypesDTOResponse(questType.Id, questType.Name)
+            ).ToList();
 
-            };
-
+            GetQuestTypesDTOResponse getQuestTypesDTOResponse = new GetQuestTypesDTOResponse(questTypesDTOs);
+            
             return (getQuestTypesDTOResponse, HttpStatusCode.OK, null);
         }
     }
