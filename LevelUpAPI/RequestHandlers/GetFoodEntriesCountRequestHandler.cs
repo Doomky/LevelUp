@@ -11,10 +11,11 @@ using static LevelUpAPI.Helpers.ClaimsHelpers;
 using Microsoft.Extensions.Logging;
 using System.Security.Claims;
 using System.Net;
+using static LevelUpDTO.GetFoodEntriesCountDTOResponse;
 
 namespace LevelUpAPI.RequestHandlers
 {
-    public class GetFoodEntriesCountRequestHandler : RequestHandler<GetFoodEntriesCountDTORequest, GetFoodEntriesDTOResponse>
+    public class GetFoodEntriesCountRequestHandler : RequestHandler<GetFoodEntriesCountDTORequest, GetFoodEntriesCountDTOResponse>
     {
         private readonly IUserRepository _userRepository;
         private readonly IFoodEntryRepository _foodEntryRepository;
@@ -25,7 +26,7 @@ namespace LevelUpAPI.RequestHandlers
             _foodEntryRepository = foodEntryRepository;
         }
 
-        protected async override Task<(GetFoodEntriesDTOResponse, HttpStatusCode, string)> Handle_Internal()
+        protected async override Task<(GetFoodEntriesCountDTOResponse, HttpStatusCode, string)> Handle_Internal()
         {
             (User user, HttpStatusCode statusCode, string err) = CheckClaimsForUser(DTORequest, Claims, _userRepository);
             if (user == null)
@@ -36,11 +37,11 @@ namespace LevelUpAPI.RequestHandlers
             if (foodEntries == null)
                 return (null, HttpStatusCode.BadRequest, null);
 
-            List<GetFoodEntriesDTOResponse.NbFoodEntryByLoginDTOResponse> dtoFoodEntries = foodEntries.Select(foodEntry =>
-                new GetFoodEntriesDTOResponse.NbFoodEntryByLoginDTOResponse(foodEntry.Login, foodEntry.Name, foodEntry.Total)
+            List<NbFoodEntryByLoginDTOResponse> dtoFoodEntries = foodEntries.Select(foodEntry =>
+                new NbFoodEntryByLoginDTOResponse(foodEntry.Login, foodEntry.Name, foodEntry.Total)
             ).ToList();
 
-            return (new GetFoodEntriesDTOResponse(dtoFoodEntries), HttpStatusCode.OK, null);
+            return (new GetFoodEntriesCountDTOResponse(dtoFoodEntries), HttpStatusCode.OK, null);
         }
     }
 }

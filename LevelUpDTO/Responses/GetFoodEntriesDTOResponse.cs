@@ -38,5 +38,9 @@ namespace LevelUpDTO
         }
 
         List<FoodEntryDTOResponse> FoodEntries { get; set; }
+        public GetFoodEntriesDTOResponse(List<FoodEntryDTOResponse> foodEntries)
+        {
+            FoodEntries = foodEntries;
+        }
     }
 }

@@ -31,45 +31,42 @@ namespace LevelUpAPI.RequestHandlers
 
         protected async override Task<(ClaimQuestsDTOResponse, HttpStatusCode, string)> Handle_Internal()
         {
-            (User user, HttpStatusCode statusCode, string err) = CheckClaimsForUser(DTORequest, Claims, _userRepository);
+            (User user, HttpStatusCode errStatusCode, string err) = CheckClaimsForUser(DTORequest, Claims, _userRepository);
             if (user == null)
-                return (null, statusCode, err);
+                return (null, errStatusCode, err);
 
             Quest quest = await _questRepository.GetById(user, DTORequest.questId);
             QuestHandler questHandler = QuestHandlers.Create(quest, user, _questTypeRepository);
-            ClaimQuestsDTOResponse claimQuestDTOResponse;
-            string serializedString;
+            ClaimQuestsDTOResponse claimQuestDTOResponse = null;
+            HttpStatusCode statusCode = HttpStatusCode.OK;
 
             if (questHandler != null)
             {
                 switch (questHandler.GetState())
                 {
                     case QuestState.InProgress:
-                        context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                        statusCode = HttpStatusCode.BadRequest;
                         claimQuestDTOResponse = new ClaimQuestsDTOResponse(QuestState.InProgress.ToString(), "0", "you cannot claim this quest, it's in progress");
                         break;
                     case QuestState.Claimed:
-                        context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                        statusCode = HttpStatusCode.BadRequest;
                         claimQuestDTOResponse = new ClaimQuestsDTOResponse(QuestState.Claimed.ToString(), "0", "you cannot claim this quest, it was already claimed");
                         break;
                     case QuestState.Failed:
-                        context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                        statusCode = HttpStatusCode.BadRequest;
                         claimQuestDTOResponse = new ClaimQuestsDTOResponse(QuestState.Failed.ToString(), "0", "you cannot claim this quest, it was already failed");
                         break;
                     case QuestState.Finished:
-                        context.Response.StatusCode = StatusCodes.Status200OK;
-                        quest = _questRepository.SetIsClaimedById(user,quest.Id).GetAwaiter().GetResult();
-                        _avatarRepository.AddXp(user, quest).GetAwaiter().GetResult();
+                        statusCode = HttpStatusCode.OK;
+                        quest = await _questRepository.SetIsClaimedById(user,quest.Id);
+                        await _avatarRepository.AddXp(user, quest);
                         claimQuestDTOResponse = new ClaimQuestsDTOResponse(QuestState.Finished.ToString(), quest.XpValue.ToString(), "you have claimed this quest");
                         break;
                     default:
                         throw new NotSupportedException();
                 }
-                serializedString = JsonSerializer.Serialize(claimQuestDTOResponse);
-                context.Response.WriteAsync(serializedString).GetAwaiter().GetResult();
-                return claimQuestDTOResponse;
             }
-            return null;
+            return (claimQuestDTOResponse, statusCode, null);
         }
     }
 }
