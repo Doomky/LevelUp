@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
+using System.Net;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using LevelUpAPI.Model;
 using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.RequestHandlers;
-using LevelUpDTO;
-using System.Net;
 using LevelUpAPI.Helpers;
+using LevelUpDTO;
 
 namespace LevelUpAPI.Controllers
 {
@@ -32,6 +31,13 @@ namespace LevelUpAPI.Controllers
         /// <summary>
         /// Get all the info about the avatar of the signed-in user.
         /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET /avatar
+        /// 
+        /// </remarks>
+        /// <returns>The info about the avatar.</returns>
         /// <response code="200">The info about the avatar were found.</response>
         /// <response code="400">The request is malformed or the user does not exist.</response>
         /// <response code="401">The user is not signed in.</response>
@@ -40,7 +46,9 @@ namespace LevelUpAPI.Controllers
         {
             GetAvatarInfoDTORequest dtoRequest = new GetAvatarInfoDTORequest();
             GetAvatarInfoRequestHandler getAvatarInfoRequestHandler = new GetAvatarInfoRequestHandler(User, dtoRequest, _logger, _userRepository, _avatarRepository);
-            (GetAvatarInfoDTOResponse dtoResponse, HttpStatusCode statusCode, string err) = await getAvatarInfoRequestHandler.Handle();
+            (var dtoResponse, HttpStatusCode statusCode, string err) = await getAvatarInfoRequestHandler.Handle();
+            if (statusCode != HttpStatusCode.OK && err != null)
+                _logger.LogError(err);
             return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse);
         }
 
@@ -48,13 +56,16 @@ namespace LevelUpAPI.Controllers
         /// Update the avatar of the signed-in user.
         /// </summary>
         /// <remarks>
-        /// The body of the request must contains this field:
-        /// 
+        /// Sample request:
+        ///
+        ///     POST /avatar/update
         ///     {
-        ///         "NewSize"
+        ///        "newSize": 2
         ///     }
-        /// 
+        ///
         /// </remarks>
+        /// <param name="dtoRequest"></param>
+        /// <returns>The id and the new size of the updated avatar</returns>
         /// <response code="200">The avatar was correctly updated.</response>
         /// <response code="400">The request is malformed or the user does not exist.</response>
         /// <response code="401">The user is not signed in.</response>
@@ -64,6 +75,8 @@ namespace LevelUpAPI.Controllers
         {
             UpdateAvatarRequestHandler updateAvatarRequestHandler = new UpdateAvatarRequestHandler(_userRepository, _avatarRepository, User, dtoRequest, _logger);
             (var dtoResponse, HttpStatusCode statusCode, string err) = await updateAvatarRequestHandler.Handle();
+            if (statusCode != HttpStatusCode.OK && err != null)
+                _logger.LogError(err);
             return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse);
         }
     }
