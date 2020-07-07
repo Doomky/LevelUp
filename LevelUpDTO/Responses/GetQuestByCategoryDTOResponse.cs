@@ -5,7 +5,7 @@ namespace LevelUpDTO
 {
     public class GetQuestByCategoryDTOResponse : DTOResponse
     {
-        public class QuestDTOResponse
+        public class QuestDTOResponse2
         {
             public int Id { get; set; }
             public int CategoryId { get; set; }
@@ -18,7 +18,7 @@ namespace LevelUpDTO
             public DateTime ExpirationDate { get; set; }
             public bool IsClaimed { get; set; }
 
-            public QuestDTOResponse(int id, int categoryId, int typeId, int progressValue, int progressCount, int userId, int? xpValue, DateTime creationDate, DateTime expirationDate, bool isClaimed)
+            public QuestDTOResponse2(int id, int categoryId, int typeId, int progressValue, int progressCount, int userId, int? xpValue, DateTime creationDate, DateTime expirationDate, bool isClaimed)
             {
                 Id = id;
                 CategoryId = categoryId;
@@ -33,9 +33,9 @@ namespace LevelUpDTO
             }
         }
 
-        public List<QuestDTOResponse> Quests { get; set; }
+        public List<QuestDTOResponse2> Quests { get; set; }
 
-        public GetQuestByCategoryDTOResponse(List<QuestDTOResponse> quests)
+        public GetQuestByCategoryDTOResponse(List<QuestDTOResponse2> quests)
         {
             Quests = quests;
         }

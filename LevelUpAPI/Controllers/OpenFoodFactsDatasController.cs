@@ -36,7 +36,7 @@ namespace LevelUpAPI.Controllers
         /// <response code="400">The request is malformed.</response>
         [HttpGet]
         [Route("{barcode}")]
-        public async Task<IActionResult> GetOpenFoodFactsDataFromBarcode([FromRoute] string barcode)
+        public async Task<ActionResult<GetOFFDataDTOResponse>> GetOpenFoodFactsDataFromBarcode([FromRoute] string barcode)
         {
             GetOFFDataDTORequest dtoRequest = new GetOFFDataDTORequest();
             dtoRequest.Barcode = barcode;
@@ -54,7 +54,7 @@ namespace LevelUpAPI.Controllers
         /// <response code="400">The request is malformed.</response>
         [HttpGet]
         [Route("category/{categoryName}")]
-        public async Task<IActionResult> GetOpenFoodFactsDataFromCategory(string categoryName)
+        public async Task<ActionResult<GetOFFDataFromCategoryDTOResponse>> GetOpenFoodFactsDataFromCategory([FromRoute] string categoryName)
         {
             GetOFFDataFromCategoryDTORequest dtoRequest = new GetOFFDataFromCategoryDTORequest();
             dtoRequest.Category = categoryName;

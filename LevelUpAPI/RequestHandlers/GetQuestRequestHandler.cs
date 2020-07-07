@@ -40,8 +40,8 @@ namespace LevelUpAPI.RequestHandlers
 
             string questsJson = JsonSerializer.Serialize(quests);
 
-            List<GetQuestDTOResponse.QuestDTOResponse> questDTOResponses = quests
-                .Select(q => new GetQuestDTOResponse.QuestDTOResponse(
+            List<GetQuestDTOResponse.QuestDTOResponse1> questDTOResponses = quests
+                .Select(q => new GetQuestDTOResponse.QuestDTOResponse1(
                     q.Id,
                     q.CategoryId,
                     q.TypeId,

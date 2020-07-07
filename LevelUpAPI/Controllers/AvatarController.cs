@@ -36,8 +36,9 @@ namespace LevelUpAPI.Controllers
         /// <response code="400">The request is malformed or the user does not exist.</response>
         /// <response code="401">The user is not signed in.</response>
         [HttpGet]
-        public async Task<IActionResult> Get([FromBody] GetAvatarInfoDTORequest dtoRequest)
+        public async Task<ActionResult<GetAvatarInfoDTOResponse>> Get()
         {
+            GetAvatarInfoDTORequest dtoRequest = new GetAvatarInfoDTORequest();
             GetAvatarInfoRequestHandler getAvatarInfoRequestHandler = new GetAvatarInfoRequestHandler(User, dtoRequest, _logger, _userRepository, _avatarRepository);
             (GetAvatarInfoDTOResponse dtoResponse, HttpStatusCode statusCode, string err) = await getAvatarInfoRequestHandler.Handle();
             return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse);
@@ -59,7 +60,7 @@ namespace LevelUpAPI.Controllers
         /// <response code="401">The user is not signed in.</response>
         [HttpPost]
         [Route("update")]
-        public async Task<IActionResult> Update([FromBody] UpdateAvatarDTORequest dtoRequest)
+        public async Task<ActionResult<UpdateAvatarDTOResponse>> Update([FromBody] UpdateAvatarDTORequest dtoRequest)
         {
             UpdateAvatarRequestHandler updateAvatarRequestHandler = new UpdateAvatarRequestHandler(_userRepository, _avatarRepository, User, dtoRequest, _logger);
             (var dtoResponse, HttpStatusCode statusCode, string err) = await updateAvatarRequestHandler.Handle();

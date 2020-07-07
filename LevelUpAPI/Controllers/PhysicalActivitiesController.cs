@@ -39,7 +39,7 @@ namespace LevelUpAPI.Controllers
         /// <response code="200">The request succedded.</response>
         /// <response code="400">The request is malformed.</response>
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<ActionResult<GetPADTOResponse>> Get()
         {
             GetPADTORequest dtoRequest = new GetPADTORequest();
             GetPARequestHandler getPARequestHandler = new GetPARequestHandler(User, dtoRequest, _logger,_physicalActivitiesRepository);
@@ -64,7 +64,7 @@ namespace LevelUpAPI.Controllers
         /// <response code="400">The request is malformed.</response>
         [HttpPost]
         [Route("add")]
-        public async Task<IActionResult>  Add([FromBody] AddPADTORequest dtoRequest)
+        public async Task<ActionResult<AddPADTOResponse>>  Add([FromBody] AddPADTORequest dtoRequest)
         {
             AddPARequestHandler addPARequestHandler = new AddPARequestHandler(User, dtoRequest, _logger, _physicalActivitiesRepository);
             (var dtoResponse, HttpStatusCode statusCode, string err) = await addPARequestHandler.Handle();
@@ -79,7 +79,7 @@ namespace LevelUpAPI.Controllers
         /// <response code="401">The user is not signed in.</response>
         [HttpGet]
         [Route("entry/")]
-        public async Task<IActionResult>  GetEntries()
+        public async Task<ActionResult<GetPAEntriesDTOResponse>>  GetEntries()
         {
             GetPAEntriesDTORequest dtoRequest = new GetPAEntriesDTORequest();
             GetPAEntriesRequestHandler getPAEntriesRequestHandler = new GetPAEntriesRequestHandler(User, dtoRequest, _logger, _userRepository, _physicalActivitiesEntryRepository);
@@ -95,7 +95,7 @@ namespace LevelUpAPI.Controllers
         /// <response code="401">The user is not signed in.</response>
         [HttpGet]
         [Route("entry/total")]
-        public async Task<IActionResult>  GetTotalEntries()
+        public async Task<ActionResult<GetTotalPAEntriesDTOResponse>>  GetTotalEntries()
         {
             GetTotalPAEntriesDTORequest dtoRequest = new GetTotalPAEntriesDTORequest();
             GetTotalPAEntriesRequestHandler getTotalPAEntriesRequestHandler = new GetTotalPAEntriesRequestHandler(User, dtoRequest, _logger, _userRepository, _physicalActivitiesEntryRepository);
@@ -122,7 +122,7 @@ namespace LevelUpAPI.Controllers
         /// <response code="401">The user is not signed in.</response>
         [HttpPost]
         [Route("entry/add")]
-        public async Task<IActionResult> AddEntry([FromBody] AddPAEntryDTORequest dtoRequest)
+        public async Task<ActionResult<AddPAEntryDTOResponse>> AddEntry([FromBody] AddPAEntryDTORequest dtoRequest)
         {
             AddPAEntryRequestHandler addPAEntryRequestHandler = new AddPAEntryRequestHandler(User, dtoRequest, _logger, _userRepository, _physicalActivitiesRepository, _physicalActivitiesEntryRepository, _questTypeRepository, _questRepository);
             (var dtoResponse, HttpStatusCode statusCode, string err) = await addPAEntryRequestHandler.Handle();
@@ -148,7 +148,7 @@ namespace LevelUpAPI.Controllers
         /// <response code="401">The user is not signed in.</response>
         [HttpPost]
         [Route("entry/update")]
-        public async Task<IActionResult> UpdateEntry([FromBody] UpdatePAEntryDTORequest dtoRequest)
+        public async Task<ActionResult<UpdatePAEntryDTOResponse>> UpdateEntry([FromBody] UpdatePAEntryDTORequest dtoRequest)
         {
             UpdatePAEntryRequestHandler updatePAEntryRequestHandler = new UpdatePAEntryRequestHandler(_userRepository, _physicalActivitiesRepository, _physicalActivitiesEntryRepository, User, dtoRequest, _logger);
             (var dtoResponse, HttpStatusCode statusCode, string err) = await updatePAEntryRequestHandler.Handle();
@@ -172,7 +172,7 @@ namespace LevelUpAPI.Controllers
         /// <response code="401">The user is not signed in.</response>
         [HttpPost]
         [Route("entry/remove")]
-        public async Task<IActionResult>  RemoveEntry([FromBody] RemovePAEntryDTORequest dtoRequest)
+        public async Task<ActionResult<RemoveFoodEntryDTOResponse>>  RemoveEntry([FromBody] RemovePAEntryDTORequest dtoRequest)
         {
             RemovePAEntryRequestHandler removePAEntryRequestHandler = new RemovePAEntryRequestHandler(_userRepository, _physicalActivitiesEntryRepository, User, dtoRequest, _logger);
             (var dtoResponse, HttpStatusCode statusCode, string err) = await removePAEntryRequestHandler.Handle();

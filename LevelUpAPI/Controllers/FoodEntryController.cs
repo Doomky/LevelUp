@@ -38,8 +38,9 @@ namespace LevelUpAPI.Controllers
         /// <response code="400">The request is malformed or the user does not exist.</response>
         /// <response code="401">The user is not signed in.</response>
         [HttpGet]
-        public async Task<ActionResult<GetFoodEntriesDTOResponse>> Get([FromBody] GetFoodEntriesDTORequest dtoRequest)
+        public async Task<ActionResult<GetFoodEntriesDTOResponse>> Get()
         {
+            GetFoodEntriesDTORequest dtoRequest = new GetFoodEntriesDTORequest();
             GetFoodEntriesRequestHandler getFoodEntriesRequestHandler = new GetFoodEntriesRequestHandler(User, dtoRequest, _logger, _userRepository, _foodEntryRepository, _offDataRepository);
             (var dtoResponse, HttpStatusCode statusCode, string err) = await getFoodEntriesRequestHandler.Handle();
             return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse);
@@ -53,8 +54,9 @@ namespace LevelUpAPI.Controllers
         /// <response code="401">The user is not signed in.</response>
         [HttpGet]
         [Route("count")]
-        public async Task<IActionResult> GetCount([FromBody] GetFoodEntriesCountDTORequest dtoRequest)
+        public async Task<ActionResult<GetFoodEntriesDTOResponse>> GetCount()
         {
+            GetFoodEntriesCountDTORequest dtoRequest = new GetFoodEntriesCountDTORequest();
             GetFoodEntriesCountRequestHandler getFoodEntriesCountRequestHandler = new GetFoodEntriesCountRequestHandler(User, dtoRequest, _logger, _userRepository, _foodEntryRepository);
             (var dtoResponse, HttpStatusCode statusCode, string err) = await getFoodEntriesCountRequestHandler.Handle();
             return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse);
@@ -91,7 +93,7 @@ namespace LevelUpAPI.Controllers
         /// <response code="401">The user is not signed in.</response>
         [HttpPost]
         [Route("add/custom")]
-        public async Task<IActionResult> AddCustom([FromBody] AddCustomFoodEntryDTORequest dtoRequest)
+        public async Task<ActionResult<AddCustomFoodEntryDTOResponse>> AddCustom([FromBody] AddCustomFoodEntryDTORequest dtoRequest)
         {
             AddCustomFoodEntryRequestHandler addCustomFoodEntryRequestHandler = new AddCustomFoodEntryRequestHandler(User, dtoRequest, _logger, _foodEntryRepository, _userRepository, _offDataRepository, _questRepository, _questTypeRepository);
             (var dtoResponse, HttpStatusCode statusCode, string err) = await addCustomFoodEntryRequestHandler.Handle();
@@ -115,7 +117,7 @@ namespace LevelUpAPI.Controllers
         /// <response code="401">The user is not signed in.</response>
         [HttpPost]
         [Route("add")]
-        public async Task<IActionResult> Add([FromBody] AddFoodEntryDTORequest dtoRequest)
+        public async Task<ActionResult<AddFoodEntryDTOResponse>> Add([FromBody] AddFoodEntryDTORequest dtoRequest)
         {
             AddFoodEntryRequestHandler addFoodEntryRequestHandler = new AddFoodEntryRequestHandler(User, dtoRequest, _logger, _foodEntryRepository, _offDataRepository, _questRepository, _questTypeRepository, _userRepository);
             (var dtoResponse, HttpStatusCode statusCode, string err) = await addFoodEntryRequestHandler.Handle();
@@ -140,7 +142,7 @@ namespace LevelUpAPI.Controllers
         /// <response code="401">The user is not signed in.</response>
         [HttpPost]
         [Route("update")]
-        public async Task<IActionResult> Update([FromBody] UpdateFoodEntryDTORequest dtoRequest)
+        public async Task<ActionResult<UpdateAvatarDTOResponse>> Update([FromBody] UpdateFoodEntryDTORequest dtoRequest)
         {
             UpdateFoodEntryRequestHandler updateFoodEntryRequestHandler = new UpdateFoodEntryRequestHandler(_userRepository, _foodEntryRepository, User, dtoRequest, _logger);
             (var dtoResponse, HttpStatusCode statusCode, string err) = await updateFoodEntryRequestHandler.Handle();
@@ -163,7 +165,7 @@ namespace LevelUpAPI.Controllers
         /// <response code="401">The user is not signed in.</response>
         [HttpPost]
         [Route("remove")]
-        public async Task<IActionResult> Remove([FromBody] RemoveFoodEntryDTORequest dtoRequest)
+        public async Task<ActionResult<RemoveFoodEntryDTOResponse>> Remove([FromBody] RemoveFoodEntryDTORequest dtoRequest)
         {
             RemoveFoodEntryRequestHandler removeFoodEntryRequestHandler = new RemoveFoodEntryRequestHandler(User, dtoRequest, _logger, _userRepository, _foodEntryRepository);
             (var dtoResponse, HttpStatusCode statusCode, string err) = await removeFoodEntryRequestHandler.Handle();
