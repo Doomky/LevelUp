@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 using LevelUpAPI.DataAccess.Repositories.Interfaces;
+using LevelUpAPI.Helpers;
 using LevelUpAPI.RequestHandlers;
+using LevelUpDTO;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace LevelUpAPI.Controllers
 {
@@ -10,12 +14,14 @@ namespace LevelUpAPI.Controllers
     [ApiController]
     public class OpenFoodFactsDatasController : ControllerBase
     {
+        private readonly ILogger<OpenFoodFactsDatasController> _logger;
         private readonly IOFFDatasCategoryRepository _oFFDataCategoryRepository;
         private readonly IOFFCategoryRepository _oFFCategoryRepository;
         private readonly IOFFDataRepository _oFFDataRepository;
 
-        public OpenFoodFactsDatasController(IOFFDatasCategoryRepository oFFDataCategoryRepository, IOFFCategoryRepository oFFCategoryRepository, IOFFDataRepository oFFDataRepository)
+        public OpenFoodFactsDatasController(ILogger<OpenFoodFactsDatasController> logger, IOFFDatasCategoryRepository oFFDataCategoryRepository, IOFFCategoryRepository oFFCategoryRepository, IOFFDataRepository oFFDataRepository)
         {
+            _logger = logger;
             _oFFDataCategoryRepository = oFFDataCategoryRepository;
             _oFFCategoryRepository = oFFCategoryRepository;
             _oFFDataRepository = oFFDataRepository;
@@ -30,10 +36,13 @@ namespace LevelUpAPI.Controllers
         /// <response code="400">The request is malformed.</response>
         [HttpGet]
         [Route("{barcode}")]
-        public void GetOpenFoodFactsDataFromBarcode(string barcode)
+        public async Task<IActionResult> GetOpenFoodFactsDataFromBarcode([FromRoute] string barcode)
         {
-            GetOFFDataRequestHandler getOFFDataRequestHandler = new GetOFFDataRequestHandler(_oFFDataRepository, _oFFCategoryRepository, _oFFDataCategoryRepository, barcode);
-            getOFFDataRequestHandler.Handle(HttpContext);
+            GetOFFDataDTORequest dtoRequest = new GetOFFDataDTORequest();
+            dtoRequest.Barcode = barcode;
+            GetOFFDataRequestHandler getOFFDataRequestHandler = new GetOFFDataRequestHandler(User, dtoRequest, _logger,  _oFFDataRepository, _oFFCategoryRepository, _oFFDataCategoryRepository, barcode);
+            (var dtoResponse, HttpStatusCode statusCode, string err) = await getOFFDataRequestHandler.Handle();
+            return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse);
         }
 
         /// <summary>
@@ -45,10 +54,13 @@ namespace LevelUpAPI.Controllers
         /// <response code="400">The request is malformed.</response>
         [HttpGet]
         [Route("category/{categoryName}")]
-        public void GetOpenFoodFactsDataFromCategory(string categoryName)
+        public async Task<IActionResult> GetOpenFoodFactsDataFromCategory(string categoryName)
         {
-            GetOFFDataFromCategoryRequestHandler getOFFDataFromCategoryRequestHandler = new GetOFFDataFromCategoryRequestHandler(_oFFDataCategoryRepository, categoryName);
-            getOFFDataFromCategoryRequestHandler.Handle(HttpContext);
+            GetOFFDataFromCategoryDTORequest dtoRequest = new GetOFFDataFromCategoryDTORequest();
+            dtoRequest.Category = categoryName;
+            GetOFFDataFromCategoryRequestHandler getOFFDataFromCategoryRequestHandler = new GetOFFDataFromCategoryRequestHandler(User, dtoRequest, _logger, _oFFDataCategoryRepository, categoryName);
+            (var dtoResponse, HttpStatusCode statusCode, string err) = await getOFFDataFromCategoryRequestHandler.Handle();
+            return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse);
         }
     }
 }

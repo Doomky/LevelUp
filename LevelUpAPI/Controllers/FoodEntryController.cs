@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 using LevelUpAPI.DataAccess.Repositories.Interfaces;
+using LevelUpAPI.Helpers;
 using LevelUpAPI.RequestHandlers;
+using LevelUpDTO;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace LevelUpAPI.Controllers
 {
@@ -10,22 +14,22 @@ namespace LevelUpAPI.Controllers
     [ApiController]
     public class FoodEntryController : ControllerBase
     {
+        private readonly ILogger<FoodEntryController> _logger;
         private readonly IFoodEntryRepository _foodEntryRepository;
         private readonly IOFFDataRepository _offDataRepository;
         private readonly IQuestRepository _questRepository;
         private readonly IQuestTypeRepository _questTypeRepository;
         private readonly IUserRepository _userRepository;
 
-        public FoodEntryController(IFoodEntryRepository foodEntryRepository, IOFFDataRepository offDataRepository, IQuestRepository questRepository, IQuestTypeRepository questTypeRepository, IUserRepository userRepository)
+        public FoodEntryController(ILogger<FoodEntryController> logger, IFoodEntryRepository foodEntryRepository, IOFFDataRepository offDataRepository, IQuestRepository questRepository, IQuestTypeRepository questTypeRepository, IUserRepository userRepository)
         {
+            _logger = logger;
             _foodEntryRepository = foodEntryRepository;
             _offDataRepository = offDataRepository;
             _questRepository = questRepository;
             _questTypeRepository = questTypeRepository;
             _userRepository = userRepository;
         }
-
-
 
         /// <summary>
         /// Get all the food entries of the signed-in user.
@@ -34,10 +38,11 @@ namespace LevelUpAPI.Controllers
         /// <response code="400">The request is malformed or the user does not exist.</response>
         /// <response code="401">The user is not signed in.</response>
         [HttpGet]
-        public void Get()
+        public async Task<IActionResult> Get([FromBody] GetFoodEntriesDTORequest dtoRequest)
         {
-            GetFoodEntriesRequestHandler getFoodEntriesRequestHandler = new GetFoodEntriesRequestHandler(_userRepository, _foodEntryRepository, _offDataRepository);
-            getFoodEntriesRequestHandler.Handle(HttpContext);
+            GetFoodEntriesRequestHandler getFoodEntriesRequestHandler = new GetFoodEntriesRequestHandler(User, dtoRequest, _logger, _userRepository, _foodEntryRepository, _offDataRepository);
+            (var dtoResponse, HttpStatusCode statusCode, string err) = await getFoodEntriesRequestHandler.Handle();
+            return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse);
         }
 
         /// <summary>
@@ -48,10 +53,11 @@ namespace LevelUpAPI.Controllers
         /// <response code="401">The user is not signed in.</response>
         [HttpGet]
         [Route("count")]
-        public void GetCount()
+        public async Task<IActionResult> GetCount([FromBody] GetFoodEntriesCountDTORequest dtoRequest)
         {
-            GetFoodEntriesCountRequestHandler getFoodEntriesCountRequestHandler = new GetFoodEntriesCountRequestHandler(_userRepository, _foodEntryRepository);
-            getFoodEntriesCountRequestHandler.Handle(HttpContext);
+            GetFoodEntriesCountRequestHandler getFoodEntriesCountRequestHandler = new GetFoodEntriesCountRequestHandler(User, dtoRequest, _logger, _userRepository, _foodEntryRepository);
+            (var dtoResponse, HttpStatusCode statusCode, string err) = await getFoodEntriesCountRequestHandler.Handle();
+            return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse);
         }
 
         /// <summary>
@@ -85,10 +91,11 @@ namespace LevelUpAPI.Controllers
         /// <response code="401">The user is not signed in.</response>
         [HttpPost]
         [Route("add/custom")]
-        public void AddCustom()
+        public async Task<IActionResult> AddCustom([FromBody] AddCustomFoodEntryDTORequest dtoRequest)
         {
-            AddCustomFoodEntryRequestHandler addCustomFoodEntryRequestHandler = new AddCustomFoodEntryRequestHandler(_foodEntryRepository, _userRepository, _offDataRepository, _questRepository, _questTypeRepository);
-            addCustomFoodEntryRequestHandler.Handle(HttpContext);
+            AddCustomFoodEntryRequestHandler addCustomFoodEntryRequestHandler = new AddCustomFoodEntryRequestHandler(User, dtoRequest, _logger, _foodEntryRepository, _userRepository, _offDataRepository, _questRepository, _questTypeRepository);
+            (var dtoResponse, HttpStatusCode statusCode, string err) = await addCustomFoodEntryRequestHandler.Handle();
+            return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse);
         }
 
         /// <summary>
@@ -108,10 +115,11 @@ namespace LevelUpAPI.Controllers
         /// <response code="401">The user is not signed in.</response>
         [HttpPost]
         [Route("add")]
-        public void Add()
+        public async Task<IActionResult> Add([FromBody] AddFoodEntryDTORequest dtoRequest)
         {
-            AddFoodEntryRequestHandler addFoodEntryRequestHandler = new AddFoodEntryRequestHandler(_foodEntryRepository, _offDataRepository, _questRepository, _questTypeRepository, _userRepository);
-            addFoodEntryRequestHandler.Handle(HttpContext);
+            AddFoodEntryRequestHandler addFoodEntryRequestHandler = new AddFoodEntryRequestHandler(User, dtoRequest, _logger, _foodEntryRepository, _offDataRepository, _questRepository, _questTypeRepository, _userRepository);
+            (var dtoResponse, HttpStatusCode statusCode, string err) = await addFoodEntryRequestHandler.Handle();
+            return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse);
         }
 
         /// <summary>
@@ -132,10 +140,11 @@ namespace LevelUpAPI.Controllers
         /// <response code="401">The user is not signed in.</response>
         [HttpPost]
         [Route("update")]
-        public void Update()
+        public async Task<IActionResult> Update([FromBody] UpdateFoodEntryDTORequest dtoRequest)
         {
-            UpdateFoodEntryRequestHandler updateFoodEntryRequestHandler = new UpdateFoodEntryRequestHandler(_userRepository, _foodEntryRepository);
-            updateFoodEntryRequestHandler.Execute(HttpContext);
+            UpdateFoodEntryRequestHandler updateFoodEntryRequestHandler = new UpdateFoodEntryRequestHandler(_userRepository, _foodEntryRepository, User, dtoRequest, _logger);
+            (var dtoResponse, HttpStatusCode statusCode, string err) = await updateFoodEntryRequestHandler.Handle();
+            return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse);
         }
 
         /// <summary>
@@ -154,10 +163,11 @@ namespace LevelUpAPI.Controllers
         /// <response code="401">The user is not signed in.</response>
         [HttpPost]
         [Route("remove")]
-        public void Remove()
+        public async Task<IActionResult> Remove([FromBody] RemoveFoodEntryDTORequest dtoRequest)
         {
-            RemoveFoodEntryRequestHandler removeFoodEntryRequestHandler = new RemoveFoodEntryRequestHandler(_userRepository, _foodEntryRepository);
-            removeFoodEntryRequestHandler.Execute(HttpContext);
+            RemoveFoodEntryRequestHandler removeFoodEntryRequestHandler = new RemoveFoodEntryRequestHandler(User, dtoRequest, _logger, _userRepository, _foodEntryRepository);
+            (var dtoResponse, HttpStatusCode statusCode, string err) = await removeFoodEntryRequestHandler.Handle();
+            return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse);
         }
     }
 }

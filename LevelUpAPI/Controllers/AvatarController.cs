@@ -6,7 +6,9 @@ using Microsoft.Extensions.Logging;
 using LevelUpAPI.Model;
 using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.RequestHandlers;
-
+using LevelUpDTO;
+using System.Net;
+using LevelUpAPI.Helpers;
 
 namespace LevelUpAPI.Controllers
 {
@@ -34,10 +36,11 @@ namespace LevelUpAPI.Controllers
         /// <response code="400">The request is malformed or the user does not exist.</response>
         /// <response code="401">The user is not signed in.</response>
         [HttpGet]
-        public void Get()
+        public async Task<IActionResult> Get([FromBody] GetAvatarInfoDTORequest dtoRequest)
         {
-            GetAvatarInfoRequestHandler getAvatarInfoRequestHandler = new GetAvatarInfoRequestHandler(_userRepository, _avatarRepository);
-            getAvatarInfoRequestHandler.Handle(HttpContext);
+            GetAvatarInfoRequestHandler getAvatarInfoRequestHandler = new GetAvatarInfoRequestHandler(User, dtoRequest, _logger, _userRepository, _avatarRepository);
+            (GetAvatarInfoDTOResponse dtoResponse, HttpStatusCode statusCode, string err) = await getAvatarInfoRequestHandler.Handle();
+            return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse);
         }
 
         /// <summary>
@@ -56,10 +59,11 @@ namespace LevelUpAPI.Controllers
         /// <response code="401">The user is not signed in.</response>
         [HttpPost]
         [Route("update")]
-        public void Update()
+        public async Task<IActionResult> Update([FromBody] UpdateAvatarDTORequest dtoRequest)
         {
-            UpdateAvatarRequestHandler updateAvatarRequestHandler = new UpdateAvatarRequestHandler(_userRepository, _avatarRepository);
-            updateAvatarRequestHandler.Execute(HttpContext);
+            UpdateAvatarRequestHandler updateAvatarRequestHandler = new UpdateAvatarRequestHandler(_userRepository, _avatarRepository, User, dtoRequest, _logger);
+            (var dtoResponse, HttpStatusCode statusCode, string err) = await updateAvatarRequestHandler.Handle();
+            return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse);
         }
     }
 }

@@ -4,6 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 using static LevelUpAPI.Helpers.StringHelpers;
 using static LevelUpAPI.DataAccess.QuestHandlers.Interfaces.IQuestHandler;
 using LevelUpDTO;
+using Microsoft.Extensions.Logging;
+using System.Net;
+using LevelUpAPI.Helpers;
+using System.Threading.Tasks;
 
 namespace LevelUpAPI.Controllers
 {
@@ -11,14 +15,16 @@ namespace LevelUpAPI.Controllers
     [ApiController]
     public class QuestsController : ControllerBase
     {
+        private readonly ILogger<QuestsController> _logger;
         private readonly IQuestRepository _questRepository;
         private readonly IUserRepository _userRepository;
         private readonly IQuestTypeRepository _questTypeRepository;
         private readonly ICategoryRepository _categoryRepository;
         private readonly IAvatarRepository _avatarRepository;
 
-        public QuestsController(IQuestRepository questRepository, IUserRepository userRepository, IQuestTypeRepository questTypeRepository, ICategoryRepository categoryRepository, IAvatarRepository avatarRepository)
+        public QuestsController(ILogger<QuestsController> logger, IQuestRepository questRepository, IUserRepository userRepository, IQuestTypeRepository questTypeRepository, ICategoryRepository categoryRepository, IAvatarRepository avatarRepository)
         {
+            _logger = logger;
             _questRepository = questRepository;
             _userRepository = userRepository;
             _questTypeRepository = questTypeRepository;
@@ -34,11 +40,14 @@ namespace LevelUpAPI.Controllers
         /// <response code="401">The user is not signed in.</response>
         [HttpGet]
         [Route("{questStateName?}")]
-        public void Get(string questStateName)
+        public async Task<IActionResult> Get(string questStateName)
         {
             QuestState? questState = questStateName.AsQuestStateEnum();
-            GetQuestRequestHandler getQuestRequestHandler = new GetQuestRequestHandler(_userRepository, _questRepository, _questTypeRepository, questState);
-            getQuestRequestHandler.Handle(HttpContext);
+            GetQuestDTORequest dtoRequest = new GetQuestDTORequest();
+            dtoRequest.QuestState = questStateName;
+            GetQuestRequestHandler getQuestRequestHandler = new GetQuestRequestHandler(questState, User, dtoRequest, _logger, _userRepository, _questRepository, _questTypeRepository);
+            (var dtoResponse, HttpStatusCode statusCode, string err) = await getQuestRequestHandler.Handle();
+            return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse);
         }
 
         /// <summary>
@@ -48,10 +57,12 @@ namespace LevelUpAPI.Controllers
         /// <response code="400">The request is malformed.</response>
         [HttpGet]
         [Route("category/list")]
-        public void GetQuestCategories()
+        public async Task<IActionResult>  GetQuestCategories()
         {
-            GetQuestCategoriesRequestHandler getQuestCategoriesRequestHandler = new GetQuestCategoriesRequestHandler(_categoryRepository);
-            getQuestCategoriesRequestHandler.Handle(HttpContext);
+            GetQuestCategoriesDTORequest dtoRequest = new GetQuestCategoriesDTORequest();
+            GetQuestCategoriesRequestHandler getQuestCategoriesRequestHandler = new GetQuestCategoriesRequestHandler(User, dtoRequest, _logger, _categoryRepository);
+            (var dtoResponse, HttpStatusCode statusCode, string err) = await getQuestCategoriesRequestHandler.Handle();
+            return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse);
         }
 
         /// <summary>
@@ -63,10 +74,13 @@ namespace LevelUpAPI.Controllers
         /// <response code="401">The user is not signed in.</response>
         [HttpGet]
         [Route("category/{categoryName}")]
-        public void GetByCategory(string categoryName)
+        public async Task<IActionResult> GetByCategory(string categoryName)
         {
-            GetQuestByCategoryRequestHandler getQuestByCategoryRequestHandler = new GetQuestByCategoryRequestHandler(_userRepository, _questRepository, _categoryRepository, _questTypeRepository, categoryName);
-            getQuestByCategoryRequestHandler.Handle(HttpContext);
+            GetQuestByCategoryDTORequest dtoRequest = new GetQuestByCategoryDTORequest();
+            dtoRequest.Category = categoryName;
+            GetQuestByCategoryRequestHandler getQuestByCategoryRequestHandler = new GetQuestByCategoryRequestHandler(User, dtoRequest, _logger, _userRepository, _questRepository, _categoryRepository, _questTypeRepository, categoryName);
+            (var dtoResponse, HttpStatusCode statusCode, string err) = await getQuestByCategoryRequestHandler.Handle();
+            return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse);
         }
 
         /// <summary>
@@ -76,10 +90,12 @@ namespace LevelUpAPI.Controllers
         /// <response code="400">The request is malformed.</response>
         [HttpGet]
         [Route("type/list")]
-        public void GetQuestTypes()
+        public async Task<IActionResult> GetQuestTypes()
         {
-            GetQuestTypesRequestHandler getQuestTypesRequestHandler = new GetQuestTypesRequestHandler(_questTypeRepository);
-            getQuestTypesRequestHandler.Execute(HttpContext);
+            GetQuestTypesDTORequest dtoRequest = new GetQuestTypesDTORequest();
+            GetQuestTypesRequestHandler getQuestTypesRequestHandler = new GetQuestTypesRequestHandler(_questTypeRepository, dtoRequest, _logger);
+            (var dtoResponse, HttpStatusCode statusCode, string err) = await getQuestTypesRequestHandler.Handle();
+            return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse);
         }
 
         /// <summary>
@@ -98,10 +114,11 @@ namespace LevelUpAPI.Controllers
         /// <response code="401">The user is not signed in.</response>
         [HttpPost]
         [Route("update")]
-        public void Update()
+        public async Task<IActionResult> Update([FromBody] UpdateQuestDTORequest dtoRequest)
         {
-            UpdateQuestRequestHandler updateQuestRequestHandler = new UpdateQuestRequestHandler(_userRepository, _questRepository, _questTypeRepository);
-            updateQuestRequestHandler.Execute(HttpContext);
+            UpdateQuestRequestHandler updateQuestRequestHandler = new UpdateQuestRequestHandler(_userRepository, _questRepository, _questTypeRepository, User, dtoRequest, _logger);
+            (var dtoResponse, HttpStatusCode statusCode, string err) = await updateQuestRequestHandler.Handle();
+            return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse);
         }
 
         /// <summary>
@@ -123,10 +140,11 @@ namespace LevelUpAPI.Controllers
         /// <response code="401">The user is not signed in.</response>
         [HttpPost]
         [Route("add")]
-        public void Add()
+        public async Task<IActionResult> Add([FromBody] AddQuestDTORequest dtoRequest)
         {
-            AddQuestRequestHandler addQuestRequestHandler = new AddQuestRequestHandler(_userRepository, _questRepository, _questTypeRepository, _categoryRepository);
-            addQuestRequestHandler.Handle(HttpContext);
+            AddQuestRequestHandler addQuestRequestHandler = new AddQuestRequestHandler(User, dtoRequest, _logger, _userRepository, _questRepository, _questTypeRepository, _categoryRepository);
+            (var dtoResponse, HttpStatusCode statusCode, string err) = await addQuestRequestHandler.Handle();
+            return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse);
         }
 
         /// <summary>
@@ -145,10 +163,11 @@ namespace LevelUpAPI.Controllers
         /// <response code="401">The user is not signed in.</response>
         [HttpPost]
         [Route("remove")]
-        public void Remove()
+        public async Task<IActionResult> Remove([FromBody] RemoveQuestDTORequest dtoRequest)
         {
-            RemoveQuestRequestHandler removeQuestRequestHandler = new RemoveQuestRequestHandler(_userRepository, _questRepository);
-            removeQuestRequestHandler.Execute(HttpContext);
+            RemoveQuestRequestHandler removeQuestRequestHandler = new RemoveQuestRequestHandler(_userRepository, _questRepository, User, dtoRequest, _logger);
+            (var dtoResponse, HttpStatusCode statusCode, string err) = await removeQuestRequestHandler.Handle();
+            return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse);
         }
 
         /// <summary>
@@ -170,11 +189,11 @@ namespace LevelUpAPI.Controllers
         /// <response code="401">The user is not signed in.</response>
         [HttpPost]
         [Route("claim")]
-        public ClaimQuestsDTOResponse Claim()
+        public async Task<IActionResult>  Claim([FromBody] ClaimQuestsDTORequest dtoRequest)
         {
-            ClaimQuestsRequestHandler claimQuestsRequestHandler = new ClaimQuestsRequestHandler(_userRepository, _questRepository, _questTypeRepository, _avatarRepository);
-            claimQuestsRequestHandler.Handle(HttpContext);
-            return (ClaimQuestsDTOResponse)claimQuestsRequestHandler.GetDTOResponse();
+            ClaimQuestsRequestHandler claimQuestsRequestHandler = new ClaimQuestsRequestHandler(User, dtoRequest, _logger, _userRepository, _questRepository, _questTypeRepository, _avatarRepository);
+            (var dtoResponse, HttpStatusCode statusCode, string err) = await claimQuestsRequestHandler.Handle();
+            return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse);
         }
     }
 }
