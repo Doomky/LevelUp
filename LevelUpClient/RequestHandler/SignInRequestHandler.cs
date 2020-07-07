@@ -14,7 +14,7 @@ namespace LevelUpClient.RequestHandler
         {
         }
 
-        public override SignInDTOResponse Execute(HttpClient httpClient)
+        public override DTOResponse Execute(HttpClient httpClient)
         {
             HttpResponseMessage httpResponse = ExecuteMethod(httpClient).GetAwaiter().GetResult();
             string tokenAsStr = "";

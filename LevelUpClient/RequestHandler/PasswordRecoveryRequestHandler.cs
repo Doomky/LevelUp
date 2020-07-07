@@ -13,7 +13,7 @@ namespace LevelUpClient.RequestHandler
         {
         }
 
-        public override PasswordRecoveryDTOResponse Execute(HttpClient httpClient)
+        public override DTOResponse Execute(HttpClient httpClient)
         {
             return base.Execute(httpClient);
         }

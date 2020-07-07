@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 namespace LevelUpClient.RequestHandler
 {
     public abstract class RequestHandler<TDTORequest, TDTOResponse> : IRequestHandler<TDTORequest, TDTOResponse>
-        where TDTORequest : DTORequest where TDTOResponse : DTOResponse
+        where TDTORequest : DTORequest 
+        where TDTOResponse : DTOResponse
     {
         protected RequestHandler(string fullAddress)
         {
@@ -21,7 +22,7 @@ namespace LevelUpClient.RequestHandler
         public string FullAddress { get; set; }
 
         public abstract TDTORequest RequestBuilder();
-        public virtual TDTOResponse Execute(HttpClient httpClient)
+        public virtual DTOResponse Execute(HttpClient httpClient)
         {
             HttpResponseMessage httpResponse = ExecuteMethod(httpClient).GetAwaiter().GetResult();
             string bodyAsStr = "";
@@ -36,7 +37,7 @@ body: {bodyAsStr}");
             return JsonSerializer.Deserialize<TDTOResponse>(bodyAsStr);
         }
 
-        public TDTOResponse Handle(HttpClient httpClient)
+        public DTOResponse Handle(HttpClient httpClient)
         {
             DTORequest = RequestBuilder();
             return Execute(httpClient);
@@ -50,7 +51,7 @@ body: {bodyAsStr}");
                     return await httpClient.GetAsync(FullAddress);
                 case LevelUpDTO.DTORequest.Method.POST:
                     string jsonString = JsonSerializer.Serialize(DTORequest);
-                    HttpContent httpContent = new StringContent(jsonString);
+                    HttpContent httpContent = new StringContent(jsonString, System.Text.Encoding.UTF8, "application/json");
                     return await httpClient.PostAsync(FullAddress, httpContent);
                 default:
                     throw new NotSupportedException(DTORequest.GetMethodType() + " is not supported yet");

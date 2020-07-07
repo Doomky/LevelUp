@@ -21,7 +21,7 @@ namespace LevelUpClient.RequestHandler
                 .Build();
         }
 
-        public override ForgotPasswordDTOResponse Execute(HttpClient httpClient)
+        public override DTOResponse Execute(HttpClient httpClient)
         {
             return base.Execute(httpClient);
         }

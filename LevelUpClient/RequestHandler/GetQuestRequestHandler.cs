@@ -13,7 +13,7 @@ namespace LevelUpClient.RequestHandler
         {
         }
 
-        public override GetQuestDTOResponse Execute(HttpClient httpClient)
+        public override DTOResponse Execute(HttpClient httpClient)
         {
             if (DTORequest.QuestState != null)
                 FullAddress += "/" + DTORequest.QuestState;

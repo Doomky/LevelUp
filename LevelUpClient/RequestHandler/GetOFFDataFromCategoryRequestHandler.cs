@@ -13,7 +13,7 @@ namespace LevelUpClient.RequestHandler
         {
         }
 
-        public override GetOFFDataFromCategoryDTOResponse Execute(HttpClient httpClient)
+        public override DTOResponse Execute(HttpClient httpClient)
         {
             FullAddress += "/" + DTORequest.Category;
             return base.Execute(httpClient);

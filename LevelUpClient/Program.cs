@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace LevelUpClient
@@ -23,6 +24,7 @@ namespace LevelUpClient
             string fullAddress;
 
             var client = new HttpClient();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             //Console.Write("port: ");
             //port = Console.ReadLine();
