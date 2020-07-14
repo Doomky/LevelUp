@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using LevelUpAPI.DataAccess.Repositories.Interfaces;
@@ -38,12 +39,12 @@ namespace LevelUpAPI.Controllers
         /// <response code="400">The request is malformed or the user does not exist.</response>
         /// <response code="401">The user is not signed in.</response>
         [HttpGet]
-        public async Task<ActionResult<GetFoodEntriesDTOResponse>> Get()
+        public async Task<ActionResult<List<GetFoodEntriesDTOResponse.FoodEntryDTOResponse>>> Get()
         {
             GetFoodEntriesDTORequest dtoRequest = new GetFoodEntriesDTORequest();
             GetFoodEntriesRequestHandler getFoodEntriesRequestHandler = new GetFoodEntriesRequestHandler(User, dtoRequest, _logger, _userRepository, _foodEntryRepository, _offDataRepository);
             (var dtoResponse, HttpStatusCode statusCode, string err) = await getFoodEntriesRequestHandler.Handle();
-            return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse);
+            return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse.FoodEntries);
         }
 
         /// <summary>
@@ -54,12 +55,12 @@ namespace LevelUpAPI.Controllers
         /// <response code="401">The user is not signed in.</response>
         [HttpGet]
         [Route("count")]
-        public async Task<ActionResult<GetFoodEntriesDTOResponse>> GetCount()
+        public async Task<ActionResult<List<GetFoodEntriesCountDTOResponse.NbFoodEntryByLoginDTOResponse>>> GetCount()
         {
             GetFoodEntriesCountDTORequest dtoRequest = new GetFoodEntriesCountDTORequest();
             GetFoodEntriesCountRequestHandler getFoodEntriesCountRequestHandler = new GetFoodEntriesCountRequestHandler(User, dtoRequest, _logger, _userRepository, _foodEntryRepository);
             (var dtoResponse, HttpStatusCode statusCode, string err) = await getFoodEntriesCountRequestHandler.Handle();
-            return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse);
+            return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse.FoodEntries);
         }
 
         /// <summary>

@@ -39,12 +39,12 @@ namespace LevelUpAPI.Controllers
         /// <response code="200">The request succedded.</response>
         /// <response code="400">The request is malformed.</response>
         [HttpGet]
-        public async Task<ActionResult<GetPADTOResponse>> Get()
+        public async Task<ActionResult<List<GetPADTOResponse.PhysicalActivityDTOResponse>>> Get()
         {
             GetPADTORequest dtoRequest = new GetPADTORequest();
             GetPARequestHandler getPARequestHandler = new GetPARequestHandler(User, dtoRequest, _logger,_physicalActivitiesRepository);
             (var dtoResponse, HttpStatusCode statusCode, string err) = await getPARequestHandler.Handle();
-            return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse);
+            return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse.dtoResponse);
         }
 
         /// <summary>
@@ -79,12 +79,12 @@ namespace LevelUpAPI.Controllers
         /// <response code="401">The user is not signed in.</response>
         [HttpGet]
         [Route("entry/")]
-        public async Task<ActionResult<GetPAEntriesDTOResponse>>  GetEntries()
+        public async Task<ActionResult<List<GetPAEntriesDTOResponse.PAEntryDTOResponse>>>  GetEntries()
         {
             GetPAEntriesDTORequest dtoRequest = new GetPAEntriesDTORequest();
             GetPAEntriesRequestHandler getPAEntriesRequestHandler = new GetPAEntriesRequestHandler(User, dtoRequest, _logger, _userRepository, _physicalActivitiesEntryRepository);
             (var dtoResponse, HttpStatusCode statusCode, string err) = await getPAEntriesRequestHandler.Handle();
-            return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse);
+            return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse.PAEntries);
         }
 
         /// <summary>
@@ -95,12 +95,12 @@ namespace LevelUpAPI.Controllers
         /// <response code="401">The user is not signed in.</response>
         [HttpGet]
         [Route("entry/total")]
-        public async Task<ActionResult<GetTotalPAEntriesDTOResponse>>  GetTotalEntries()
+        public async Task<ActionResult<List<GetTotalPAEntriesDTOResponse.PAEntryByLoginDTOResponse>>>  GetTotalEntries()
         {
             GetTotalPAEntriesDTORequest dtoRequest = new GetTotalPAEntriesDTORequest();
             GetTotalPAEntriesRequestHandler getTotalPAEntriesRequestHandler = new GetTotalPAEntriesRequestHandler(User, dtoRequest, _logger, _userRepository, _physicalActivitiesEntryRepository);
             (var dtoResponse, HttpStatusCode statusCode, string err) = await getTotalPAEntriesRequestHandler.Handle();
-            return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse);
+            return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse.PaEntries);
         }
 
         /// <summary>

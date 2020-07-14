@@ -19,7 +19,7 @@ namespace LevelUpDTO
             }
         }
 
-        List<PhysicalActivityDTOResponse> dtoResponse { get; set; }
+        public List<PhysicalActivityDTOResponse> dtoResponse { get; set; }
 
         public GetPADTOResponse(List<PhysicalActivityDTOResponse> dtoResponse)
         {

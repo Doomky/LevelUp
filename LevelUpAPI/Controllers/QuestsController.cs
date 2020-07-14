@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using System.Net;
 using LevelUpAPI.Helpers;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace LevelUpAPI.Controllers
 {
@@ -40,14 +41,14 @@ namespace LevelUpAPI.Controllers
         /// <response code="401">The user is not signed in.</response>
         [HttpGet]
         [Route("{questStateName?}")]
-        public async Task<ActionResult<GetQuestDTOResponse>> Get(string questStateName)
+        public async Task<ActionResult<List<GetQuestDTOResponse.QuestDTOResponse1>>> Get(string questStateName)
         {
             QuestState? questState = questStateName.AsQuestStateEnum();
             GetQuestDTORequest dtoRequest = new GetQuestDTORequest();
             dtoRequest.QuestState = questStateName;
             GetQuestRequestHandler getQuestRequestHandler = new GetQuestRequestHandler(questState, User, dtoRequest, _logger, _userRepository, _questRepository, _questTypeRepository);
             (var dtoResponse, HttpStatusCode statusCode, string err) = await getQuestRequestHandler.Handle();
-            return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse);
+            return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse.QuestDTOResponses);
         }
 
         /// <summary>
@@ -57,12 +58,12 @@ namespace LevelUpAPI.Controllers
         /// <response code="400">The request is malformed.</response>
         [HttpGet]
         [Route("category/list")]
-        public async Task<ActionResult<GetQuestCategoriesDTOResponse>>  GetQuestCategories()
+        public async Task<ActionResult<List<GetQuestCategoriesDTOResponse.CategoryDTOResponse>>>  GetQuestCategories()
         {
             GetQuestCategoriesDTORequest dtoRequest = new GetQuestCategoriesDTORequest();
             GetQuestCategoriesRequestHandler getQuestCategoriesRequestHandler = new GetQuestCategoriesRequestHandler(User, dtoRequest, _logger, _categoryRepository);
             (var dtoResponse, HttpStatusCode statusCode, string err) = await getQuestCategoriesRequestHandler.Handle();
-            return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse);
+            return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse.Categories);
         }
 
         /// <summary>
@@ -74,13 +75,13 @@ namespace LevelUpAPI.Controllers
         /// <response code="401">The user is not signed in.</response>
         [HttpGet]
         [Route("category/{categoryName}")]
-        public async Task<ActionResult<GetQuestByCategoryDTOResponse>> GetByCategory(string categoryName)
+        public async Task<ActionResult<List<GetQuestByCategoryDTOResponse.QuestDTOResponse2>>> GetByCategory(string categoryName)
         {
             GetQuestByCategoryDTORequest dtoRequest = new GetQuestByCategoryDTORequest();
             dtoRequest.Category = categoryName;
             GetQuestByCategoryRequestHandler getQuestByCategoryRequestHandler = new GetQuestByCategoryRequestHandler(User, dtoRequest, _logger, _userRepository, _questRepository, _categoryRepository, _questTypeRepository, categoryName);
             (var dtoResponse, HttpStatusCode statusCode, string err) = await getQuestByCategoryRequestHandler.Handle();
-            return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse);
+            return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse.Quests);
         }
 
         /// <summary>
@@ -114,11 +115,11 @@ namespace LevelUpAPI.Controllers
         /// <response code="401">The user is not signed in.</response>
         [HttpPost]
         [Route("update")]
-        public async Task<ActionResult<UpdateQuestDTOResponse>> Update([FromBody] UpdateQuestDTORequest dtoRequest)
+        public async Task<ActionResult<List<UpdateQuestDTOResponse.Quest>>> Update([FromBody] UpdateQuestDTORequest dtoRequest)
         {
             UpdateQuestRequestHandler updateQuestRequestHandler = new UpdateQuestRequestHandler(_userRepository, _questRepository, _questTypeRepository, User, dtoRequest, _logger);
             (var dtoResponse, HttpStatusCode statusCode, string err) = await updateQuestRequestHandler.Handle();
-            return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse);
+            return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse.Quests);
         }
 
         /// <summary>

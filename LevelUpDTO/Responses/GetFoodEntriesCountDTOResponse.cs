@@ -19,7 +19,7 @@ namespace LevelUpDTO
             }
         }
 
-        List<NbFoodEntryByLoginDTOResponse> FoodEntries { get; set; }
+        public List<NbFoodEntryByLoginDTOResponse> FoodEntries { get; set; }
 
         public GetFoodEntriesCountDTOResponse(List<NbFoodEntryByLoginDTOResponse> foodEntries)
         {

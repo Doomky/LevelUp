@@ -20,7 +20,7 @@ namespace LevelUpDTO
             }
         }
         
-        List<PAEntryByLoginDTOResponse> PaEntries { get; set; }
+        public List<PAEntryByLoginDTOResponse> PaEntries { get; set; }
 
         public GetTotalPAEntriesDTOResponse(List<PAEntryByLoginDTOResponse> paEntries)
         {
