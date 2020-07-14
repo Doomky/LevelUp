@@ -41,7 +41,7 @@ namespace LevelUpAPI.Controllers
         /// <response code="401">The user is not signed in.</response>
         [HttpGet]
         [Route("{questStateName?}")]
-        public async Task<ActionResult<List<GetQuestDTOResponse.QuestDTOResponse1>>> Get(string questStateName)
+        public async Task<ActionResult<List<GetQuestDTOResponse.QuestDTOResponse1>>> Get([FromRoute] string questStateName)
         {
             QuestState? questState = questStateName.AsQuestStateEnum();
             GetQuestDTORequest dtoRequest = new GetQuestDTORequest();
@@ -58,7 +58,7 @@ namespace LevelUpAPI.Controllers
         /// <response code="400">The request is malformed.</response>
         [HttpGet]
         [Route("category/list")]
-        public async Task<ActionResult<List<GetQuestCategoriesDTOResponse.CategoryDTOResponse>>>  GetQuestCategories()
+        public async Task<ActionResult<List<GetQuestCategoriesDTOResponse.CategoryDTOResponse>>> GetQuestCategories()
         {
             GetQuestCategoriesDTORequest dtoRequest = new GetQuestCategoriesDTORequest();
             GetQuestCategoriesRequestHandler getQuestCategoriesRequestHandler = new GetQuestCategoriesRequestHandler(User, dtoRequest, _logger, _categoryRepository);
@@ -75,7 +75,7 @@ namespace LevelUpAPI.Controllers
         /// <response code="401">The user is not signed in.</response>
         [HttpGet]
         [Route("category/{categoryName}")]
-        public async Task<ActionResult<List<GetQuestByCategoryDTOResponse.QuestDTOResponse2>>> GetByCategory(string categoryName)
+        public async Task<ActionResult<List<GetQuestByCategoryDTOResponse.QuestDTOResponse2>>> GetByCategory([FromRoute] string categoryName)
         {
             GetQuestByCategoryDTORequest dtoRequest = new GetQuestByCategoryDTORequest();
             dtoRequest.Category = categoryName;
@@ -190,7 +190,7 @@ namespace LevelUpAPI.Controllers
         /// <response code="401">The user is not signed in.</response>
         [HttpPost]
         [Route("claim")]
-        public async Task<ActionResult<ClaimQuestsDTOResponse>>  Claim([FromBody] ClaimQuestsDTORequest dtoRequest)
+        public async Task<ActionResult<ClaimQuestsDTOResponse>> Claim([FromBody] ClaimQuestsDTORequest dtoRequest)
         {
             ClaimQuestsRequestHandler claimQuestsRequestHandler = new ClaimQuestsRequestHandler(User, dtoRequest, _logger, _userRepository, _questRepository, _questTypeRepository, _avatarRepository);
             (var dtoResponse, HttpStatusCode statusCode, string err) = await claimQuestsRequestHandler.Handle();
