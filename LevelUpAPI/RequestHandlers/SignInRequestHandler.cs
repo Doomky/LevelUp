@@ -1,14 +1,13 @@
-﻿using System;
-using System.Net.Http;
-using Microsoft.AspNetCore.Http;
-using IdentityModel.Client;
-using LevelUpDTO;
+﻿using IdentityModel.Client;
 using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.DataAccess.GoogleFit;
-using System.Security.Claims;
+using LevelUpDTO;
 using Microsoft.Extensions.Logging;
-using System.Threading.Tasks;
+using System;
 using System.Net;
+using System.Net.Http;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace LevelUpAPI.RequestHandlers
 {
@@ -36,23 +35,23 @@ namespace LevelUpAPI.RequestHandlers
             if (DTORequest == null)
                 return (null, HttpStatusCode.BadRequest, "Request malformed, please check body data sanity");
 
-            if (!_userRepository.CanSignIn(DTORequest).GetAwaiter().GetResult())
+            if (!await _userRepository.CanSignIn(DTORequest))
                 return (null, HttpStatusCode.BadRequest, "You are already signed in !");
 
             Dbo.User user;
             if (!string.IsNullOrEmpty(DTORequest.EmailAddress))
             {
-                user = _userRepository.GetUserByLoginOrEmail(null, DTORequest.EmailAddress).GetAwaiter().GetResult();
+                user = await _userRepository.GetUserByLoginOrEmail(null, DTORequest.EmailAddress);
                 
                 if (user != null)
                     DTORequest.Login = user.Login;
             }
             else
-                user = _userRepository.GetUserByLoginOrEmail(DTORequest.Login, null).GetAwaiter().GetResult();
+                user = await _userRepository.GetUserByLoginOrEmail(DTORequest.Login, null);
 
             string fullAddress = $"{HTTP}{address}:{port}";
             var client = new HttpClient();
-            DiscoveryDocumentResponse discoDoc = client.GetDiscoveryDocumentAsync(fullAddress).GetAwaiter().GetResult();
+            DiscoveryDocumentResponse discoDoc = await client.GetDiscoveryDocumentAsync(fullAddress);
             ClientCredentialsTokenRequest clientCredentialsTokenRequest = new ClientCredentialsTokenRequest
             {
                 Address = discoDoc.TokenEndpoint,
@@ -60,7 +59,7 @@ namespace LevelUpAPI.RequestHandlers
                 ClientSecret = DTORequest.PasswordHash,
                 Scope = "api1"
             };
-            TokenResponse tokenResponse = client.RequestClientCredentialsTokenAsync(clientCredentialsTokenRequest).GetAwaiter().GetResult();
+            TokenResponse tokenResponse = await client.RequestClientCredentialsTokenAsync(clientCredentialsTokenRequest);
             
             string jsonAsString = tokenResponse.Json.ToString();
 

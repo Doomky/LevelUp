@@ -1,11 +1,8 @@
-﻿using System;
-using System.IO;
-using System.Text.Json;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using LevelUpDTO;
-using System.Net;
+﻿using LevelUpDTO;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Net;
+using System.Threading.Tasks;
 using System.Security.Claims;
 
 namespace LevelUpAPI

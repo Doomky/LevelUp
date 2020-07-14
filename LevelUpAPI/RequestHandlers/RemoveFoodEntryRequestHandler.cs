@@ -1,7 +1,6 @@
 ﻿using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Dbo;
 using LevelUpDTO;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Net;
@@ -24,27 +23,18 @@ namespace LevelUpAPI.RequestHandlers
 
         protected async override Task<(RemoveFoodEntryDTOResponse, HttpStatusCode, string)> Handle_Internal()
         {
-            (User user, HttpStatusCode errStatusCode, string err) = CheckClaimsForUser(DTORequest, Claims, _userRepository);
+            (User user, HttpStatusCode errStatusCode, string err) = await CheckClaimsForUser(DTORequest, Claims, _userRepository);
             if (user == null)
                 return (null, errStatusCode, err);
 
             FoodEntry foodEntry = _foodEntryRepository.GetFoodEntryById(DTORequest.Id);
-            HttpStatusCode statusCode = HttpStatusCode.OK;
-            RemoveFoodEntryDTOResponse dtoResponse = new RemoveFoodEntryDTOResponse();
-            string errMsg = null;
-
             if (foodEntry == null)
-            {
-                statusCode = HttpStatusCode.BadRequest;
-                errMsg = "Could not find the food entry, please check body data sanity";
-            }
-            else if (! await _foodEntryRepository.Delete(DTORequest.Id))
-            {
-                statusCode = HttpStatusCode.BadRequest;
-                errMsg = "Could not remove the food entry";
-            }
+                return (null, HttpStatusCode.BadRequest, "Could not find the food entry, please check body data sanity");
+            
+            if (! await _foodEntryRepository.Delete(DTORequest.Id))
+                return (null, HttpStatusCode.BadRequest, "Could not remove the food entry");
 
-            return (dtoResponse, statusCode, errMsg);
+            return (new RemoveFoodEntryDTOResponse(DTORequest.Id), HttpStatusCode.OK, null);
         }
     }
 }

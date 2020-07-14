@@ -1,9 +1,10 @@
-﻿using System;
-using Microsoft.AspNetCore.Http;
-using LevelUpDTO;
-using LevelUpAPI.DataAccess.Repositories.Interfaces;
+﻿using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Dbo;
+using LevelUpDTO;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Net;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace LevelUpAPI.RequestHandlers
@@ -13,7 +14,7 @@ namespace LevelUpAPI.RequestHandlers
         private readonly IPasswordRecoveryDataRepository _passwordRecoveryDataRepository;
         private readonly IUserRepository _userRepository;
 
-        public PasswordRecoveryRequestHandler(IPasswordRecoveryDataRepository passwordRecoveryDataRepository, IUserRepository userRepository, PasswordRecoveryDTORequest dTORequest, Microsoft.Extensions.Logging.ILogger logger) : base(null, dTORequest, logger)
+        public PasswordRecoveryRequestHandler(IPasswordRecoveryDataRepository passwordRecoveryDataRepository, IUserRepository userRepository, ClaimsPrincipal claims, PasswordRecoveryDTORequest dTORequest, ILogger logger) : base(claims, dTORequest, logger)
         {
             _passwordRecoveryDataRepository = passwordRecoveryDataRepository;
             _userRepository = userRepository;

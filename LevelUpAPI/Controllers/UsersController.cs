@@ -172,7 +172,7 @@ namespace LevelUpAPI.Controllers
         [Route("password-recovery")]
         public async Task<ActionResult<PasswordRecoveryDTOResponse>> PasswordRecovery([FromBody] PasswordRecoveryDTORequest dtoRequest)
         {
-            PasswordRecoveryRequestHandler passwordRecoveryRequestHandler = new PasswordRecoveryRequestHandler(_passwordRecoveryDataRepository, _userRepository, dtoRequest, _logger);
+            PasswordRecoveryRequestHandler passwordRecoveryRequestHandler = new PasswordRecoveryRequestHandler(_passwordRecoveryDataRepository, _userRepository, User, dtoRequest, _logger);
             (var dtoResponse, HttpStatusCode statusCode, string err) = await passwordRecoveryRequestHandler.Handle();
             if (statusCode != HttpStatusCode.OK && err != null)
                 _logger.LogError(err);

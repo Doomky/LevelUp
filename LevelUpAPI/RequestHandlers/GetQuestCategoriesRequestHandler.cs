@@ -1,14 +1,12 @@
 ﻿using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Dbo;
 using LevelUpDTO;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Security.Claims;
-using System.Text.Json;
 using System.Threading.Tasks;
 using static LevelUpDTO.GetQuestCategoriesDTOResponse;
 
@@ -28,7 +26,7 @@ namespace LevelUpAPI.RequestHandlers
             IEnumerable<Category> categories = _categoryRepository.GetAllCategories();
 
             if (categories == null)
-                return (null, HttpStatusCode.BadRequest, null);
+                return (null, HttpStatusCode.BadRequest, "Cannot get the quest categories");
 
             List<CategoryDTOResponse> categoriesDTOs = categories.Select( category =>
                 new CategoryDTOResponse(category.Id, category.Name)

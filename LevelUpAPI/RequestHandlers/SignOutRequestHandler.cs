@@ -1,15 +1,14 @@
-﻿using System;
-using System.Net.Http;
-using Microsoft.AspNetCore.Http;
-using IdentityModel.Client;
-using LevelUpDTO;
+﻿using IdentityModel.Client;
 using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Dbo;
-using static LevelUpAPI.Helpers.ClaimsHelpers;
-using System.Security.Claims;
+using LevelUpDTO;
 using Microsoft.Extensions.Logging;
-using System.Threading.Tasks;
+using System;
 using System.Net;
+using System.Net.Http;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using static LevelUpAPI.Helpers.ClaimsHelpers;
 
 namespace LevelUpAPI.RequestHandlers
 {
@@ -34,13 +33,13 @@ namespace LevelUpAPI.RequestHandlers
 
         protected override async Task<(SignOutDTOResponse, HttpStatusCode, string)> Handle_Internal()
         {
-            (User user, HttpStatusCode statusCode, string err) = CheckClaimsForUser(DTORequest, Claims, _userRepository);
+            (User user, HttpStatusCode statusCode, string err) = await CheckClaimsForUser(DTORequest, Claims, _userRepository);
             if (user == null)
                 return (null, statusCode, err);
 
             string fullAddress = $"{HTTP}{address}:{port}";
             var client = new HttpClient();
-            DiscoveryDocumentResponse discoDoc = client.GetDiscoveryDocumentAsync(fullAddress).GetAwaiter().GetResult();
+            DiscoveryDocumentResponse discoDoc = await client.GetDiscoveryDocumentAsync(fullAddress);
             TokenRevocationRequest tokenRevocationRequest = new TokenRevocationRequest
             {
                 Address = discoDoc.RevocationEndpoint,
@@ -49,7 +48,7 @@ namespace LevelUpAPI.RequestHandlers
                 Token = DTORequest.AccessToken,
                 TokenTypeHint = "access_token"
             };
-            TokenRevocationResponse tokenRevocationResponse = client.RevokeTokenAsync(tokenRevocationRequest).GetAwaiter().GetResult();
+            TokenRevocationResponse tokenRevocationResponse = await client.RevokeTokenAsync(tokenRevocationRequest);
 
             return (new SignOutDTOResponse(),
                 tokenRevocationResponse.HttpStatusCode,

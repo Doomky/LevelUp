@@ -1,13 +1,12 @@
-﻿using System;
-using Microsoft.AspNetCore.Http;
-using LevelUpDTO;
-using LevelUpAPI.DataAccess.Repositories.Interfaces;
+﻿using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Dbo;
-using static LevelUpAPI.Helpers.ClaimsHelpers;
-using System.Threading.Tasks;
+using LevelUpDTO;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Threading.Tasks;
 using System.Security.Claims;
 using System.Net;
+using static LevelUpAPI.Helpers.ClaimsHelpers;
 
 namespace LevelUpAPI.RequestHandlers
 {
@@ -23,7 +22,7 @@ namespace LevelUpAPI.RequestHandlers
 
         protected async override Task<(ChangeUserInfoDTOResponse, HttpStatusCode, string)> Handle_Internal()
         {
-            (User user, HttpStatusCode statusCode, string err) = CheckClaimsForUser(DTORequest, Claims, _userRepository);
+            (User user, HttpStatusCode statusCode, string err) = await CheckClaimsForUser(DTORequest, Claims, _userRepository);
             if (user == null)
                 return (null, statusCode, err);
 

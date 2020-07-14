@@ -94,7 +94,7 @@ namespace LevelUpAPI.Controllers
         public async Task<ActionResult<GetQuestTypesDTOResponse>> GetQuestTypes()
         {
             GetQuestTypesDTORequest dtoRequest = new GetQuestTypesDTORequest();
-            GetQuestTypesRequestHandler getQuestTypesRequestHandler = new GetQuestTypesRequestHandler(_questTypeRepository, dtoRequest, _logger);
+            GetQuestTypesRequestHandler getQuestTypesRequestHandler = new GetQuestTypesRequestHandler(_questTypeRepository, User, dtoRequest, _logger);
             (var dtoResponse, HttpStatusCode statusCode, string err) = await getQuestTypesRequestHandler.Handle();
             return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse);
         }

@@ -1,14 +1,12 @@
 ﻿using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Dbo;
 using LevelUpDTO;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Security.Claims;
-using System.Text.Json;
 using System.Threading.Tasks;
 using static LevelUpAPI.Helpers.ClaimsHelpers;
 using QuestState = LevelUpAPI.DataAccess.QuestHandlers.Interfaces.IQuestHandler.QuestState;
@@ -32,13 +30,11 @@ namespace LevelUpAPI.RequestHandlers
 
         protected override async Task<(GetQuestDTOResponse, HttpStatusCode, string)> Handle_Internal()
         {
-            (User user, HttpStatusCode statusCode, string err) = CheckClaimsForUser(DTORequest, Claims, _userRepository);
+            (User user, HttpStatusCode statusCode, string err) = await CheckClaimsForUser(DTORequest, Claims, _userRepository);
             if (user == null)
                 return (null, statusCode, err);
 
             IEnumerable<Quest> quests = await _questRepository.Get(user, _questTypeRepository, _questState);
-
-            string questsJson = JsonSerializer.Serialize(quests);
 
             List<GetQuestDTOResponse.QuestDTOResponse1> questDTOResponses = quests
                 .Select(q => new GetQuestDTOResponse.QuestDTOResponse1(

@@ -1,11 +1,10 @@
-﻿using System;
-using Microsoft.AspNetCore.Http;
-using LevelUpAPI.DataAccess.Repositories.Interfaces;
+﻿using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpDTO;
-using System.Security.Claims;
 using Microsoft.Extensions.Logging;
-using System.Threading.Tasks;
+using System;
 using System.Net;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace LevelUpAPI
 {
@@ -36,12 +35,12 @@ namespace LevelUpAPI
             if (DTORequest == null)
                 return (null, HttpStatusCode.BadRequest, "Request malformed, please check body data sanity");
 
-            if (!_userRepository.CanSignUp(DTORequest).GetAwaiter().GetResult())
+            if (!await _userRepository.CanSignUp(DTORequest))
                 return (null, HttpStatusCode.Conflict, "User already exists, please use another email address or login");
             else
             {
-                Dbo.Avatar avatar = _avatarRepository.Create().GetAwaiter().GetResult();
-                Dbo.User user = _userRepository.SignUp(DTORequest, avatar.Id).GetAwaiter().GetResult();
+                Dbo.Avatar avatar = await _avatarRepository.Create();
+                Dbo.User user = await _userRepository.SignUp(DTORequest, avatar.Id);
                 if (user != null)
                     return (new SignUpDTOResponse(
                         user.Id,

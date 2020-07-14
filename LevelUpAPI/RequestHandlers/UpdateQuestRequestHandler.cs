@@ -2,7 +2,6 @@
 using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Dbo;
 using LevelUpDTO;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -36,18 +35,18 @@ namespace LevelUpAPI.RequestHandlers
 
         protected override async Task<(UpdateQuestDTOResponse, HttpStatusCode, string)> Handle_Internal()
         {
-            (User user, HttpStatusCode statusCode, string err) = CheckClaimsForUser(DTORequest, Claims, _userRepository);
+            (User user, HttpStatusCode statusCode, string err) = await CheckClaimsForUser(DTORequest, Claims, _userRepository);
             if (user == null)
                 return (null, statusCode, err);
 
-            IEnumerable<Quest> quests = _questRepository.Get(user, _questTypeRepository, QuestState.InProgress).GetAwaiter().GetResult();
+            IEnumerable<Quest> quests = await _questRepository.Get(user, _questTypeRepository, QuestState.InProgress);
             foreach (Quest quest in quests)
             {
                 QuestHandler questHandler = QuestHandlers.Create(quest, user, _questTypeRepository);
                 if (questHandler != null)
                 {
                     questHandler.Update(DTORequest);
-                    _questRepository.Update(quest).GetAwaiter().GetResult();
+                    await _questRepository.Update(quest);
                 }
             }
 

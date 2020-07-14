@@ -1,14 +1,13 @@
-﻿using System;
+﻿using LevelUpAPI.DataAccess.Repositories.Interfaces;
+using LevelUpAPI.Dbo;
+using LevelUpDTO;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration;
+using System;
 using System.ComponentModel;
 using System.Net;
 using System.Net.Mail;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
-using LevelUpAPI.DataAccess.Repositories.Interfaces;
-using LevelUpAPI.Dbo;
-using LevelUpDTO;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
 using System.Security.Claims;
 
 namespace LevelUpAPI.RequestHandlers

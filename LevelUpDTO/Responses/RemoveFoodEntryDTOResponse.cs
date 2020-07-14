@@ -4,8 +4,11 @@ namespace LevelUpDTO
 {
     public class RemoveFoodEntryDTOResponse : DTOResponse
     {
-        public RemoveFoodEntryDTOResponse()
+        public int FoodEntryId { get; set; }
+
+        public RemoveFoodEntryDTOResponse(int foodEntryId)
         {
+            FoodEntryId = foodEntryId;
         }
     }
 }

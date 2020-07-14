@@ -1,14 +1,12 @@
 ﻿using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Dbo;
 using LevelUpDTO;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Security.Claims;
-using System.Text.Json;
 using System.Threading.Tasks;
 using static LevelUpAPI.Helpers.ClaimsHelpers;
 using static LevelUpDTO.GetTotalPAEntriesDTOResponse;
@@ -28,7 +26,7 @@ namespace LevelUpAPI.RequestHandlers
 
         protected override async Task<(GetTotalPAEntriesDTOResponse, HttpStatusCode, string)> Handle_Internal()
         {
-            (User user, HttpStatusCode statusCode, string errMsg) = CheckClaimsForUser(DTORequest, Claims, _userRepository);
+            (User user, HttpStatusCode statusCode, string errMsg) = await CheckClaimsForUser(DTORequest, Claims, _userRepository);
             if (user == null)
                 return (null, statusCode, errMsg);
 

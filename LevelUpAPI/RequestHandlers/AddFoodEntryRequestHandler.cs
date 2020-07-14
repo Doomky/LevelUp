@@ -2,16 +2,14 @@
 using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Dbo;
 using LevelUpDTO;
-using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
-using System.Text.Json;
+using System.Net;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using static LevelUpAPI.Helpers.ClaimsHelpers;
 using static LevelUpAPI.DataAccess.QuestHandlers.Interfaces.IQuestHandler.QuestState;
-using System.Net;
-using Microsoft.Extensions.Logging;
-using System.Security.Claims;
 
 namespace LevelUpAPI.RequestHandlers
 {
@@ -34,7 +32,7 @@ namespace LevelUpAPI.RequestHandlers
 
         protected async override Task<(AddFoodEntryDTOResponse, HttpStatusCode, string)> Handle_Internal()
         {
-            (User user, HttpStatusCode statusCode, string err) = CheckClaimsForUser(DTORequest, Claims, _userRepository);
+            (User user, HttpStatusCode statusCode, string err) = await CheckClaimsForUser(DTORequest, Claims, _userRepository);
             if (user == null)
                 return (null, statusCode, err);
 

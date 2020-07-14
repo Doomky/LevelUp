@@ -2,7 +2,6 @@
 using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Dbo;
 using LevelUpDTO;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using System;
@@ -10,7 +9,6 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
-using System.Text.Json;
 using System.Threading.Tasks;
 using static LevelUpAPI.Helpers.ClaimsHelpers;
 
@@ -27,7 +25,7 @@ namespace LevelUpAPI.RequestHandlers
 
         protected override async Task<(LinkGoogleAccountDTOResponse, HttpStatusCode, string)> Handle_Internal()
         {
-            (User user, HttpStatusCode statusCode, string errMsg) = CheckClaimsForUser(DTORequest, Claims, _userRepository);
+            (User user, HttpStatusCode statusCode, string errMsg) = await CheckClaimsForUser(DTORequest, Claims, _userRepository);
             if (user == null)
                 return (null, statusCode, errMsg);
 
@@ -42,8 +40,8 @@ namespace LevelUpAPI.RequestHandlers
             };
             var httpClient = new HttpClient();            
             var content = new FormUrlEncodedContent(values);
-            HttpResponseMessage httpResponse = httpClient.PostAsync("https://oauth2.googleapis.com/token", content).GetAwaiter().GetResult();
-            var response = httpResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            HttpResponseMessage httpResponse = await httpClient.PostAsync("https://oauth2.googleapis.com/token", content);
+            var response = await httpResponse.Content.ReadAsStringAsync();
             if (httpResponse.IsSuccessStatusCode)
             {
                 JObject tokenAsJson = JObject.Parse(response);
@@ -56,10 +54,7 @@ namespace LevelUpAPI.RequestHandlers
                 LinkGoogleAccountDTOResponse dTOResponse = new LinkGoogleAccountDTOResponse(accessTokenInfo.AccessToken, accessTokenInfo.AccessExpiration);
                 return (dTOResponse, HttpStatusCode.OK, null);
             }
-            else
-            {
-                return (null, HttpStatusCode.BadRequest, "");
-            }
+            return (null, HttpStatusCode.BadRequest, "Could link Google account, Google auth code might be wrong");
         }
     }
 }

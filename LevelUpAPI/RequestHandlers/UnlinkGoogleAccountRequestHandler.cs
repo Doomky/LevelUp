@@ -1,12 +1,11 @@
-﻿using System;
-using System.Security.Claims;
-using System.Net;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
-using LevelUpDTO;
-using LevelUpAPI.DataAccess.Repositories.Interfaces;
+﻿using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Dbo;
+using LevelUpDTO;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Net;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using static LevelUpAPI.Helpers.ClaimsHelpers;
 
 namespace LevelUpAPI.RequestHandlers
@@ -27,14 +26,14 @@ namespace LevelUpAPI.RequestHandlers
 
         protected override async Task<(UnlinkGoogleAccountDTOResponse, HttpStatusCode, string)> Handle_Internal()
         {
-            (User user, HttpStatusCode statusCode, string err) = CheckClaimsForUser(DTORequest, Claims, _userRepository);
+            (User user, HttpStatusCode statusCode, string err) = await CheckClaimsForUser(DTORequest, Claims, _userRepository);
             if (user == null)
                 return (null, statusCode, err);
 
             user.GoogleAccessExpiration = null;
             user.GoogleAccessToken = null;
             user.GoogleRefreshToken = null;
-            user = _userRepository.Update(user).GetAwaiter().GetResult();
+            user = await _userRepository.Update(user);
             if (user != null)
                 return (new UnlinkGoogleAccountDTOResponse(
                     user.Login,

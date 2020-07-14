@@ -1,7 +1,6 @@
 ﻿using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Dbo;
 using LevelUpDTO;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Net;
@@ -30,12 +29,13 @@ namespace LevelUpAPI.RequestHandlers
 
         protected override async Task<(RemoveQuestDTOResponse, HttpStatusCode, string)> Handle_Internal()
         {
-            (User user, HttpStatusCode statusCode, string err) = CheckClaimsForUser(DTORequest, Claims, _userRepository);
+            (User user, HttpStatusCode statusCode, string err) = await CheckClaimsForUser(DTORequest, Claims, _userRepository);
             if (user == null)
                 return (null, statusCode, err);
 
-            if (!_questRepository.Delete(DTORequest.QuestId).GetAwaiter().GetResult())
+            if (!await _questRepository.Delete(DTORequest.QuestId))
                 return (null, HttpStatusCode.BadRequest, "Could not remove the given quest");
+
             return (new RemoveQuestDTOResponse(DTORequest.QuestId), HttpStatusCode.OK, null);
         }
     }

@@ -1,11 +1,11 @@
-﻿using System;
+﻿using LevelUpAPI.DataAccess.Repositories.Interfaces;
+using LevelUpAPI.Dbo;
+using LevelUpDTO;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Net;
-using Microsoft.Extensions.Logging;
-using LevelUpDTO;
-using LevelUpAPI.DataAccess.Repositories.Interfaces;
-using LevelUpAPI.Dbo;
 using static LevelUpAPI.Helpers.ClaimsHelpers;
 
 namespace LevelUpAPI.RequestHandlers
@@ -29,11 +29,11 @@ namespace LevelUpAPI.RequestHandlers
 
         protected override async Task<(UserInfoDTOResponse, HttpStatusCode, string)> Handle_Internal()
         {
-            (User user, HttpStatusCode statusCode, string err) = CheckClaimsForUser(DTORequest, Claims, _userRepository);
+            (User user, HttpStatusCode statusCode, string err) = await CheckClaimsForUser(DTORequest, Claims, _userRepository);
             if (user == null)
                 return (null, statusCode, err);
 
-            Avatar avatar = _avatarRepository.GetByUser(user).GetAwaiter().GetResult();
+            Avatar avatar = await _avatarRepository.GetByUser(user);
 
             UserInfo userInfo = new UserInfo(user, avatar);
 
