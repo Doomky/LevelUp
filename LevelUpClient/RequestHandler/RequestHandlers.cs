@@ -131,6 +131,10 @@ namespace LevelUpClient.RequestHandler
                     requestHandler = new UpdateAvatarRequestHandler(fulladdress);
                     break;
 
+                // Sleep
+                case "sleep":
+                    requestHandler = new GetSleepEntriesRequestHandler(fulladdress);
+                    break;
                 default:
                     Console.WriteLine("Unknown endpoint");
                     return;
