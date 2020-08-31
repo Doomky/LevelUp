@@ -18,14 +18,15 @@ namespace LevelUpClient.RequestHandler
         {
             HttpResponseMessage httpResponse = ExecuteMethod(httpClient).GetAwaiter().GetResult();
             string tokenAsStr = httpResponse.IsSuccessStatusCode ? httpResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult() : "";
+            JObject tokenAsJson = JObject.Parse(tokenAsStr);
+            JObject token = JObject.Parse(tokenAsJson.First.First.ToString());
             Console.WriteLine(
 $@"response:
 status code: {(int)httpResponse.StatusCode} {httpResponse.StatusCode}
-body: {tokenAsStr}");
-            JObject tokenAsJson = JObject.Parse(tokenAsStr);
-            string accessToken = tokenAsJson.TryGetString("access_token");
+body: {token}");
+            string accessToken = token.TryGetString("access_token");
             httpClient.SetBearerToken(accessToken);
-            return JsonSerializer.Deserialize<SignInDTOResponse>(tokenAsStr);
+            return JsonSerializer.Deserialize<SignInDTOResponse>(token.ToString());
         }
 
         public override SignInDTORequest RequestBuilder()
