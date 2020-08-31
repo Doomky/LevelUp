@@ -58,12 +58,12 @@ namespace LevelUpAPI.Controllers
         /// <response code="400">The request is malformed.</response>
         [HttpGet]
         [Route("category/list")]
-        public async Task<ActionResult<List<GetQuestCategoriesDTOResponse.CategoryDTOResponse>>> GetQuestCategories()
+        public async Task<ActionResult<GetQuestCategoriesDTOResponse>> GetQuestCategories()
         {
             GetQuestCategoriesDTORequest dtoRequest = new GetQuestCategoriesDTORequest();
             GetQuestCategoriesRequestHandler getQuestCategoriesRequestHandler = new GetQuestCategoriesRequestHandler(User, dtoRequest, _logger, _categoryRepository);
             (var dtoResponse, HttpStatusCode statusCode, string err) = await getQuestCategoriesRequestHandler.Handle();
-            return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse.Categories);
+            return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse);
         }
 
         /// <summary>
