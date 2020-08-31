@@ -29,7 +29,7 @@ namespace LevelUpAPI.Migrations
 
             migrationBuilder.Sql(
 @"INSERT INTO [dbo].[physical_activities]
-            ([id], [name], [cal_per_kg_per_hour])
+            ([name], [cal_per_kg_per_hour])
         VALUES
             ('aérobic', CAST(5.08 AS Numeric(5, 2))),
             ('alpinisme', CAST(11.00 AS Numeric(5, 2))),
