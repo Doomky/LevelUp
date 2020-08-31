@@ -25,11 +25,7 @@ namespace LevelUpClient.RequestHandler
         public virtual DTOResponse Execute(HttpClient httpClient)
         {
             HttpResponseMessage httpResponse = ExecuteMethod(httpClient).GetAwaiter().GetResult();
-            string bodyAsStr = "";
-            if (httpResponse.IsSuccessStatusCode)
-            {
-                bodyAsStr = httpResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-            }
+            string bodyAsStr = httpResponse.IsSuccessStatusCode ? httpResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult() : "";
             Console.WriteLine(
 $@"response:
 status code: {(int)httpResponse.StatusCode} {httpResponse.StatusCode}

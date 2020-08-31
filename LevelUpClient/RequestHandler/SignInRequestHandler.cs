@@ -17,11 +17,7 @@ namespace LevelUpClient.RequestHandler
         public override DTOResponse Execute(HttpClient httpClient)
         {
             HttpResponseMessage httpResponse = ExecuteMethod(httpClient).GetAwaiter().GetResult();
-            string tokenAsStr = "";
-            if (httpResponse.IsSuccessStatusCode)
-            {
-                tokenAsStr = httpResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-            }
+            string tokenAsStr = httpResponse.IsSuccessStatusCode ? httpResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult() : "";
             Console.WriteLine(
 $@"response:
 status code: {(int)httpResponse.StatusCode} {httpResponse.StatusCode}
