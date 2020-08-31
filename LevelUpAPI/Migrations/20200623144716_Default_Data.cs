@@ -105,6 +105,65 @@ namespace LevelUpAPI.Migrations
             ('volleyball (léger)', CAST(4.00 AS Numeric(5, 2))),
             ('volleyball (match)', CAST(8.00 AS Numeric(5, 2))),
             ('yoga', CAST(4.00 AS Numeric(5, 2)))");
+
+
+            migrationBuilder.Sql(
+@"INSERT INTO [dbo].[advices]
+	        ([category_id], [text])
+        VALUES
+            (1,	'Eviter de grignoter entre les repas'),
+            (1, 'Buver 1 à 1.5L d''eau par jour'),
+            (1,	'Eviter de manger trop gras, salé ou sucré'),
+            (1,	'Manges 5 fruits et légumes par jour'),
+            (1,	'Mâcher bien vos aliments pour faciliter la digestion'),
+            (1,	'Ne manger pas trop vite, au moins 20 min par repas'),
+            (1,	'Privilégier les produits végétaux de saison, bio et/ou d’origine locale si l’agriculteur utilise peu de pesticides.'),
+            (1,	'Limiter la consommation de plats industriels, en particulier quand la liste d’ingrédients est longue.'),
+            (1,	'Eviter de consommer des produits céréaliers à chaque repas.'),
+            (1,	'Privilégier dans tous les cas des aliments glucidiques à index glycémique faible.'),
+            (1,	'Moins l’aliment est coloré par la cuisson, mieux c’est !'),
+            (1,	'Privilégier une cuisson respectueuse de l’aliment, à la vapeur douce.'),
+            (1,	'Consommer chaque jour au moins 2 cuillères à soupe d’huile riche en  oméga 3.'),
+            (1,	'Pas un repas sans légumes !'),
+            (1,	'Saler le moins possible vos aliments.'),
+            (1,	'Consommer une source significative de protéines animale ou végétale au petit-déjeuner: oeuf, fromage ou yaourt.'),
+            (1,	'Limiter la consommation de charcuterie, 1 fois par semaine.'),
+            (1,	'Limiter la consommation de viande hors volaille, 2 fois par semaine en privilégiant un élevage fermier.'),
+            (1,	'Manger moins de viande, mais mieux !'),
+            (1,	'Privilégier un déjeuner à dominante de protéines (volaille, poisson) et de légumes. '),
+            (1,	'Idéalement, déshabituer du goût sucré en dessert (1 à 2 carrés de chocolat noir de qualité par exemple)'),
+            (1,	'Eviter les produits light (marketing), préférer les produits légers.'),
+            (1,	'Opter pour un dîner à dominante végétale à base de légumes et de légumineuses, de produits céréaliers complets ou de galettes végétales.'),
+            (1,	'Maîtrisez ce que vous mangez ! Faites le ménage de printemps dans votre placard !'),
+            (1,	'N''oubliez pas le plus important: Prenez du plaisir !'),
+            (2,	'Pratiquer des activités physiques quotidiennes: '),
+            (2,	'Effectuer des déplacements actifs quotidiens : marcher, faire du vélo, monter et utiliser les escaliers.'),
+            (2,	'Effectuer des activités physiques domestiques : faire le ménage, bricoler, jardiner.'),
+            (2,	'Effectuer des travaux physiques dans votre milieu professionnel.'),
+            (2,	'Varier l''intensité de vos activités physiques: légère, modéré, intense'),
+            (2,	'Minimiser les comportements sédentaires: se déplacer en véhicule motorisé, être assis pour travailler, regarder la télévision...'),
+            (2,	'L’activité physique doit être régulière pour avoir un effet positif sur la santé.'),
+            (2,	'Eviter les activités intenses par des températures extérieures < – 5 °C ou > + 30 °C et lors des pics de pollution.'),
+            (2,	'Effectuer une activité physique adapté, progressive et régulière.'),
+            (2,	'Du mal à commencer ? Donner un but à votre activité physique !'),
+            (2,	'Du mal à commencer ? À plusieurs, c’est plus sympa !'),
+            (2,	'Respecter toujours un échauffement et un récupération de 10 min.'),
+            (2,	'Pendant l''exercice, buver 3 à 4 gorgés d''eau toutes les 30 mins.'),
+            (2,	'Pour éviter les courbatures, hydratez vous réguliérement pendant et après l''exercice.'),
+            (2,	'Pour éviter les courbatures, étirez vous après l''exercice.'),
+            (3,	'En cas de somnolence durant la journée, effectuer une sieste de 5 à 20 en début d''après-midi.'),
+            (3,	'Eviter les excitants après 15 heures: café, thé, sodas, vitamine C.'),
+            (3,	'Pratiquer une activité physique durant la journée'),
+            (3,	'Eviter de pratiquer une activité physique le soir surtout avant de vous coucher'),
+            (3,	'Dîner légèrement et au moins 2 heures avant vous coucher'),
+            (3,	'En fin de journée, éviter l''alcool et le tabac.'),
+            (3,	'En fin de journée, effectuer des activités calmes, relaxantes.'),
+            (3,	'Aménager un environnement favorable: un chambre aéré, a 18°C, isolé phoniquement, avec une obscurité totale'),
+            (3,	'Gérer vos horaires de sommeil, aussi régulier que possible.'),
+            (3,	'Ne vous forcez pas à dormir, suscité le sommeil par une activité calme.'),
+            (3,	'Mettez vos problèmes temporairement de côté avant d’aller au lit. L’anxiété est l’une des plus grandes causes d’insomnie.'),
+            (3,	'Ne comptabilisez pas votre sommeil. Accordez de l’importance à la qualité du sommeil plutôt qu’à sa quantité'),
+            (3,	'Votre horloge interne aime les rythmes de sommeil réguliers. Écoutez votre corps plutôt que votre tête quand il s’agit du sommeil.')");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -202,6 +261,9 @@ namespace LevelUpAPI.Migrations
             physical_activities.id = 72 OR
             physical_activities.id = 73 OR
             physical_activities.id = 74");
+
+            migrationBuilder.Sql(
+@"DELETE FROM [dbo].[advices]");
         }
     }
 }
