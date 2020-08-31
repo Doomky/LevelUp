@@ -9,6 +9,12 @@ namespace LevelUpDTO
         public int OpenFoodFactsDataId { get; set; }
         public DateTime Datetime { get; set; }
         public int Servings { get; set; }
+
+        public AddFoodEntryDTOResponse()
+        {
+
+        }
+
         public AddFoodEntryDTOResponse(int id, int userId, int openFoodFactsDataId, DateTime datetime, int servings)
         {
             Id = id;

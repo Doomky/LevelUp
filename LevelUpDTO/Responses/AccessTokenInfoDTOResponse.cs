@@ -7,6 +7,11 @@ namespace LevelUpDTO
         public DateTime? AccessExpiration { get; set; }
         public string AccessToken { get; set; }
 
+        public AccessTokenInfoDTOResponse()
+        {
+
+        }
+
         public AccessTokenInfoDTOResponse(DateTime? accessExpiration, string accessToken)
         {
             AccessExpiration = accessExpiration;

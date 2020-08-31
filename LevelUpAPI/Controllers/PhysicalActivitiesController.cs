@@ -44,7 +44,7 @@ namespace LevelUpAPI.Controllers
             GetPADTORequest dtoRequest = new GetPADTORequest();
             GetPARequestHandler getPARequestHandler = new GetPARequestHandler(User, dtoRequest, _logger,_physicalActivitiesRepository);
             (var dtoResponse, HttpStatusCode statusCode, string err) = await getPARequestHandler.Handle();
-            return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse.dtoResponse);
+            return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse.PhysicalActivities);
         }
 
         /// <summary>

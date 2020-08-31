@@ -6,6 +6,11 @@ namespace LevelUpDTO
     {
         public int QuestId { get; set; }
 
+        public RemoveQuestDTOResponse()
+        {
+
+        }
+
         public RemoveQuestDTOResponse(int questId)
         {
             QuestId = questId;

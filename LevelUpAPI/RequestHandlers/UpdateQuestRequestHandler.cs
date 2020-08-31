@@ -50,7 +50,7 @@ namespace LevelUpAPI.RequestHandlers
                 }
             }
 
-            var questsDtoResponse = (IEnumerable<UpdateQuestDTOResponse.Quest>) quests;
+            var questsDtoResponse = (List<QuestDTOResponse>) quests;
             return (new UpdateQuestDTOResponse(questsDtoResponse), HttpStatusCode.OK, null);
         }
     }

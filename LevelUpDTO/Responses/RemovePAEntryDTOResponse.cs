@@ -6,6 +6,11 @@ namespace LevelUpDTO
     {
         public int PAEntryId { get; set; }
 
+        public RemovePAEntryDTOResponse()
+        {
+
+        }
+
         public RemovePAEntryDTOResponse(int paEntryId)
         {
             PAEntryId = paEntryId;

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace LevelUpDTO
 {
@@ -10,6 +9,11 @@ namespace LevelUpDTO
             public int Id { get; set; }
             public string Name { get; set; }
 
+            public QuestTypesDTOResponse()
+            {
+
+            }
+
             public QuestTypesDTOResponse(int id, string name)
             {
                 Id = id;
@@ -19,9 +23,14 @@ namespace LevelUpDTO
         
         public List<QuestTypesDTOResponse> QuestTypes { get; set; }
 
+        public GetQuestTypesDTOResponse()
+        {
+
+        }
+
         public GetQuestTypesDTOResponse(List<QuestTypesDTOResponse> questTypes)
         {
-            this.QuestTypes = questTypes;
+            QuestTypes = questTypes;
         }
     }
 }

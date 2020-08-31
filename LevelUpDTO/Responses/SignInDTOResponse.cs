@@ -6,6 +6,11 @@ namespace LevelUpDTO
     {
         public string Token { get; set; }
 
+        public SignInDTOResponse()
+        {
+
+        }
+
         public SignInDTOResponse(string token)
         {
             Token = token;

@@ -10,6 +10,11 @@ namespace LevelUpDTO
         public DateTime DatetimeStart { get; set; }
         public DateTime DatetimeEnd { get; set; }
 
+        public UpdatePAEntryDTOResponse()
+        {
+
+        }
+
         public UpdatePAEntryDTOResponse(
             int id,
             int userId,

@@ -10,6 +10,11 @@ namespace LevelUpDTO
         public string GoogleRefreshToken { get; set; }
         public DateTime? GoogleAccessExpiration { get; set; }
 
+        public UnlinkGoogleAccountDTOResponse()
+        {
+
+        }
+
         public UnlinkGoogleAccountDTOResponse(
             string login,
             string email,

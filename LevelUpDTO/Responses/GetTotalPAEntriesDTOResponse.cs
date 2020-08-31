@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace LevelUpDTO
 {
@@ -12,6 +10,11 @@ namespace LevelUpDTO
             public string Name { get; set; }
             public int? Total { get; set; }
 
+            public PAEntryByLoginDTOResponse()
+            {
+
+            }
+
             public PAEntryByLoginDTOResponse(string login, string name, int? total)
             {
                 Login = login;
@@ -22,9 +25,14 @@ namespace LevelUpDTO
         
         public List<PAEntryByLoginDTOResponse> PaEntries { get; set; }
 
+        public GetTotalPAEntriesDTOResponse()
+        {
+
+        }
+
         public GetTotalPAEntriesDTOResponse(List<PAEntryByLoginDTOResponse> paEntries)
         {
-            this.PaEntries = paEntries;
+            PaEntries = paEntries;
         }
     }
 }

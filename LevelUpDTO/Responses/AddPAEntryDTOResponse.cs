@@ -9,6 +9,12 @@ namespace LevelUpDTO
         public int PhysicalActivitiesId { get; set; }
         public DateTime DatetimeStart { get; set; }
         public DateTime DatetimeEnd { get; set; }
+
+        public AddPAEntryDTOResponse()
+        {
+
+        }
+
         public AddPAEntryDTOResponse(int id, int userId, int physicalActivitiesId, DateTime datetimeStart, DateTime datetimeEnd)
         {
             Id = id;

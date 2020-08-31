@@ -9,6 +9,12 @@ namespace LevelUpDTO
         public int Xp { get; set; }
         public int XpMax { get; set; }
         public int Size { get; set; }
+
+        public GetAvatarInfoDTOResponse()
+        {
+
+        }
+
         public GetAvatarInfoDTOResponse(int id, int level, int xp, int xpMax, int size)
         {
             Id = id;

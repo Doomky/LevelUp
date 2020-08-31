@@ -7,9 +7,12 @@ namespace LevelUpDTO
         public int Id { get; set; }
         public int Size { get; set; }
 
-        public UpdateAvatarDTOResponse(
-            int id,
-            int size)
+        public UpdateAvatarDTOResponse()
+        {
+
+        }
+
+        public UpdateAvatarDTOResponse(int id, int size)
         {
             Id = id;
             Size = size;

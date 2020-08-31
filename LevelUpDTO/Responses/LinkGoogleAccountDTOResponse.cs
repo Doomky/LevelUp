@@ -7,6 +7,11 @@ namespace LevelUpDTO
         public string AccessToken { get; set; }
         public DateTime? AccessExpiration { get; set; }
 
+        public LinkGoogleAccountDTOResponse()
+        {
+
+        }
+
         public LinkGoogleAccountDTOResponse(string accessToken, DateTime? accessExpiration)
         {
             AccessToken = accessToken;

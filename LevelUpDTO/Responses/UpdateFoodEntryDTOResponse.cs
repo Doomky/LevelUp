@@ -10,6 +10,11 @@ namespace LevelUpDTO
         public DateTime Datetime { get; set; }
         public int Servings { get; set; }
 
+        public UpdateFoodEntryDTOResponse()
+        {
+
+        }
+
         public UpdateFoodEntryDTOResponse(
             int id,
             int userId,

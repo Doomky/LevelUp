@@ -11,6 +11,11 @@ namespace LevelUpDTO
             public string Name { get; set; }
             public int? Total { get; set; }
 
+            public NbFoodEntryByLoginDTOResponse()
+            {
+
+            }
+
             public NbFoodEntryByLoginDTOResponse(string login, string name, int? total)
             {
                 Login = login;
@@ -20,6 +25,11 @@ namespace LevelUpDTO
         }
 
         public List<NbFoodEntryByLoginDTOResponse> FoodEntries { get; set; }
+
+        public GetFoodEntriesCountDTOResponse()
+        {
+
+        }
 
         public GetFoodEntriesCountDTOResponse(List<NbFoodEntryByLoginDTOResponse> foodEntries)
         {

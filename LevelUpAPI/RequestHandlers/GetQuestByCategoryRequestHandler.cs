@@ -43,7 +43,7 @@ namespace LevelUpAPI.RequestHandlers
             
             IEnumerable<Quest> quests = await _questRepository.Get(user, category.Id, _questTypeRepository, null);
 
-            List<QuestDTOResponse2> questsDTOs = quests.Select(quest => new QuestDTOResponse2(
+            List<QuestDTOResponse> questsDTOs = quests.Select(quest => new QuestDTOResponse(
                 quest.Id,
                 quest.CategoryId,
                 quest.TypeId,

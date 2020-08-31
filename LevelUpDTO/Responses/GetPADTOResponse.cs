@@ -11,6 +11,11 @@ namespace LevelUpDTO
             public string Name { get; set; }
             public decimal CalPerKgPerHour { get; set; }
 
+            public PhysicalActivityDTOResponse()
+            {
+
+            }
+
             public PhysicalActivityDTOResponse(int id, string name, decimal calPerKgPerHour)
             {
                 Id = id;
@@ -19,11 +24,16 @@ namespace LevelUpDTO
             }
         }
 
-        public List<PhysicalActivityDTOResponse> dtoResponse { get; set; }
+        public List<PhysicalActivityDTOResponse> PhysicalActivities { get; set; }
 
-        public GetPADTOResponse(List<PhysicalActivityDTOResponse> dtoResponse)
+        public GetPADTOResponse()
         {
-            this.dtoResponse = dtoResponse;
+
+        }
+
+        public GetPADTOResponse(List<PhysicalActivityDTOResponse> physicalActivities)
+        {
+            PhysicalActivities = physicalActivities;
         }
     }
 }

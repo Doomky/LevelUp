@@ -10,6 +10,11 @@ namespace LevelUpDTO
             public int Id { get; set; }
             public string Name { get; set; }
 
+            public CategoryDTOResponse()
+            {
+
+            }
+
             public CategoryDTOResponse(int id, string name)
             {
                 Id = id;
@@ -18,6 +23,11 @@ namespace LevelUpDTO
         }
 
         public List<CategoryDTOResponse> Categories { get; set; }
+
+        public GetQuestCategoriesDTOResponse()
+        {
+
+        }
 
         public GetQuestCategoriesDTOResponse(List<CategoryDTOResponse> categories)
         {

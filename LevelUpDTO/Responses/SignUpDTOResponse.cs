@@ -18,6 +18,11 @@ namespace LevelUpDTO
         public int AvatarSize { get; set; }
         public DateTime CreationDate { get; set; }
 
+        public SignUpDTOResponse()
+        {
+
+        }
+
         public SignUpDTOResponse(
             int id,
             string login,

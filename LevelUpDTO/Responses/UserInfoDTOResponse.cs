@@ -20,6 +20,11 @@ namespace LevelUpDTO
         public int XpMax { get; set; }
         public int Size { get; set; }
 
+        public UserInfoDTOResponse()
+        {
+
+        }
+
         public UserInfoDTOResponse(string login,
             string firstname,
             string lastname,

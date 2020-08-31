@@ -7,6 +7,12 @@ namespace LevelUpDTO
         public string State { get; set; }
         public string XpGain { get; set; }
         public string Message { get; set; }
+
+        public ClaimQuestsDTOResponse()
+        {
+
+        }
+
         public ClaimQuestsDTOResponse(string state, string xpGain, string message)
         {
             State = state;

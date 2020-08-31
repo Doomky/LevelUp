@@ -24,6 +24,11 @@ namespace LevelUpDTO
         public string ImgUrl { get; set; }
         public bool IsCustom { get; set; }
 
+        public GetOFFDataDTOResponse()
+        {
+
+        }
+
         public GetOFFDataDTOResponse(int id, string code, string name, double? energy100g, double? sodium100g, double? salt100g, double? fat100g, double? saturatedFat100g, double? proteins100g, double? sugars100g, double? energyServing, double? sodiumServing, double? saltServing, double? fatServing, double? saturatedFatServing, double? proteinsServing, double? sugarsServing, string imgUrl, bool isCustom)
         {
             Id = id;

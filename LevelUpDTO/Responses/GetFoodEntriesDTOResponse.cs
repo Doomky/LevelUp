@@ -20,6 +20,11 @@ namespace LevelUpDTO
             public double? SugarsServing { get; set; }
             public string ImgUrl { get; set; }
 
+            public FoodEntryDTOResponse()
+            {
+
+            }
+
             public FoodEntryDTOResponse(DateTime datetime, int servings, string code, string name, double? energyServing, double? sodiumServing, double? saltServing, double? fatServing, double? saturatedFatServing, double? proteinsServing, double? sugarsServing, string imgUrl)
             {
                 Datetime = datetime;
@@ -37,6 +42,12 @@ namespace LevelUpDTO
             }
         }
         public List<FoodEntryDTOResponse> FoodEntries { get; set; }
+
+        public GetFoodEntriesDTOResponse()
+        {
+
+        }
+
         public GetFoodEntriesDTOResponse(List<FoodEntryDTOResponse> foodEntries)
         {
             FoodEntries = foodEntries;

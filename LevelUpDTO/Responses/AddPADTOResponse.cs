@@ -7,6 +7,12 @@ namespace LevelUpDTO
         public int Id { get; set; }
         public string Name { get; set; }
         public decimal CalPerKgPerHour { get; set; }
+
+        public AddPADTOResponse()
+        {
+
+        }
+
         public AddPADTOResponse(int id, string name, decimal calPerKgPerHour)
         {
             Id = id;
