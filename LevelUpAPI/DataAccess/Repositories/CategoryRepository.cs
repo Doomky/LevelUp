@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LevelUpAPI.Helpers;
 
 namespace LevelUpAPI.DataAccess.Repositories
 {
@@ -35,6 +36,7 @@ namespace LevelUpAPI.DataAccess.Repositories
         {
             try
             {
+                name = name.AsCategoryEnum().ToString();
                 List<Categories> query = null;
                 query = await _set.AsNoTracking().ToListAsync();
                 var arr = _mapper.Map<Dbo.Category[]>(query);

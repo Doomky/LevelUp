@@ -135,6 +135,11 @@ namespace LevelUpClient.RequestHandler
                 case "sleep":
                     requestHandler = new GetSleepEntriesRequestHandler(fulladdress);
                     break;
+
+                //Advices
+                case "advice":
+                    requestHandler = new GetAdviceByCategoryRequestHandler(fulladdress);
+                    break;
                 default:
                     Console.WriteLine("Unknown endpoint");
                     return;
