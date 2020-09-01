@@ -36,7 +36,7 @@ namespace LevelUpAPI.RequestHandlers
             FoodEntry foodEntry = new FoodEntry()
             {
                 Id = DTORequest.Id,
-                Datetime = DTORequest.DateTime,
+                Datetime = DateTime.Now,
                 OpenFoodFactsDataId = DTORequest.OFFDataId,
                 UserId = user.Id
             };

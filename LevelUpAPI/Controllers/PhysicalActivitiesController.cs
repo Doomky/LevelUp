@@ -39,23 +39,26 @@ namespace LevelUpAPI.Controllers
         /// <response code="200">The request succedded.</response>
         /// <response code="400">The request is malformed.</response>
         [HttpGet]
-        public async Task<ActionResult<List<GetPADTOResponse.PhysicalActivityDTOResponse>>> Get()
+        public async Task<ActionResult<GetPADTOResponse>> Get()
         {
             GetPADTORequest dtoRequest = new GetPADTORequest();
             GetPARequestHandler getPARequestHandler = new GetPARequestHandler(User, dtoRequest, _logger,_physicalActivitiesRepository);
             (var dtoResponse, HttpStatusCode statusCode, string err) = await getPARequestHandler.Handle();
-            return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse.PhysicalActivities);
+            if (statusCode != HttpStatusCode.OK && err != null)
+                _logger.LogError(err);
+            return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse);
         }
 
         /// <summary>
         /// Add a new physical activity. 
         /// </summary>
         /// <remarks>
-        /// The body of the request must contains those fields:
+        /// Sample request:
         /// 
+        ///     POST /physicalactivities/add
         ///     {
-        ///         "Name"
-        ///         "CalPerKgPerHour"
+        ///         "name": "kayak",
+        ///         "calPerKgPerHour": 10
         ///     }
         /// 
         /// </remarks>
@@ -68,6 +71,8 @@ namespace LevelUpAPI.Controllers
         {
             AddPARequestHandler addPARequestHandler = new AddPARequestHandler(User, dtoRequest, _logger, _physicalActivitiesRepository);
             (var dtoResponse, HttpStatusCode statusCode, string err) = await addPARequestHandler.Handle();
+            if (statusCode != HttpStatusCode.OK && err != null)
+                _logger.LogError(err);
             return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse);
         }
 
@@ -78,13 +83,15 @@ namespace LevelUpAPI.Controllers
         /// <response code="400">The request is malformed or the user does not exist.</response>
         /// <response code="401">The user is not signed in.</response>
         [HttpGet]
-        [Route("entry/")]
-        public async Task<ActionResult<List<GetPAEntriesDTOResponse.PAEntryDTOResponse>>>  GetEntries()
+        [Route("entry")]
+        public async Task<ActionResult<GetPAEntriesDTOResponse>> GetEntries()
         {
             GetPAEntriesDTORequest dtoRequest = new GetPAEntriesDTORequest();
             GetPAEntriesRequestHandler getPAEntriesRequestHandler = new GetPAEntriesRequestHandler(User, dtoRequest, _logger, _userRepository, _physicalActivitiesEntryRepository);
             (var dtoResponse, HttpStatusCode statusCode, string err) = await getPAEntriesRequestHandler.Handle();
-            return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse.PAEntries);
+            if (statusCode != HttpStatusCode.OK && err != null)
+                _logger.LogError(err);
+            return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse);
         }
 
         /// <summary>
@@ -95,24 +102,27 @@ namespace LevelUpAPI.Controllers
         /// <response code="401">The user is not signed in.</response>
         [HttpGet]
         [Route("entry/total")]
-        public async Task<ActionResult<List<GetTotalPAEntriesDTOResponse.PAEntryByLoginDTOResponse>>>  GetTotalEntries()
+        public async Task<ActionResult<GetTotalPAEntriesDTOResponse>> GetTotalEntries()
         {
             GetTotalPAEntriesDTORequest dtoRequest = new GetTotalPAEntriesDTORequest();
             GetTotalPAEntriesRequestHandler getTotalPAEntriesRequestHandler = new GetTotalPAEntriesRequestHandler(User, dtoRequest, _logger, _userRepository, _physicalActivitiesEntryRepository);
             (var dtoResponse, HttpStatusCode statusCode, string err) = await getTotalPAEntriesRequestHandler.Handle();
-            return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse.PaEntries);
+            if (statusCode != HttpStatusCode.OK && err != null)
+                _logger.LogError(err);
+            return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse);
         }
 
         /// <summary>
         /// Add a new physical activity entry for the signed-in user. 
         /// </summary>
         /// <remarks>
-        /// The body of the request must contains those fields:
+        /// Sample request:
         /// 
+        ///     POST /physicalactivities/entry/add
         ///     {
-        ///         "Name"
-        ///         "dateTimeStart"
-        ///         "dateTimeEnd"
+        ///         "name": "football",
+        ///         "dateTimeStart": "01-08-2020 15:00",
+        ///         "dateTimeEnd": "01-08-2020 16:00"
         ///     }
         /// 
         /// </remarks>
@@ -126,6 +136,8 @@ namespace LevelUpAPI.Controllers
         {
             AddPAEntryRequestHandler addPAEntryRequestHandler = new AddPAEntryRequestHandler(User, dtoRequest, _logger, _userRepository, _physicalActivitiesRepository, _physicalActivitiesEntryRepository, _questTypeRepository, _questRepository);
             (var dtoResponse, HttpStatusCode statusCode, string err) = await addPAEntryRequestHandler.Handle();
+            if (statusCode != HttpStatusCode.OK && err != null)
+                _logger.LogError(err);
             return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse);
         }
 
@@ -133,12 +145,13 @@ namespace LevelUpAPI.Controllers
         /// Update a physical activity entry for the signed-in user. 
         /// </summary>
         /// <remarks>
-        /// The body of the request must contains those fields:
+        /// Sample request:
         /// 
+        ///     POST /physicalactivities/entry/update
         ///     {
-        ///         "Id"
-        ///         "NewDateTimeStart"
-        ///         "NewDateTimeEnd"
+        ///         "id": 1,
+        ///         "newDateTimeStart": "02-08-2020 15:00",
+        ///         "newDateTimeEnd": "02-08-2020 16:00"
         ///     }
         /// 
         /// </remarks>
@@ -152,6 +165,8 @@ namespace LevelUpAPI.Controllers
         {
             UpdatePAEntryRequestHandler updatePAEntryRequestHandler = new UpdatePAEntryRequestHandler(_userRepository, _physicalActivitiesRepository, _physicalActivitiesEntryRepository, User, dtoRequest, _logger);
             (var dtoResponse, HttpStatusCode statusCode, string err) = await updatePAEntryRequestHandler.Handle();
+            if (statusCode != HttpStatusCode.OK && err != null)
+                _logger.LogError(err);
             return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse);
         }
 
@@ -159,10 +174,11 @@ namespace LevelUpAPI.Controllers
         /// Remove a physical activity entry for the signed-in user. 
         /// </summary>
         /// <remarks>
-        /// The body of the request must contains this field:
+        /// Sample request:
         /// 
+        ///     POST /physicalactivities/entry/remove
         ///     {
-        ///         "Id"
+        ///         "id": 1
         ///     }
         /// 
         /// </remarks>
@@ -176,6 +192,8 @@ namespace LevelUpAPI.Controllers
         {
             RemovePAEntryRequestHandler removePAEntryRequestHandler = new RemovePAEntryRequestHandler(_userRepository, _physicalActivitiesEntryRepository, User, dtoRequest, _logger);
             (var dtoResponse, HttpStatusCode statusCode, string err) = await removePAEntryRequestHandler.Handle();
+            if (statusCode != HttpStatusCode.OK && err != null)
+                _logger.LogError(err);
             return ActionResultHelpers.FromHttpStatusCode(statusCode, dtoResponse);
         }
     }

@@ -8,7 +8,6 @@ namespace LevelUpDTO
     {
         public int Id { get; set; }
         public int OFFDataId { get; set; }
-        public DateTime DateTime { get; set; }
 
         public UpdateFoodEntryDTORequest() : base(Method.POST)
         {

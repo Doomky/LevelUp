@@ -33,9 +33,7 @@ namespace LevelUpAPI.RequestHandlers
             if (user == null)
                 return (null, statusCode, err);
 
-            Avatar avatar = await _avatarRepository.GetByUser(user);
-
-            UserInfo userInfo = new UserInfo(user, avatar);
+            UserInfo userInfo = new UserInfo(user);
 
             return (new UserInfoDTOResponse(
                 userInfo.Login,
@@ -45,11 +43,7 @@ namespace LevelUpAPI.RequestHandlers
                 userInfo.WeightKg,
                 userInfo.Email,
                 userInfo.LastLoginDate,
-                userInfo.GoogleLinked,
-                userInfo.Level,
-                userInfo.Xp,
-                userInfo.XpMax,
-                userInfo.Size),
+                userInfo.GoogleLinked),
                 HttpStatusCode.OK, null);
         }
     }

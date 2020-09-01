@@ -11,14 +11,7 @@ namespace LevelUpDTO
         public byte WeightKg { get; set; }
         public string Email { get; set; }
         public DateTime? LastLoginDate { get; set; }
-
         public bool GoogleLinked { get; set; }
-
-        public int Level { get; set; }
-
-        public int Xp { get; set; }
-        public int XpMax { get; set; }
-        public int Size { get; set; }
 
         public UserInfoDTOResponse()
         {
@@ -32,11 +25,7 @@ namespace LevelUpDTO
             byte weightKg,
             string email,
             DateTime? lastLoginDate,
-            bool googleLinked,
-            int level,
-            int xp,
-            int xpMax,
-            int size)
+            bool googleLinked)
         {
             Login = login;
             Firstname = firstname;
@@ -46,10 +35,6 @@ namespace LevelUpDTO
             Email = email;
             LastLoginDate = lastLoginDate;
             GoogleLinked = googleLinked;
-            Level = level;
-            Xp = xp;
-            XpMax = xpMax;
-            Size = size;
         }
     }
 }

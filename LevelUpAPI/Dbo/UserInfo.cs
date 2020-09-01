@@ -4,7 +4,7 @@ namespace LevelUpAPI.Dbo
 {
     public class UserInfo
     {
-        public UserInfo(User user, Avatar avatar)
+        public UserInfo(User user)
         {
             Login = user.Login;
             Firstname = user.Firstname;
@@ -14,10 +14,6 @@ namespace LevelUpAPI.Dbo
             Email = user.Email;
             LastLoginDate = user.LastLoginDate;
             GoogleLinked = (user.GoogleRefreshToken != null);
-            Level = avatar.Level;
-            Xp = avatar.Xp;
-            XpMax = avatar.XpMax;
-            Size = avatar.Size;
         }
 
         public string Login { get; set; }
@@ -27,13 +23,6 @@ namespace LevelUpAPI.Dbo
         public byte WeightKg { get; set; }
         public string Email { get; set; }
         public DateTime? LastLoginDate { get; set; }
-
         public bool GoogleLinked { get; set; }
-
-        public int Level { get; set; }
-
-        public int Xp { get; set; }
-        public int XpMax { get; set; }
-        public int Size { get; set; }
     }
 }

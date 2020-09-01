@@ -33,6 +33,9 @@ namespace LevelUpAPI.RequestHandlers
 
             IEnumerable<FoodEntry> foodEntries = await _foodEntryRepository.GetFromUser(user.Login);
 
+            if (foodEntries == null)
+                return (null, HttpStatusCode.BadRequest, "Error while getting the list of food entries of the user");
+
             List<FoodEntryDTOResponse> foodEntryDTOs = new List<FoodEntryDTOResponse>();
 
             foreach (FoodEntry entry in foodEntries)
@@ -55,12 +58,9 @@ namespace LevelUpAPI.RequestHandlers
                 foodEntryDTOs.Add(foodEntryDTO);
             }
 
-            if (foodEntries == null)
-                return (null, HttpStatusCode.BadRequest, null);
-
             GetFoodEntriesDTOResponse dtoReponse = new GetFoodEntriesDTOResponse(foodEntryDTOs);
 
-            return (dtoReponse, HttpStatusCode.BadRequest, null);
+            return (dtoReponse, HttpStatusCode.OK, null);
         }
     }
 }

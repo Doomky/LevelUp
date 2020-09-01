@@ -18,7 +18,6 @@ namespace LevelUpClient.RequestHandler
             return new ConsoleUpdateFoodEntryRequestBuilder()
                         .WithId()
                         .WithOFFDataId()
-                        .WithDatetime()
                         .Build();
         }
     }

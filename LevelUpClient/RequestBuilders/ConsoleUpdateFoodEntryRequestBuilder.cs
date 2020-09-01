@@ -36,20 +36,5 @@ namespace LevelUpClient.RequestBuilders
             }
             return this;
         }
-
-        public ConsoleUpdateFoodEntryRequestBuilder WithDatetime()
-        {
-            bool done = false;
-            while (!done)
-            {
-                Console.Write("Datetime: ");
-                if (DateTime.TryParse(Console.ReadLine(), out DateTime datetime))
-                {
-                    Request.DateTime = datetime;
-                    done = true;
-                }
-            }
-            return this;
-        }
     }
 }
