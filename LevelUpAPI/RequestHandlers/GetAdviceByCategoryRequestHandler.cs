@@ -2,6 +2,7 @@
 using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpAPI.Dbo;
 using LevelUpDTO.Requests;
+using LevelUpDTO.Responses;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -43,7 +44,14 @@ namespace LevelUpAPI.RequestHandlers
             }
             
             Advice advice = _adviceRepository.GetByCategoryForUser(category, user).GetAwaiter().GetResult();
-            string adviceJson = JsonSerializer.Serialize(advice);
+
+            AdivceDTOResponse adivceDTOResponse = new AdivceDTOResponse() {
+                Id = advice.Id,
+                Category = category.Name,
+                Text = advice.Text
+            };
+
+            string adviceJson = JsonSerializer.Serialize(adivceDTOResponse);
             context.Response.StatusCode = StatusCodes.Status200OK;
             context.Response.WriteAsync(adviceJson).GetAwaiter().GetResult();
         }
