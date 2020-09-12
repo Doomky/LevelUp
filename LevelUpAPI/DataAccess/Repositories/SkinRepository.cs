@@ -21,7 +21,7 @@ namespace LevelUpAPI.DataAccess.Repositories
         {
             try
             {
-                string genderStr = gender == true ? "man" : (gender == false ? "woman" : "non-binary");
+                string genderStr = gender == false ? "man" : (gender == true ? "woman" : "non-binary");
                 var skinList = (from skins in _context.Skins.AsNoTracking()
                                    where skins.Name.Contains(genderStr)
                                    select skins).ToList();
@@ -38,7 +38,7 @@ namespace LevelUpAPI.DataAccess.Repositories
         {
             try
             {
-                string genderStr = gender == true ? "man" : (gender == false ? "woman" : "non-binary");
+                string genderStr = gender == false ? "man" : (gender == true ? "woman" : "non-binary");
                 var skinList = (from skins in _context.Skins.AsNoTracking()
                                 where skins.Name.Contains(genderStr)
                                 where level >= skins.LevelMin 
