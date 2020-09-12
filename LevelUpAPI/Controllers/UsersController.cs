@@ -20,15 +20,24 @@ namespace LevelUpAPI.Controllers
         private readonly ILogger<UsersController> _logger;
         private readonly levelupContext _context;
         private readonly IAvatarRepository _avatarRepository;
+        private readonly ISkinRepository _skinRepository;
         private readonly IUserRepository _userRepository;
         private readonly IPasswordRecoveryDataRepository _passwordRecoveryDataRepository;
         private readonly IConfiguration Configuration;
 
-        public UsersController(ILogger<UsersController> logger, levelupContext context, IAvatarRepository avatarRepository, IUserRepository userRepository, IPasswordRecoveryDataRepository passwordRecoveryDataRepository, IConfiguration configuration)
+        public UsersController(
+            ILogger<UsersController> logger,
+            levelupContext context,
+            IAvatarRepository avatarRepository,
+            ISkinRepository skinRepository,
+            IUserRepository userRepository,
+            IPasswordRecoveryDataRepository passwordRecoveryDataRepository,
+            IConfiguration configuration)
         {
             _logger = logger;
             _context = context;
             _avatarRepository = avatarRepository;
+            _skinRepository = skinRepository;
             _userRepository = userRepository;
             _passwordRecoveryDataRepository = passwordRecoveryDataRepository;
             Configuration = configuration;
@@ -57,7 +66,7 @@ namespace LevelUpAPI.Controllers
         [Route("signup")]
         public void SignUp()
         {
-            SignUpRequestHandler signUpRequestHandler = new SignUpRequestHandler(_avatarRepository, _userRepository);
+            SignUpRequestHandler signUpRequestHandler = new SignUpRequestHandler(_avatarRepository, _userRepository, _skinRepository);
             signUpRequestHandler.Execute(HttpContext);
         }
 

@@ -16,14 +16,15 @@ namespace LevelUpAPI.DataAccess.Repositories
         {
         }
 
-        public async Task<Avatar> Create()
+        public async Task<Avatar> Create(int skinId)
         {
             Avatar avatar = new Avatar()
             {
-                Level = 1,
-                Size = 1,
-                Xp = 0,
-                XpMax = 10
+                Level = 1,          // Default level, starts at 1
+                Size = 1,           // Default size (0 = skinny, 1 = normal, 2 = curvy)
+                Xp = 0,             // Default experience, starts at 0
+                XpMax = 10,         // Max experience for the actual level
+                SkinId = skinId
             };
             return await base.Insert(avatar);
         }
