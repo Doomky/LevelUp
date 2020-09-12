@@ -10,5 +10,6 @@ namespace LevelUpAPI.DataAccess.Repositories.Interfaces
     {
         Task<IEnumerable<Skin>> GetAll(bool? gender);
         Task<IEnumerable<Skin>> GetEquipable(bool? gender, int level);
+        Task<Skin> GetByUser(User user);
     }
 }

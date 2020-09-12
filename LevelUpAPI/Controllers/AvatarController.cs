@@ -18,13 +18,15 @@ namespace LevelUpAPI.Controllers
         private readonly levelupContext _context;
         private readonly IAvatarRepository _avatarRepository;
         private readonly IUserRepository _userRepository;
+        private readonly ISkinRepository _skinRepository;
 
-        public AvatarController(ILogger<UsersController> logger, levelupContext context, IAvatarRepository avatarRepository, IUserRepository userRepository)
+        public AvatarController(ILogger<UsersController> logger, levelupContext context, IAvatarRepository avatarRepository, IUserRepository userRepository, ISkinRepository skinRepository)
         {
             _logger = logger;
             _context = context;
             _avatarRepository = avatarRepository;
             _userRepository = userRepository;
+            _skinRepository = skinRepository;
         }
 
         /// <summary>
@@ -60,6 +62,20 @@ namespace LevelUpAPI.Controllers
         {
             UpdateAvatarRequestHandler updateAvatarRequestHandler = new UpdateAvatarRequestHandler(_userRepository, _avatarRepository);
             updateAvatarRequestHandler.Execute(HttpContext);
+        }
+
+        /// <summary>
+        /// Get the name of the current skin of the avatar of the signed-in user.
+        /// </summary>
+        /// <response code="200">The name of the current skin was found.</response>
+        /// <response code="400">The request is malformed or the user does not exist.</response>
+        /// <response code="401">The user is not signed in.</response>
+        [HttpGet]
+        [Route("skin")]
+        public void GetSkin()
+        {
+            GetCurrentSkinRequestHandler getCurrentSkinRequestHandler = new GetCurrentSkinRequestHandler(_userRepository, _skinRepository);
+            getCurrentSkinRequestHandler.Execute(HttpContext);
         }
     }
 }

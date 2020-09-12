@@ -51,5 +51,24 @@ namespace LevelUpAPI.DataAccess.Repositories
                 return null;
             }
         }
+
+        public async Task<Skin> GetByUser(User user)
+        {
+            try
+            {
+                var avatar = await (from avatars in _context.Avatars.AsNoTracking()
+                                    where avatars.Id == user.AvatarId
+                                    select avatars).FirstOrDefaultAsync();
+                var skin = await (from skins in _context.Skins.AsNoTracking()
+                                    where skins.Id == avatar.SkinId
+                                    select skins).FirstOrDefaultAsync();
+                return _mapper.Map<Skin>(skin);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Cannot get this entry", ex);
+                return null;
+            }
+        }
     }
 }
