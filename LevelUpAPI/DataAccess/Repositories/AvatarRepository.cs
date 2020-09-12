@@ -5,22 +5,20 @@ using LevelUpAPI.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace LevelUpAPI.DataAccess.Repositories
 {
-    public class AvatarRepository : Repository<Model.Avatars, Dbo.Avatar>, IAvatarRepository
+    public class AvatarRepository : Repository<Avatars, Avatar>, IAvatarRepository
     {
         public AvatarRepository(levelupContext context, ILogger<AvatarRepository> logger, IMapper mapper) : base(context, context.Avatars, logger, mapper)
         {
         }
 
-        public async Task<Dbo.Avatar> Create()
+        public async Task<Avatar> Create()
         {
-            Dbo.Avatar avatar = new Dbo.Avatar()
+            Avatar avatar = new Avatar()
             {
                 Level = 1,
                 Size = 1,
@@ -46,7 +44,7 @@ namespace LevelUpAPI.DataAccess.Repositories
             }
         }
 
-        public async Task<Dbo.Avatar> AddXp(User user, Quest quest)
+        public async Task<Avatar> AddXp(User user, Quest quest)
         {
             var avatar = GetByUser(user).GetAwaiter().GetResult();
             if (avatar != null)
