@@ -77,5 +77,18 @@ namespace LevelUpAPI.Controllers
             GetCurrentSkinRequestHandler getCurrentSkinRequestHandler = new GetCurrentSkinRequestHandler(_userRepository, _skinRepository);
             getCurrentSkinRequestHandler.Execute(HttpContext);
         }
+
+        /// <summary>
+        /// Get the list of all the skins.
+        /// </summary>
+        /// <response code="200">The list of all the skins was found.</response>
+        /// <response code="400">The request is malformed.</response>
+        [HttpGet]
+        [Route("skin/all")]
+        public void GetAll()
+        {
+            GetAllSkinsRequestHandler getAllSkinsRequestHandler = new GetAllSkinsRequestHandler(_skinRepository);
+            getAllSkinsRequestHandler.Execute(HttpContext);
+        }
     }
 }

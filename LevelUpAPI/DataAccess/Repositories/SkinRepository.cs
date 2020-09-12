@@ -17,13 +17,11 @@ namespace LevelUpAPI.DataAccess.Repositories
         {
         }
 
-        public async Task<IEnumerable<Skin>> GetAll(bool? gender)
+        public async Task<IEnumerable<Skin>> GetAll()
         {
             try
             {
-                string genderStr = gender == false ? "man" : (gender == true ? "woman" : "non-binary");
                 var skinList = (from skins in _context.Skins.AsNoTracking()
-                                   where skins.Name.Contains(genderStr)
                                    select skins).ToList();
                 return _mapper.Map<IEnumerable<Skin>>(skinList);
             }
