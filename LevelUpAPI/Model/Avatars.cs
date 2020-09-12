@@ -15,7 +15,9 @@ namespace LevelUpAPI.Model
         public int Xp { get; set; }
         public int XpMax { get; set; }
         public int Size { get; set; }
+        public int SkinId { get; set; }
 
+        public virtual Skins Skin { get; set; }
         public virtual ICollection<Users> Users { get; set; }
     }
 }
