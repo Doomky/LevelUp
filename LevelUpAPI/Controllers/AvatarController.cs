@@ -104,5 +104,19 @@ namespace LevelUpAPI.Controllers
             GetAvailableSkinsRequestHandler getAvailableSkinsRequestHandler = new GetAvailableSkinsRequestHandler(_userRepository, _avatarRepository, _skinRepository);
             getAvailableSkinsRequestHandler.Execute(HttpContext);
         }
+
+        /// <summary>
+        /// Select the skin to equip to the user's avatar.
+        /// </summary>
+        /// <response code="200">The skin was correctly equiped.</response>
+        /// <response code="400">The request is malformed or the user does not exist.</response>
+        /// <response code="401">The user is not signed in.</response>
+        [HttpPost]
+        [Route("skin/select")]
+        public void Select()
+        {
+            SelectSkinRequestHandler selectSkinRequestHandler = new SelectSkinRequestHandler(_userRepository, _avatarRepository, _skinRepository);
+            selectSkinRequestHandler.Execute(HttpContext);
+        }
     }
 }
