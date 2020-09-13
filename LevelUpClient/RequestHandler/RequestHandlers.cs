@@ -152,6 +152,9 @@ namespace LevelUpClient.RequestHandler
                 case "advice":
                     requestHandler = new GetAdviceByCategoryRequestHandler(fulladdress);
                     break;
+                case "advice/all":
+                    requestHandler = new GetAllAdvicesRequestHandler(fulladdress);
+                    break;
                 default:
                     Console.WriteLine("Unknown endpoint");
                     return;

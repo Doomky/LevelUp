@@ -59,5 +59,11 @@ namespace LevelUpAPI.Controllers
         }
 
 
+        [HttpGet("all/{categoryName}")]
+        public void GetAll(string categoryName)
+        {
+            GetAllAdviceByCategoryRequestHandler getAllAdviceRequestHandler = new GetAllAdviceByCategoryRequestHandler(_adviceRepository, _userRepository, _categoryRepository, categoryName);
+            getAllAdviceRequestHandler.Execute(HttpContext);
+        }
     }
 }
