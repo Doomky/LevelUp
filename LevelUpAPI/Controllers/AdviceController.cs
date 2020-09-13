@@ -44,5 +44,20 @@ namespace LevelUpAPI.Controllers
             GetAdviceByCategoryRequestHandler getAdviceByCategoryRequestHandler = new GetAdviceByCategoryRequestHandler(_userRepository, _adviceRepository, _categoryRepository, categoryName);
             getAdviceByCategoryRequestHandler.Execute(HttpContext);
         }
+
+        /// <summary>
+        /// Get all the info about the avatar of the signed-in user.
+        /// </summary>
+        /// <response code="200">The info about the avatar were found.</response>
+        /// <response code="400">The request is malformed or the user does not exist.</response>
+        /// <response code="401">The user is not signed in.</response>
+        [HttpGet]
+        public void Get()
+        {
+            GetAdviceByCategoryRequestHandler getAdviceByCategoryRequestHandler = new GetAdviceByCategoryRequestHandler(_userRepository, _adviceRepository, _categoryRepository, null);
+            getAdviceByCategoryRequestHandler.Execute(HttpContext);
+        }
+
+
     }
 }

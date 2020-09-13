@@ -34,24 +34,31 @@ namespace LevelUpAPI.RequestHandlers
             (bool isOk, User user) = CheckClaimsForUser(Request, context, _userRepository);
             if (!isOk || user == null)
                 return;
-
-            Category category = _categoryRepository.GetByName(_categoryName).GetAwaiter().GetResult();
-            if (category == null)
+            Advice advice = null;
+            string adviceJson = null;
+            if (_categoryName == null || _categoryName.Length <= 0)
             {
-                context.Response.StatusCode = StatusCodes.Status400BadRequest;
-                context.Response.WriteAsync("the category does not exit").GetAwaiter().GetResult();
-                return;
+                advice = _adviceRepository.GetForUser(user).GetAwaiter().GetResult();
+                adviceJson = JsonSerializer.Serialize(advice);
             }
-            
-            Advice advice = _adviceRepository.GetByCategoryForUser(category, user).GetAwaiter().GetResult();
-
-            AdivceDTOResponse adivceDTOResponse = new AdivceDTOResponse() {
-                Id = advice.Id,
-                Category = category.Name,
-                Text = advice.Text
-            };
-
-            string adviceJson = JsonSerializer.Serialize(adivceDTOResponse);
+            else
+            {
+                Category category = _categoryRepository.GetByName(_categoryName).GetAwaiter().GetResult();
+                if (category == null)
+                {
+                    context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                    context.Response.WriteAsync("the category does not exit").GetAwaiter().GetResult();
+                    return;
+                }
+                advice = _adviceRepository.GetByCategoryForUser(category, user).GetAwaiter().GetResult();
+                AdivceDTOResponse adivceDTOResponse = new AdivceDTOResponse()
+                {
+                    Id = advice.Id,
+                    Category = category.Name,
+                    Text = advice.Text
+                };
+                adviceJson = JsonSerializer.Serialize(adivceDTOResponse);
+            }
             context.Response.StatusCode = StatusCodes.Status200OK;
             context.Response.WriteAsync(adviceJson).GetAwaiter().GetResult();
         }

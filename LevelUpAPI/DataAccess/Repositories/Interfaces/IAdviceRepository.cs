@@ -7,5 +7,6 @@ namespace LevelUpAPI.DataAccess.Repositories
     {
         public Task<Dbo.Advice> GetByCategoryForUser(Dbo.Category category, User user);
         public Task<Advice[]> GetAllByCategoryForUser(Dbo.Category category, User user);
+        public Task<Dbo.Advice> GetForUser(User user);
     }
 }

@@ -50,5 +50,23 @@ namespace LevelUpAPI.DataAccess.Repositories
                 return null;
             }
         }
+
+        public async Task<Advice> GetForUser(User user)
+        {
+            try
+            {
+                var advices = await (from advice in _context.Advices.AsNoTracking()
+                                            select advice).ToArrayAsync();
+                Random random = new Random();
+                int selectedAdviceIndex = random.Next(0, advices.Length);
+                var selectedAdvice = advices[selectedAdviceIndex];
+                return _mapper.Map<Advice>(selectedAdvice);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Cannot get this entry", ex);
+                return null;
+            }
+        }
     }
 }
