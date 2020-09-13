@@ -30,6 +30,7 @@ namespace LevelUpAPI.Model
         public virtual DbSet<PhysicalActivitiesEntriesByLogin> PhysicalActivitiesEntriesByLogin { get; set; }
         public virtual DbSet<Quests> Quests { get; set; }
         public virtual DbSet<QuestsTypes> QuestsTypes { get; set; }
+        public virtual DbSet<Skins> Skins { get; set; }
         public virtual DbSet<SleepEntries> SleepEntries { get; set; }
         public virtual DbSet<Users> Users { get; set; }
 
@@ -53,7 +54,7 @@ namespace LevelUpAPI.Model
                     .WithMany(p => p.Advices)
                     .HasForeignKey(d => d.CategoryId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__advices__categor__1A69E950");
+                    .HasConstraintName("FK__advices__categor__6AEFE058");
             });
 
             modelBuilder.Entity<Avatars>(entity =>
@@ -66,9 +67,17 @@ namespace LevelUpAPI.Model
 
                 entity.Property(e => e.Size).HasColumnName("size");
 
+                entity.Property(e => e.SkinId).HasColumnName("skin_id");
+
                 entity.Property(e => e.Xp).HasColumnName("xp");
 
                 entity.Property(e => e.XpMax).HasColumnName("xp_max");
+
+                entity.HasOne(d => d.Skin)
+                    .WithMany(p => p.Avatars)
+                    .HasForeignKey(d => d.SkinId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_avatars_skins");
             });
 
             modelBuilder.Entity<Categories>(entity =>
@@ -76,7 +85,7 @@ namespace LevelUpAPI.Model
                 entity.ToTable("categories");
 
                 entity.HasIndex(e => e.Name)
-                    .HasName("UQ__categori__72E12F1BD64C7225")
+                    .HasName("UQ__tmp_ms_x__72E12F1BB52CA233")
                     .IsUnique();
 
                 entity.Property(e => e.Id).HasColumnName("id");
@@ -396,19 +405,19 @@ namespace LevelUpAPI.Model
                     .WithMany(p => p.Quests)
                     .HasForeignKey(d => d.CategoryId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__quests__category__220B0B18");
+                    .HasConstraintName("FK__quests__category__73852659");
 
                 entity.HasOne(d => d.Type)
                     .WithMany(p => p.Quests)
                     .HasForeignKey(d => d.TypeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__quests__type_id__22FF2F51");
+                    .HasConstraintName("FK__quests__type_id__74794A92");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Quests)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__quests__user_id__4A18FC72");
+                    .HasConstraintName("FK__quests__user_id__756D6ECB");
             });
 
             modelBuilder.Entity<QuestsTypes>(entity =>
@@ -416,7 +425,7 @@ namespace LevelUpAPI.Model
                 entity.ToTable("quests_types");
 
                 entity.HasIndex(e => e.Name)
-                    .HasName("UQ__quests_t__72E12F1BDC557DC3")
+                    .HasName("UQ__tmp_ms_x__72E12F1B414BC0C6")
                     .IsUnique();
 
                 entity.Property(e => e.Id).HasColumnName("id");
@@ -425,6 +434,21 @@ namespace LevelUpAPI.Model
                     .IsRequired()
                     .HasColumnName("name")
                     .HasMaxLength(255)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Skins>(entity =>
+            {
+                entity.ToTable("skins");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.LevelMin).HasColumnName("level_min");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasColumnName("name")
+                    .HasMaxLength(50)
                     .IsUnicode(false);
             });
 

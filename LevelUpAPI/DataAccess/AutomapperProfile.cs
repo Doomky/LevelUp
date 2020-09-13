@@ -1,8 +1,5 @@
 ﻿using AutoMapper;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace LevelUpAPI.DataAccess
 {
@@ -27,6 +24,7 @@ namespace LevelUpAPI.DataAccess
             AddTwoWayMapping<Dbo.OpenFoodFactsCategory, Model.OpenFoodFactsCategories>();
             AddTwoWayMapping<Dbo.OpenFoodFactsDatasCategory, Model.OpenFoodFactsDatasCategories>();
             AddTwoWayMapping<Dbo.PhysicalActivityEntry, Model.PhysicalActivitiesEntries>();
+            AddTwoWayMapping<Dbo.Skin, Model.Skins>();
         }
 
         public void AddTwoWayMapping<T1, T2>()

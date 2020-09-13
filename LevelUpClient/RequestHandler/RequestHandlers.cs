@@ -130,6 +130,15 @@ namespace LevelUpClient.RequestHandler
                 case "avatar/update":
                     requestHandler = new UpdateAvatarRequestHandler(fulladdress);
                     break;
+                case "avatar/skin":
+                    requestHandler = new GetCurrentSkinRequestHandler(fulladdress);
+                    break;
+                case "avatar/skin/all":
+                    requestHandler = new GetAllSkinsRequestHandler(fulladdress);
+                    break;
+                case "avatar/skin/available":
+                    requestHandler = new GetAvailableSkinsRequestHandler(fulladdress);
+                    break;
 
                 // Sleep
                 case "sleep":

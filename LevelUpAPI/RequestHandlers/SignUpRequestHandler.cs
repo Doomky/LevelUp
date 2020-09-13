@@ -2,6 +2,9 @@
 using Microsoft.AspNetCore.Http;
 using LevelUpAPI.DataAccess.Repositories.Interfaces;
 using LevelUpDTO;
+using LevelUpAPI.Dbo;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace LevelUpAPI
 {
@@ -14,11 +17,13 @@ namespace LevelUpAPI
 
         private readonly IAvatarRepository _avatarRepository;
         private readonly IUserRepository _userRepository;
+        private readonly ISkinRepository _skinRepository;
 
-        public SignUpRequestHandler(IAvatarRepository avatarRepository, IUserRepository userRepository)
+        public SignUpRequestHandler(IAvatarRepository avatarRepository, IUserRepository userRepository, ISkinRepository skinRepository)
         {
             _avatarRepository = avatarRepository;
             _userRepository = userRepository;
+            _skinRepository = skinRepository;
         }
 
         protected override void ExecuteRequest(HttpContext context)
@@ -40,8 +45,9 @@ namespace LevelUpAPI
             }
             else
             {
-                Dbo.Avatar avatar = _avatarRepository.Create().GetAwaiter().GetResult();
-                Dbo.User user = _userRepository.SignUp(Request, avatar.Id).GetAwaiter().GetResult();
+                Skin skin = _skinRepository.GetEquipable(Request.Gender, 1).GetAwaiter().GetResult().FirstOrDefault(skin => skin.Name.Contains("default"));
+                Avatar avatar = _avatarRepository.Create(skin.Id).GetAwaiter().GetResult();
+                User user = _userRepository.SignUp(Request, avatar.Id).GetAwaiter().GetResult();
                 if (user != null)
                     context.Response.StatusCode = StatusCodes.Status200OK;
                 return;
