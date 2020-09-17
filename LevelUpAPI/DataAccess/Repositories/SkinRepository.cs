@@ -36,9 +36,7 @@ namespace LevelUpAPI.DataAccess.Repositories
         {
             try
             {
-                string genderStr = gender == false ? "man" : (gender == true ? "woman" : "non-binary");
                 var skinList = (from skins in _context.Skins.AsNoTracking()
-                                where skins.Name.StartsWith(genderStr)
                                 where level >= skins.LevelMin 
                                 select skins).ToList();
                 return _mapper.Map<IEnumerable<Skin>>(skinList);
