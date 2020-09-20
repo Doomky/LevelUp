@@ -9,7 +9,7 @@ namespace LevelUpAPI.DataAccess.Repositories.Interfaces
     public interface ISkinRepository : IRepository<Skins, Skin>
     {
         Task<IEnumerable<Skin>> GetAll();
-        Task<IEnumerable<Skin>> GetEquipable(bool? gender, int level);
+        Task<IEnumerable<Skin>> GetEquipable(int level);
         Task<Skin> GetByUser(User user);
     }
 }

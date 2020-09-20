@@ -32,7 +32,7 @@ namespace LevelUpAPI.DataAccess.Repositories
             }
         }
 
-        public async Task<IEnumerable<Skin>> GetEquipable(bool? gender, int level)
+        public async Task<IEnumerable<Skin>> GetEquipable(int level)
         {
             try
             {

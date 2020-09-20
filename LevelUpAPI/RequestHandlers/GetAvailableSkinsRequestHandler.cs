@@ -32,7 +32,7 @@ namespace LevelUpAPI.RequestHandlers
             Avatar avatar = _avatarRepository.GetByUser(user).GetAwaiter().GetResult();
             if (avatar != null)
             {
-                IEnumerable<Skin> skins = _skinRepository.GetEquipable(user.Gender, avatar.Level).GetAwaiter().GetResult();
+                IEnumerable<Skin> skins = _skinRepository.GetEquipable(avatar.Level).GetAwaiter().GetResult();
                 if (skins != null)
                 {
                     string skinsJson = JsonSerializer.Serialize(skins);
