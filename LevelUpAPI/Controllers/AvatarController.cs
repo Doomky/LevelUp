@@ -19,14 +19,20 @@ namespace LevelUpAPI.Controllers
         private readonly IAvatarRepository _avatarRepository;
         private readonly IUserRepository _userRepository;
         private readonly ISkinRepository _skinRepository;
+        private readonly ICategoryRepository _categoryQuest;
+        private readonly IQuestRepository _questRepository;
+        private readonly IQuestTypeRepository _questTypeRepository;
 
-        public AvatarController(ILogger<UsersController> logger, levelupContext context, IAvatarRepository avatarRepository, IUserRepository userRepository, ISkinRepository skinRepository)
+        public AvatarController(ILogger<UsersController> logger, levelupContext context, IAvatarRepository avatarRepository, IUserRepository userRepository, ISkinRepository skinRepository, ICategoryRepository categoryQuest, IQuestRepository questRepository, IQuestTypeRepository questTypeRepository)
         {
             _logger = logger;
             _context = context;
             _avatarRepository = avatarRepository;
             _userRepository = userRepository;
             _skinRepository = skinRepository;
+            _categoryQuest = categoryQuest;
+            _questRepository = questRepository;
+            _questTypeRepository = questTypeRepository;
         }
 
         /// <summary>
@@ -87,7 +93,7 @@ namespace LevelUpAPI.Controllers
         [Route("skin/all")]
         public void GetAll()
         {
-            GetAllSkinsRequestHandler getAllSkinsRequestHandler = new GetAllSkinsRequestHandler(_skinRepository);
+            GetAllSkinsRequestHandler getAllSkinsRequestHandler = new GetAllSkinsRequestHandler(_userRepository, _avatarRepository, _skinRepository, _categoryQuest, _questRepository, _questTypeRepository);
             getAllSkinsRequestHandler.Execute(HttpContext);
         }
 
@@ -101,7 +107,7 @@ namespace LevelUpAPI.Controllers
         [Route("skin/available")]
         public void GetEquipable()
         {
-            GetAvailableSkinsRequestHandler getAvailableSkinsRequestHandler = new GetAvailableSkinsRequestHandler(_userRepository, _avatarRepository, _skinRepository);
+            GetAvailableSkinsRequestHandler getAvailableSkinsRequestHandler = new GetAvailableSkinsRequestHandler(_userRepository, _avatarRepository, _skinRepository, _categoryQuest, _questRepository, _questTypeRepository);
             getAvailableSkinsRequestHandler.Execute(HttpContext);
         }
 

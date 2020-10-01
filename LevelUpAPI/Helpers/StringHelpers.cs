@@ -70,5 +70,38 @@ namespace LevelUpAPI.Helpers
                     return Dbo.Category.CategoryAsEnum.Undefined;
             }
         }
+
+        public static Dbo.Skin.SkinNameAsEnum AsSkinEnum(this string type)
+        {
+            switch (type)
+            {
+                case "man_default":
+                case "manDefault":
+                case "ManDefault":
+                    return Dbo.Skin.SkinNameAsEnum.man_default;
+                case "woman_default":
+                case "womanDefault":
+                case "WomanDefault":
+                    return Dbo.Skin.SkinNameAsEnum.woman_default;
+                case "man_pyjama":
+                case "manPyjama":
+                case "ManPyjama":
+                    return Dbo.Skin.SkinNameAsEnum.man_pyjama;
+                case "woman_pyjama":
+                case "womanPyjama":
+                case "WomanPyjama":
+                    return Dbo.Skin.SkinNameAsEnum.woman_pyjama;
+                case "man_fancy":
+                case "manFancy":
+                case "ManFancy":
+                    return Dbo.Skin.SkinNameAsEnum.man_fancy;
+                case "woman_fancy":
+                case "womanFancy":
+                case "WomanFancy":
+                    return Dbo.Skin.SkinNameAsEnum.woman_fancy;
+                default:
+                    return Dbo.Skin.SkinNameAsEnum.unknown;
+            }
+        }
     }
 }

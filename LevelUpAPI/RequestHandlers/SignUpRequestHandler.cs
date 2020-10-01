@@ -45,7 +45,7 @@ namespace LevelUpAPI
             }
             else
             {
-                Skin skin = _skinRepository.GetEquipable(Request.Gender, 1).GetAwaiter().GetResult().FirstOrDefault(skin => skin.Name.Contains("default"));
+                Skin skin = _skinRepository.GetEquipable(1).GetAwaiter().GetResult().FirstOrDefault(skin => skin.Name.Contains("default"));
                 Avatar avatar = _avatarRepository.Create(skin.Id).GetAwaiter().GetResult();
                 User user = _userRepository.SignUp(Request, avatar.Id).GetAwaiter().GetResult();
                 if (user != null)

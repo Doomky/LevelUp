@@ -12,7 +12,10 @@ namespace LevelUpAPI.Migrations
         VALUES
             ('man_default', 0),
             ('woman_default', 0),
-            ('non-binary_default', 0)");
+            ('man_pyjama', 0),
+            ('woman_pyjama', 0),
+            ('man_fancy', 0),
+            ('woman_fancy', 0)");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
