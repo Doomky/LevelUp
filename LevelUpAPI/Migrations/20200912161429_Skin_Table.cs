@@ -45,7 +45,7 @@ namespace LevelUpAPI.Migrations
                     id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     name = table.Column<string>(unicode: false, maxLength: 50, nullable: false),
-                    level_min = table.Column<int>(nullable: false)
+                    level_min = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {

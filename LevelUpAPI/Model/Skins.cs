@@ -12,7 +12,7 @@ namespace LevelUpAPI.Model
 
         public int Id { get; set; }
         public string Name { get; set; }
-        public int LevelMin { get; set; }
+        public int? LevelMin { get; set; }
 
         public virtual ICollection<Avatars> Avatars { get; set; }
     }

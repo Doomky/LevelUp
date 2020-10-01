@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace LevelUpAPI.Dbo
@@ -13,11 +13,17 @@ namespace LevelUpAPI.Dbo
             man_pyjama,
             woman_pyjama,
             man_fancy,
-            woman_fancy
+            woman_fancy,
+            man_funny,
+            woman_funny,
+            man_sportive,
+            woman_sportive,
+            man_cook,
+            woman_cook
         };
 
         public int Id { get; set; }
         public string Name { get; set; }
-        public int LevelMin { get; set; }
+        public int? LevelMin { get; set; }
     }
 }

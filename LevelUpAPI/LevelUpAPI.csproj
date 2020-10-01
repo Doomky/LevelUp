@@ -23,4 +23,8 @@
   <ItemGroup>
     <ProjectReference Include="..\LevelUpDTO\LevelUpDTO.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="DataAccess\SkinHandlers\" />
+  </ItemGroup>
 </Project>

@@ -58,7 +58,11 @@ namespace LevelUpAPI.Helpers
             switch (type)
             {
                 case "physicalactivities":
+                case "physicalActivities":
                 case "PhysicalActivities":
+                case "physicalactivity":
+                case "physicalActivity":
+                case "PhysicalActivity":
                     return Dbo.Category.CategoryAsEnum.PhysicalActivity;
                 case "nutrition":
                 case "Nutrition":
@@ -73,7 +77,7 @@ namespace LevelUpAPI.Helpers
 
         public static Dbo.Skin.SkinNameAsEnum AsSkinEnum(this string type)
         {
-            switch (type)
+            switch(type)
             {
                 case "man_default":
                 case "manDefault":
@@ -99,6 +103,30 @@ namespace LevelUpAPI.Helpers
                 case "womanFancy":
                 case "WomanFancy":
                     return Dbo.Skin.SkinNameAsEnum.woman_fancy;
+                case "man_funny":
+                case "manFunny":
+                case "ManFunny":
+                    return Dbo.Skin.SkinNameAsEnum.man_funny;
+                case "woman_funny":
+                case "womanFunny":
+                case "WomanFunny":
+                    return Dbo.Skin.SkinNameAsEnum.woman_funny;
+                case "man_sportive":
+                case "manSportive":
+                case "ManSportive":
+                    return Dbo.Skin.SkinNameAsEnum.man_sportive;
+                case "woman_sportive":
+                case "womanSportive":
+                case "WomanSportive":
+                    return Dbo.Skin.SkinNameAsEnum.woman_sportive;
+                case "man_cook":
+                case "manCook":
+                case "ManCook":
+                    return Dbo.Skin.SkinNameAsEnum.man_cook;
+                case "woman_cook":
+                case "womanCook":
+                case "WomanCook":
+                    return Dbo.Skin.SkinNameAsEnum.woman_cook;
                 default:
                     return Dbo.Skin.SkinNameAsEnum.unknown;
             }
