@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LevelUpAPI.Migrations
 {
     [DbContext(typeof(levelupContext))]
-    [Migration("20201105162410_Questions_Data")]
-    partial class Questions_Data
+    [Migration("20201106095858_Question_Table")]
+    partial class Question_Table
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -101,7 +101,7 @@ namespace LevelUpAPI.Migrations
 
                     b.HasIndex("Name")
                         .IsUnique()
-                        .HasName("UQ__tmp_ms_x__72E12F1BB52CA233");
+                        .HasName("UQ__tmp_ms_x__72E12F1B62462595");
 
                     b.ToTable("categories");
                 });
@@ -365,6 +365,59 @@ namespace LevelUpAPI.Migrations
                     b.ToTable("physical_activities_entries");
                 });
 
+            modelBuilder.Entity("LevelUpAPI.Model.Questions", b =>
+                {
+                    b.Property<string>("CorrectAnswer")
+                        .IsRequired()
+                        .HasColumnName("correct_answer")
+                        .HasColumnType("varchar(1)")
+                        .HasMaxLength(1)
+                        .IsUnicode(false);
+
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("id")
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ResponseA")
+                        .IsRequired()
+                        .HasColumnName("response_a")
+                        .HasColumnType("varchar(255)")
+                        .HasMaxLength(255)
+                        .IsUnicode(false);
+
+                    b.Property<string>("ResponseB")
+                        .IsRequired()
+                        .HasColumnName("response_b")
+                        .HasColumnType("varchar(255)")
+                        .HasMaxLength(255)
+                        .IsUnicode(false);
+
+                    b.Property<string>("ResponseC")
+                        .IsRequired()
+                        .HasColumnName("response_c")
+                        .HasColumnType("varchar(255)")
+                        .HasMaxLength(255)
+                        .IsUnicode(false);
+
+                    b.Property<string>("ResponseD")
+                        .IsRequired()
+                        .HasColumnName("response_d")
+                        .HasColumnType("varchar(255)")
+                        .HasMaxLength(255)
+                        .IsUnicode(false);
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnName("text")
+                        .HasColumnType("varchar(255)")
+                        .HasMaxLength(255)
+                        .IsUnicode(false);
+
+                    b.ToTable("questions");
+                });
+
             modelBuilder.Entity("LevelUpAPI.Model.Quests", b =>
                 {
                     b.Property<int>("Id")
@@ -445,7 +498,7 @@ namespace LevelUpAPI.Migrations
 
                     b.HasIndex("Name")
                         .IsUnique()
-                        .HasName("UQ__tmp_ms_x__72E12F1B414BC0C6");
+                        .HasName("UQ__tmp_ms_x__72E12F1B2B16B892");
 
                     b.ToTable("quests_types");
                 });
@@ -458,7 +511,7 @@ namespace LevelUpAPI.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("LevelMin")
+                    b.Property<int>("LevelMin")
                         .HasColumnName("level_min")
                         .HasColumnType("int");
 
@@ -593,7 +646,7 @@ namespace LevelUpAPI.Migrations
                     b.HasOne("LevelUpAPI.Model.Categories", "Category")
                         .WithMany("Advices")
                         .HasForeignKey("CategoryId")
-                        .HasConstraintName("FK__advices__categor__6AEFE058")
+                        .HasConstraintName("FK__advices__categor__719CDDE7")
                         .IsRequired();
                 });
 
@@ -665,19 +718,19 @@ namespace LevelUpAPI.Migrations
                     b.HasOne("LevelUpAPI.Model.Categories", "Category")
                         .WithMany("Quests")
                         .HasForeignKey("CategoryId")
-                        .HasConstraintName("FK__quests__category__73852659")
+                        .HasConstraintName("FK__quests__category__7B264821")
                         .IsRequired();
 
                     b.HasOne("LevelUpAPI.Model.QuestsTypes", "Type")
                         .WithMany("Quests")
                         .HasForeignKey("TypeId")
-                        .HasConstraintName("FK__quests__type_id__74794A92")
+                        .HasConstraintName("FK__quests__type_id__7C1A6C5A")
                         .IsRequired();
 
                     b.HasOne("LevelUpAPI.Model.Users", "User")
                         .WithMany("Quests")
                         .HasForeignKey("UserId")
-                        .HasConstraintName("FK__quests__user_id__756D6ECB")
+                        .HasConstraintName("FK__quests__user_id__7D0E9093")
                         .IsRequired();
                 });
 

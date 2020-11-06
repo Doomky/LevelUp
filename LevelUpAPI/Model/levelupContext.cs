@@ -28,6 +28,7 @@ namespace LevelUpAPI.Model
         public virtual DbSet<PhysicalActivities> PhysicalActivities { get; set; }
         public virtual DbSet<PhysicalActivitiesEntries> PhysicalActivitiesEntries { get; set; }
         public virtual DbSet<PhysicalActivitiesEntriesByLogin> PhysicalActivitiesEntriesByLogin { get; set; }
+        public virtual DbSet<Questions> Questions { get; set; }
         public virtual DbSet<Quests> Quests { get; set; }
         public virtual DbSet<QuestsTypes> QuestsTypes { get; set; }
         public virtual DbSet<Skins> Skins { get; set; }
@@ -54,7 +55,7 @@ namespace LevelUpAPI.Model
                     .WithMany(p => p.Advices)
                     .HasForeignKey(d => d.CategoryId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__advices__categor__6AEFE058");
+                    .HasConstraintName("FK__advices__categor__719CDDE7");
             });
 
             modelBuilder.Entity<Avatars>(entity =>
@@ -85,7 +86,7 @@ namespace LevelUpAPI.Model
                 entity.ToTable("categories");
 
                 entity.HasIndex(e => e.Name)
-                    .HasName("UQ__tmp_ms_x__72E12F1BB52CA233")
+                    .HasName("UQ__tmp_ms_x__72E12F1B62462595")
                     .IsUnique();
 
                 entity.Property(e => e.Id).HasColumnName("id");
@@ -369,6 +370,53 @@ namespace LevelUpAPI.Model
                     .IsUnicode(false);
             });
 
+            modelBuilder.Entity<Questions>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("questions");
+
+                entity.Property(e => e.CorrectAnswer)
+                    .IsRequired()
+                    .HasColumnName("correct_answer")
+                    .HasMaxLength(1)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.ResponseA)
+                    .IsRequired()
+                    .HasColumnName("response_a")
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ResponseB)
+                    .IsRequired()
+                    .HasColumnName("response_b")
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ResponseC)
+                    .IsRequired()
+                    .HasColumnName("response_c")
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ResponseD)
+                    .IsRequired()
+                    .HasColumnName("response_d")
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Text)
+                    .IsRequired()
+                    .HasColumnName("text")
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+            });
+
             modelBuilder.Entity<Quests>(entity =>
             {
                 entity.ToTable("quests");
@@ -405,19 +453,19 @@ namespace LevelUpAPI.Model
                     .WithMany(p => p.Quests)
                     .HasForeignKey(d => d.CategoryId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__quests__category__73852659");
+                    .HasConstraintName("FK__quests__category__7B264821");
 
                 entity.HasOne(d => d.Type)
                     .WithMany(p => p.Quests)
                     .HasForeignKey(d => d.TypeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__quests__type_id__74794A92");
+                    .HasConstraintName("FK__quests__type_id__7C1A6C5A");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Quests)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__quests__user_id__756D6ECB");
+                    .HasConstraintName("FK__quests__user_id__7D0E9093");
             });
 
             modelBuilder.Entity<QuestsTypes>(entity =>
@@ -425,7 +473,7 @@ namespace LevelUpAPI.Model
                 entity.ToTable("quests_types");
 
                 entity.HasIndex(e => e.Name)
-                    .HasName("UQ__tmp_ms_x__72E12F1B414BC0C6")
+                    .HasName("UQ__tmp_ms_x__72E12F1B2B16B892")
                     .IsUnique();
 
                 entity.Property(e => e.Id).HasColumnName("id");

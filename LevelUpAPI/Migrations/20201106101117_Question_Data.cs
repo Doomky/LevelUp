@@ -2,7 +2,7 @@
 
 namespace LevelUpAPI.Migrations
 {
-    public partial class Questions_Data : Migration
+    public partial class Question_Data : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
