@@ -82,6 +82,8 @@ namespace LevelUpAPI
 
             services.AddTransient<ISkinRepository, SkinRepository>();
 
+            services.AddTransient<IQuestionRepository, QuestionRepository>();
+
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
             {

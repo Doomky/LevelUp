@@ -25,6 +25,7 @@ namespace LevelUpAPI.DataAccess
             AddTwoWayMapping<Dbo.OpenFoodFactsDatasCategory, Model.OpenFoodFactsDatasCategories>();
             AddTwoWayMapping<Dbo.PhysicalActivityEntry, Model.PhysicalActivitiesEntries>();
             AddTwoWayMapping<Dbo.Skin, Model.Skins>();
+            AddTwoWayMapping<Dbo.Question, Model.Questions>();
         }
 
         public void AddTwoWayMapping<T1, T2>()
