@@ -64,5 +64,22 @@ namespace LevelUpAPI.DataAccess.Repositories
             }
             return avatar;
         }
+
+        public async Task<Avatar> AddXp(User user, int xp)
+        {
+            var avatar = GetByUser(user).GetAwaiter().GetResult();
+            if (avatar != null)
+            {
+                avatar.Xp += xp;
+                while (avatar.Xp >= avatar.XpMax)
+                {
+                    avatar.Level++;
+                    avatar.Xp = 0;
+                    avatar.XpMax *= 2;
+                }
+                avatar = Update(avatar).GetAwaiter().GetResult();
+            }
+            return avatar;
+        }
     }
 }

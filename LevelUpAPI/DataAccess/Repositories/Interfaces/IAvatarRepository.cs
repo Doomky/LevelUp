@@ -10,5 +10,6 @@ namespace LevelUpAPI.DataAccess.Repositories.Interfaces
         public Task<Avatar> Create(int skinId);
         public Task<Avatar> GetByUser(User user);
         public Task<Avatar> AddXp(User user, Quest quest);
+        public Task<Avatar> AddXp(User user, int xp);
     }
 }
