@@ -26,7 +26,7 @@ namespace LevelUpAPI.RequestHandlers
 
             if (questions != null)
             {
-                string questionsJson = JsonSerializer.Serialize(questions);
+                string questionsJson = JsonSerializer.Serialize(new{ questions = questions});
                 context.Response.StatusCode = StatusCodes.Status200OK;
                 context.Response.WriteAsync(questionsJson).GetAwaiter().GetResult();
             }
