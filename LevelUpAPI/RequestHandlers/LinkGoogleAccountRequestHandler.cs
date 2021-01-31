@@ -52,7 +52,7 @@ namespace LevelUpAPI.RequestHandlers
                 string accessTokenInfoJson = JsonSerializer.Serialize(accessTokenInfo);
 
                 context.Response.WriteAsync(accessTokenInfoJson).GetAwaiter().GetResult();
-                _userRepository.Update(user);
+                _userRepository.Update(user).GetAwaiter().GetResult();
             }
             else
             {

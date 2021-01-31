@@ -10,11 +10,18 @@ namespace LevelUpAPI.DataAccess.Quests
 {
     public static class WeeklyPhysicalActivity
     {
+        private const string PHYSICAL_ACTIVITIES_GOAL_KEY = "PhysicalActivitiesGoal";
         public static Quest Initialize(Quest quest, User user, QuestTypeAsEmum questTypeAsEmum, AddQuestDTORequest addQuestRequest)
         {
-            quest.ProgressValue = 0;
-            quest.ProgressCount = 1;
-            quest.ExpirationDate = DateTime.Now.AddDays(7);
+            if (addQuestRequest.Data.TryGetValue(PHYSICAL_ACTIVITIES_GOAL_KEY, out string physicalActivitiesGoalValue))
+            {
+                if (int.TryParse(physicalActivitiesGoalValue, out int physicalActivitiesGoal))
+                {
+                    quest.ProgressValue = 0;
+                    quest.ProgressCount = physicalActivitiesGoal;
+                    quest.ExpirationDate = DateTime.Now.AddDays(7);
+                }
+            }
             return quest;
         }
     }

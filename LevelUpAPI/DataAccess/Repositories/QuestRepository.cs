@@ -37,7 +37,7 @@ namespace LevelUpAPI.DataAccess.Repositories
                     var questHandler = QuestHandlers.QuestHandlers.Create(quest, user, questTypeRepository);
                     return 
                     quest.UserId == user.Id &&
-                    quest.TypeId == categoryId &&
+                    quest.CategoryId == categoryId &&
                     questHandler != null && (!questState.HasValue || questState.Value == questHandler.GetState());
             });
         }

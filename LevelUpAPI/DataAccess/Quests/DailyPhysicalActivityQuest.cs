@@ -10,12 +10,18 @@ namespace LevelUpAPI.DataAccess.Quests
 {
     public static class DailyPhysicalActivityQuest
     {
+        private const string PHYSICAL_ACTIVITIES_GOAL_KEY = "PhysicalActivitiesGoal";
 
         public static Quest Initialize(Quest quest, User user, QuestTypeAsEmum questTypeAsEmum, AddQuestDTORequest addQuestRequest)
         {
-            quest.ProgressValue = 0;
-            quest.ProgressCount = 1;
-
+            if (addQuestRequest.Data.TryGetValue(PHYSICAL_ACTIVITIES_GOAL_KEY, out string physicalActivitiesGoalValue))
+            {
+                if (int.TryParse(physicalActivitiesGoalValue, out int physicalActivitiesGoal))
+                {
+                    quest.ProgressValue = 0;
+                    quest.ProgressCount = physicalActivitiesGoal;
+                }
+            }
             return quest;
         }
     }
