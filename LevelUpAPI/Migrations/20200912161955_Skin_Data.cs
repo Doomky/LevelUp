@@ -13,7 +13,7 @@ namespace LevelUpAPI.Migrations
             ('man_default', 0),
             ('woman_default', 0),
             ('man_pyjama', NULL),
-            ('woman_pyjama', NULL)
+            ('woman_pyjama', NULL),
             ('man_fancy', 10),
             ('woman_fancy', 10),
             ('man_cook', 7),

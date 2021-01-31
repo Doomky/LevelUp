@@ -58,7 +58,6 @@ namespace LevelUpAPI.RequestHandlers
             {
                 context.Response.WriteAsync(response).GetAwaiter().GetResult();
             }
-            context.Response.StatusCode = (int)httpResponse.StatusCode;
         }
     }
 }
